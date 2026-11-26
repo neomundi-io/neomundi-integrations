@@ -1,0 +1,110 @@
+# The single source of truth for this integration.
+#
+# The library index, the catalogue and the badges are GENERATED from this
+# file and its siblings. `tools/check_conformance.py` validates it.
+
+slug: litellm
+name: LiteLLM
+technology:
+  name: LiteLLM
+  homepage: https://www.litellm.ai/
+  what_it_is: >-
+    An LLM gateway: one OpenAI-style API to 100+ providers, as a Python
+    library or as a proxy server, with routing, retries, budgets and logging
+    callbacks.
+
+package:
+  name: litellm-neomundi
+  import_name: litellm_neomundi
+  version: 0.1.0
+  # Not published. The index renders the repository install line instead
+  # of a `pip install` that would fail.
+  published_on: none
+  pypi_url: https://pypi.org/project/litellm-neomundi/
+
+# Package lifecycle, not evidence. Experimental: it has not yet measured a
+# single real completion.
+maturity: experimental
+
+evidence:
+  # E1, deliberately, and not E2.
+  #
+  # The mission window that built this (2026-11-26) had no
+  # NEOMUNDI_VERIFICATION_KEY in its environment, so no real measurement
+  # could be taken and nothing was re-read from the API. What exists is an
+  # offline suite that drives the real `litellm.completion` (1.111.0) and
+  # the real `neomundi` 2.1.0 client through mock transports, and asserts
+  # the exact body sent to POST /v1/govern. Claiming E2 would require a
+  # proof under evidence/ that does not exist. See LIMITATIONS.md §9.
+  level: e1
+  offline_tests: 47
+  real_observations: 0
+  observations_verified_persisted: 0
+  cost_chf: 0.0
+
+compatibility:
+  python: ["3.11", "3.12", "3.13"]
+  platforms: [linux, macos, windows]
+  target:
+    name: litellm
+    min: "1.111.0"
+    max: "<2.0"
+    verified: "1.111.0"
+  neomundi_sdk:
+    min: "2.1.0"
+    verified: "2.1.0"
+  # The fixture the suite replays was produced under 3.3.1. No live
+  # measurement was taken, so no served version was observed.
+  measurement_version_verified: "3.3.1 (captured fixture, not a live call)"
+
+value:
+  host_keeps: >-
+    LiteLLM keeps routing, retries, fallbacks, budgets, virtual keys, its
+    cost table and whatever logging callbacks you already run.
+  neomundi_adds: >-
+    Signed, independently verifiable behavioural measurement of every chat
+    completion the gateway routes, to any provider, from one attachment
+    point -- with the latency LiteLLM observed, and only token counts the
+    provider itself published.
+  complements_not_replaces:
+    - LiteLLM logging callbacks
+    - Langfuse
+    - langchain-neomundi
+  typical_use:
+    - Measure every provider behind a LiteLLM Proxy without instrumenting each application.
+    - Detect a behavioural regression after a routing or model change that latency and cost do not show.
+    - Find out, for free, which of your providers publish usage at all, with submit=False.
+
+entrypoint:
+  kind: custom_logger
+  symbol: litellm_neomundi.NeoMundiLogger
+  snippet: |
+    logger = NeoMundiLogger(api_key=..., base_url="https://api.neomundi.io")
+    litellm.callbacks = [logger]
+    answer = litellm.completion(model="ollama_chat/llama3.2", messages=messages)
+
+refusals:
+  - The provider published no token count; LiteLLM's zero or estimate is refused, never forwarded.
+  - An async stream hides the provider's payload from the logger, so it is refused rather than trusted.
+  - A cache hit, a failed call or a non-chat call is not a model interaction to measure.
+  - The measurement API is unreachable, so the failure is reported and your call is untouched.
+
+billing:
+  metered: true
+  note: >-
+    Every submitted observation is a billed measurement; there is no
+    trace-only route. sample_rate defaults to 1.0 and a gateway sees every
+    call -- start with submit=False, which needs no key and opens no socket.
+
+links:
+  readme: README.md
+  readme_fr: README_FR.md
+  limitations: LIMITATIONS.md
+  value: VALUE.md
+  mission_report: MISSION_REPORT.md
+  changelog: CHANGELOG.md
+  notebook: notebooks/quickstart.ipynb
+  examples: examples/
+
+delivered: 2026-11-26
+last_verified: 2026-11-26
