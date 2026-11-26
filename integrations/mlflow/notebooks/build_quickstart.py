@@ -44,7 +44,7 @@ NeoMundi API is a mock that replays a captured production response.
 MLflow's usage telemetry is switched off before MLflow is imported.
 
 What it does **not** show: a real measurement persisted by the API. That
-is outside this package's evidence (E1). See `LIMITATIONS.md`.
+is the package's E2 run, outside this notebook. See `LIMITATIONS.md` §8.
 """
     ),
     md("## 1. Setup — before importing MLflow"),
