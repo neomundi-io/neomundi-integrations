@@ -12,11 +12,15 @@
 
 ---
 
-> **Niveau de preuve : E1 — hors ligne uniquement.** Aucune mesure réelle
-> n'a encore été prise avec ce paquet : la fenêtre qui l'a construit ne
-> disposait pas de la clé du compte de vérification NeoMundi. La suite
-> pilote le vrai `litellm.completion` et le vrai client `neomundi` à travers
-> des transports simulés. Voir [LIMITATIONS.md §9](LIMITATIONS.md#9-evidence-level-e1-not-e2).
+> **Niveau de preuve : E2.** Quatre complétions réelles, par la route
+> compatible OpenAI de LiteLLM vers un modèle Ollama local, ont été
+> mesurées sur le compte de vérification du service le 2026-11-26 et
+> relues depuis l'API comme persistées : 4/4, `measurement_version` 3.5.0
+> servie, 0,12 CHF. Deux autres phases ont été refusées sur des appels
+> réels et n'ont rien facturé : la route native `ollama/` de LiteLLM, dont
+> le compte ne peut pas être prouvé comme celui du fournisseur, et un
+> embedding. Preuve : [`evidence/e2_qualification_20261126T094917Z.json`](evidence/e2_qualification_20261126T094917Z.json). Voir
+> [LIMITATIONS.md §9](LIMITATIONS.md#9-evidence-level-e2-on-one-route).
 
 ## Ce que c'est
 
@@ -100,8 +104,8 @@ cela ([LIMITATIONS §4](LIMITATIONS.md#4-replacing-or-removing-the-logger-is-not
 | | |
 |---|---|
 | Suite hors ligne | 47 tests, verts sur Python 3.12 / Linux en local ; la CI couvre 3.11–3.13 sur Linux, macOS, Windows |
-| Exécution réelle | **aucune** — E1. 0 observation soumise, 0 relue |
-| Maturité | expérimentale |
+| Exécution réelle | **E2** : 4 observations soumises à `https://api.neomundi.io`, 4/4 relues comme persistées (2026-11-26, Python 3.12, `neomundi` 2.1.0). Voir [`evidence/`](evidence/) |
+| Maturité | bêta |
 
 Lisez [LIMITATIONS.md](LIMITATIONS.md) avant de tirer une conclusion d'un score.
 

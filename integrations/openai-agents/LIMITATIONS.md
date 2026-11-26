@@ -128,16 +128,30 @@ default 1024). A full queue drops the call with
 `processor.flush()` or `force_flush()` before exiting, or the last
 submissions may be lost with the process.
 
-## 9. Evidence level E1, not E2
+## 9. Evidence level E2, on the Responses route
 
-No real observation has been submitted through this package. The window
-that built it had no `NEOMUNDI_VERIFICATION_KEY`, and no billed
-measurement was authorised. `qualify.py` is ready: four billed
-observations, about 0.12 CHF, against Ollama's `/v1/responses`. Its dry
-run is green against a mock provider. **Two facts remain unverified until
-it runs against a real Ollama:** that Ollama's Responses endpoint publishes
-a `usage` block, and that the chosen model performs the tool call. If
-either fails, the evidence will say so.
+**Measured 2026-11-26.** Two plain runs and one tool run of a real
+`Agent`, through the real `Runner` on `OpenAIResponsesModel` against
+`llama3.2:3b` on a local Ollama's `/v1/responses`, from the service
+verification account. Four model calls submitted, re-read by `request_id`:
+4/4 persisted, served `measurement_version` 3.5.0, 0.12 CHF
+([`evidence/e2_qualification_20261126T140137Z.json`](evidence/e2_qualification_20261126T140137Z.json)).
+
+The two facts this section used to list as unverified are now measured,
+and both hold: Ollama's Responses endpoint publishes an integer `usage`
+block, and the model performed the tool call, which produced two model
+calls, both measured.
+
+What that does **not** cover, and what it means for you:
+
+- **Refusals were reproduced, not lifted.** A Chat Completions generation
+  span was refused on a real call (§1), and so was a run with
+  `trace_include_sensitive_data=False` (§2). Both billed nothing.
+- **One provider, one platform.** Paid providers were exercised only
+  through mock transports. The real run was Python 3.12 with `neomundi`
+  2.1.0; the CI matrix covers 3.11–3.13 on Linux, macOS and Windows
+  offline.
+- **Not E3.** Nobody outside the team has reproduced it.
 
 ## 10. Pinned to openai-agents 0.26.x
 

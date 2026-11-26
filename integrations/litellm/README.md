@@ -12,11 +12,14 @@
 
 ---
 
-> **Evidence level: E1 — offline only.** No real measurement has been
-> taken with this package yet: the window that built it had no NeoMundi
-> service verification key. The suite drives the real `litellm.completion`
-> and the real `neomundi` client through mock transports. See
-> [LIMITATIONS.md §9](LIMITATIONS.md#9-evidence-level-e1-not-e2).
+> **Evidence level: E2.** Four real completions, through LiteLLM's
+> OpenAI-compatible route to a local Ollama model, were measured on the
+> service verification account on 2026-11-26 and re-read from the API as
+> persisted: 4/4, served `measurement_version` 3.5.0, 0.12 CHF. Two more
+> phases were refused on real calls and billed nothing: LiteLLM's native
+> `ollama/` route, whose count cannot be proven to be the provider's, and
+> an embedding. Proof: [`evidence/e2_qualification_20261126T094917Z.json`](evidence/e2_qualification_20261126T094917Z.json). See
+> [LIMITATIONS.md §9](LIMITATIONS.md#9-evidence-level-e2-on-one-route).
 
 ## What this is
 
@@ -99,8 +102,8 @@ deterministic in `litellm_call_id`.
 | | |
 |---|---|
 | Offline test suite | 47 tests, green on Python 3.12 / Linux locally; CI runs 3.11–3.13 on Linux, macOS, Windows |
-| Real execution | **none** — E1. 0 observations submitted, 0 re-read |
-| Maturity | experimental |
+| Real execution | **E2**: 4 observations submitted to `https://api.neomundi.io`, 4/4 re-read as persisted (2026-11-26, Python 3.12, `neomundi` 2.1.0). See [`evidence/`](evidence/) |
+| Maturity | beta |
 
 Read [LIMITATIONS.md](LIMITATIONS.md) before drawing a conclusion from any score.
 

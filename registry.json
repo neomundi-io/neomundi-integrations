@@ -350,7 +350,7 @@
           "LitellmModel (refused) -- litellm 1.111.0, estimate observed on a silent provider",
           "AnyLLMModel (refused while loaded) -- any-llm-sdk 1.55.0, source read, not run"
         ],
-        "measurement_version_verified": "none (E1)"
+        "measurement_version_verified": "3.5.0 (served live, 4 observations re-read)"
       },
       "value": {
         "host_keeps": "The Agents SDK keeps the agent loop, tools, handoffs, guardrails and its tracing -- including its own exporter to the OpenAI dashboard and any processor you registered. The processor is appended and evicts nobody.",

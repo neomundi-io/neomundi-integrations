@@ -136,7 +136,7 @@
 | Platforms | linux, macos, windows |
 | Target verified | `openai-agents` 0.26.0 (bounds 0.26.0 → <0.27) |
 | NeoMundi SDK | ≥ 2.1.0, verified 2.1.0 |
-| `measurement_version` verified | **none (E1)** |
+| `measurement_version` verified | **3.5.0 (served live, 4 observations re-read)** |
 | Offline tests | 45 |
 | Real observations | 4, of which 4 re-read as persisted |
 | Metered | yes |

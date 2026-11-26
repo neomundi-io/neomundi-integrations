@@ -136,7 +136,7 @@
 | Plateformes | linux, macos, windows |
 | Cible vérifiée | `openai-agents` 0.26.0 (bornes 0.26.0 → <0.27) |
 | SDK NeoMundi | ≥ 2.1.0, vérifié 2.1.0 |
-| `measurement_version` vérifiée | **none (E1)** |
+| `measurement_version` vérifiée | **3.5.0 (served live, 4 observations re-read)** |
 | Tests hors ligne | 45 |
 | Observations réelles | 4, dont 4 relues persistées |
 | Facturée | oui |
