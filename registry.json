@@ -2,7 +2,7 @@
   "library": "neomundi-integrations",
   "generated_by": "tools/build_registry.py",
   "counts": {
-    "active": 1,
+    "active": 2,
     "archived": 0,
     "evidence_e2_or_better": 1,
     "published": 0
@@ -114,6 +114,96 @@
       "directory": "integrations/langchain",
       "archived": false,
       "install": "pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/langchain'"
+    },
+    {
+      "slug": "langfuse",
+      "name": "Langfuse",
+      "technology": {
+        "name": "Langfuse",
+        "homepage": "https://langfuse.com/",
+        "what_it_is": "An open-source LLM observability platform: traces, prompts, cost, sessions, datasets and evaluation scores, self-hosted or in the cloud."
+      },
+      "package": {
+        "name": "langfuse-neomundi",
+        "import_name": "langfuse_neomundi",
+        "version": "0.1.0",
+        "published_on": "none",
+        "pypi_url": "https://pypi.org/project/langfuse-neomundi/"
+      },
+      "maturity": "experimental",
+      "evidence": {
+        "level": "e1",
+        "offline_tests": 33,
+        "real_observations": 0,
+        "observations_verified_persisted": 0,
+        "cost_chf": 0.0
+      },
+      "compatibility": {
+        "python": [
+          "3.11",
+          "3.12",
+          "3.13"
+        ],
+        "platforms": [
+          "linux",
+          "macos",
+          "windows"
+        ],
+        "target": {
+          "name": "langfuse",
+          "min": "5.2.0",
+          "max": "<6.0",
+          "verified": "5.2.0"
+        },
+        "neomundi_sdk": {
+          "min": "2.1.0",
+          "verified": "2.1.0"
+        },
+        "measurement_version_verified": "3.3.1 (captured fixture, not a live call)"
+      },
+      "value": {
+        "host_keeps": "Langfuse keeps the trace: prompt, completion, latency, cost, sessions, datasets, experiments, and the UI the developer already has open.",
+        "neomundi_adds": "Signed, independently verifiable behavioural measurement of the same interaction, written onto that Langfuse trace as scores -- one per signal the server declared measured -- with the NeoMundi request_id attached so the trace links to the signed record.",
+        "complements_not_replaces": [
+          "Langfuse",
+          "langchain-neomundi"
+        ],
+        "typical_use": [
+          "See NeoMundi signals next to latency and cost on the trace you are already debugging.",
+          "Filter or chart Langfuse traces by a measured behavioural signal.",
+          "Jump from a Langfuse trace to the signed, third-party-verifiable NeoMundi record."
+        ]
+      },
+      "entrypoint": {
+        "kind": "bridge",
+        "symbol": "langfuse_neomundi.NeoMundiLangfuseBridge",
+        "snippet": "bridge = NeoMundiLangfuseBridge(langfuse)  # your existing Langfuse client\noutcome = bridge.write(trace.close())  # a neomundi TraceRecord or GovernResult\nprint(outcome.status, outcome.signals_written)\n"
+      },
+      "refusals": [
+        "A signal the server did not declare measured gets no numeric score, not even its conventional value.",
+        "There is no Langfuse trace to attach to, so nothing is written.",
+        "A measurement that was not submitted writes only a summary saying so, never a signal.",
+        "A Langfuse or bridge failure is reported as an outcome and never reaches your application."
+      ],
+      "billing": {
+        "metered": false,
+        "note": "The bridge never contacts NeoMundi and bills nothing by itself. The measurement it transports was billed when it was submitted, at 0.030 CHF per observation, by whatever produced it."
+      },
+      "links": {
+        "readme": "README.md",
+        "readme_fr": "README_FR.md",
+        "limitations": "LIMITATIONS.md",
+        "value": "VALUE.md",
+        "mission_report": "MISSION_REPORT.md",
+        "changelog": "CHANGELOG.md",
+        "notebook": "notebooks/quickstart.ipynb",
+        "examples": "examples/"
+      },
+      "delivered": "2026-11-26",
+      "last_verified": "2026-11-26",
+      "directory": "integrations/langfuse",
+      "archived": false,
+      "install": "pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/langfuse'"
     }
   ],
   "archived": []

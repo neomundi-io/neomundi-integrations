@@ -1,0 +1,80 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "langfuse-neomundi"
+version = "0.1.0"
+description = "Write NeoMundi measurements back into Langfuse as scores on the trace"
+readme = "README.md"
+license = "Apache-2.0"
+authors = [{ name = "Sebastien FAVRE", email = "sebastien@neomundi.org" }]
+requires-python = ">=3.11"
+keywords = ["langfuse", "neomundi", "ai-governance", "llm-measurement", "observability"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+
+# Two dependencies, both unavoidable: the measurement types and the client
+# the scores are written through.
+#
+# `langfuse` is floored at 5.2.0 because that is the only version whose
+# `create_score` surface and wire payload were introspected. The upper
+# bound is the next major: Langfuse 5.x is OTel-based and moves fast, and
+# the library's weekly upstream watch is what catches drift inside it.
+dependencies = [
+    "langfuse>=5.2.0,<6.0",
+    "neomundi>=2.1.0,<3.0",
+]
+
+[project.optional-dependencies]
+# `httpx.MockTransport` ships with httpx, already a dependency of both.
+dev = [
+    "pytest>=8.0",
+]
+
+# Nothing extra: the examples run offline on the two runtime dependencies.
+examples = []
+
+notebook = [
+    "nbformat>=5.9",
+    "nbclient>=0.9",
+    "ipykernel>=6.29",
+]
+
+[project.urls]
+Homepage = "https://github.com/neomundi-io/neomundi-integrations/tree/main/integrations/langfuse"
+Repository = "https://github.com/neomundi-io/neomundi-integrations"
+Documentation = "https://github.com/neomundi-io/neomundi-integrations/tree/main/integrations/langfuse#readme"
+Changelog = "https://github.com/neomundi-io/neomundi-integrations/blob/main/integrations/langfuse/CHANGELOG.md"
+Issues = "https://github.com/neomundi-io/neomundi-integrations/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+langfuse_neomundi = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-q"
+pythonpath = ["src", "tests"]
+filterwarnings = ["error::RuntimeWarning"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/langfuse_neomundi/__init__.py" = ["E402"]

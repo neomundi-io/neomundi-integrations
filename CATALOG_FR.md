@@ -46,6 +46,44 @@
 [Guide](integrations/langchain/README_FR.md) · [Limites](integrations/langchain/LIMITATIONS.md) · [Valeur et ROI](integrations/langchain/VALUE.md) · [Notebook](integrations/langchain/notebooks/quickstart.ipynb) · [Exemples](integrations/langchain/examples/) · [Preuves](integrations/langchain/evidence/) · [Rapport de mission](integrations/langchain/MISSION_REPORT.md) · [Journal](integrations/langchain/CHANGELOG.md)
 
 
+## Langfuse
+
+> An open-source LLM observability platform: traces, prompts, cost, sessions, datasets and evaluation scores, self-hosted or in the cloud.
+
+| | |
+| --- | --- |
+| Paquet | `langfuse-neomundi` 0.1.0 |
+| Installation | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/langfuse'` |
+| Maturité | experimental |
+| Niveau de preuve | **E1** — offline tests, green across platforms |
+| Python | 3.11, 3.12, 3.13 |
+| Plateformes | linux, macos, windows |
+| Cible vérifiée | `langfuse` 5.2.0 (bornes 5.2.0 → <6.0) |
+| SDK NeoMundi | ≥ 2.1.0, vérifié 2.1.0 |
+| `measurement_version` vérifiée | **3.3.1 (captured fixture, not a live call)** |
+| Tests hors ligne | 33 |
+| Observations réelles | 0, dont 0 relues persistées |
+| Facturée | non |
+| Livrée | 2026-11-26 · dernière vérification 2026-11-26 |
+
+**Ce que la technologie garde.** Langfuse keeps the trace: prompt, completion, latency, cost, sessions, datasets, experiments, and the UI the developer already has open.
+
+**Ce que NeoMundi ajoute.** Signed, independently verifiable behavioural measurement of the same interaction, written onto that Langfuse trace as scores -- one per signal the server declared measured -- with the NeoMundi request_id attached so the trace links to the signed record.
+
+**Complète, ne remplace pas :** Langfuse, langchain-neomundi.
+
+**Ce qu'elle refuse de faire.**
+
+- A signal the server did not declare measured gets no numeric score, not even its conventional value.
+- There is no Langfuse trace to attach to, so nothing is written.
+- A measurement that was not submitted writes only a summary saying so, never a signal.
+- A Langfuse or bridge failure is reported as an outcome and never reaches your application.
+
+🔴 The bridge never contacts NeoMundi and bills nothing by itself. The measurement it transports was billed when it was submitted, at 0.030 CHF per observation, by whatever produced it.
+
+[Guide](integrations/langfuse/README_FR.md) · [Limites](integrations/langfuse/LIMITATIONS.md) · [Valeur et ROI](integrations/langfuse/VALUE.md) · [Notebook](integrations/langfuse/notebooks/quickstart.ipynb) · [Exemples](integrations/langfuse/examples/) · [Rapport de mission](integrations/langfuse/MISSION_REPORT.md) · [Journal](integrations/langfuse/CHANGELOG.md)
+
+
 ## Niveaux de preuve
 
 - **E0** — nothing probative yet
