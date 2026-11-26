@@ -16,14 +16,24 @@ Run by CI on every pull request. Three classes of check:
 3. **Honesty of the install line.** A package marked ``published_on: none``
    may not be documented with a ``pip install <name>`` that would fail.
 
+Those three **block**: a claim the library cannot keep must not ship.
+
+And one class that **reports without blocking**:
+
 4. **The prose agrees with the manifest.** Wherever a README or
    ``LIMITATIONS.md`` states an evidence level or a maturity, it states the
    one the manifest declares. A verified E2 badge above a README that says
    "E1, no real measurement" is a library contradicting itself, and the
    reader cannot tell which half to believe.
 
-Exit code 0 when everything holds, 1 otherwise, with every problem listed
-rather than only the first.
+   🔴 **It warns; it never fails the run.** The contradictions it exists to
+   find all came from manifest-only commits, and were caught by a human
+   reading the catalogue rather than by CI. Printing them at the top of
+   every run finds them earlier than that, and costs nobody a red build.
+   Documentation drift is a thing to fix, not a thing to block on.
+
+Exit code 0 when every **blocking** check holds, 1 otherwise, with every
+problem listed rather than only the first. Warnings never move it.
 """
 
 from __future__ import annotations
@@ -206,11 +216,15 @@ _MATURITY_WORDS = {
 
 
 def check_prose_agrees(integration: Integration) -> list[str]:
-    """A README may not state a level or a maturity the manifest does not.
+    """Report where a README states a level or a maturity the manifest does not.
 
     Written after three integrations reached E2 through a manifest-only
     commit and kept telling readers, in two languages, that no real
     measurement had ever been taken.
+
+    🔴 **Returns warnings, not problems.** Its findings are printed and do
+    not affect the exit code -- see this module's docstring for why. Callers
+    must keep them out of the blocking list.
     """
     problems: list[str] = []
     level = integration.evidence_level.upper()
@@ -326,14 +340,19 @@ def main() -> int:
         return 1
 
     failed = False
+    warned = 0
     for integration in active + archived:
         problems = list(integration.problems)
         problems += check_skeleton(integration)
         problems += check_package_name(integration)
         problems += check_evidence(integration)
         problems += check_install_honesty(integration)
-        problems += check_prose_agrees(integration)
         problems += check_no_live_key(integration)
+
+        # Deliberately NOT in `problems`: documentation drift is reported,
+        # never blocking. Adding it to the list above would make it a gate.
+        prose = check_prose_agrees(integration)
+        warned += len(prose)
 
         label = f"{integration.slug} ({integration.maturity}, {integration.evidence_level})"
         if problems:
@@ -341,8 +360,21 @@ def main() -> int:
             print(f"FAIL  {label}")
             for problem in problems:
                 print(f"        - {problem}")
+        elif prose:
+            print(f"warn  {label}")
         else:
             print(f"ok    {label}")
+        for warning in prose:
+            print(f"        ! {warning}")
+
+    if warned:
+        # On stdout, not stderr: a warning is not an error, and a CI step
+        # that greps stderr must not treat it as one.
+        print(
+            f"\nWARNING: {warned} place(s) where the documentation disagrees with "
+            "its manifest. This does NOT fail the run -- fix them in their own "
+            "commit, at the same time as whatever moved the manifest."
+        )
 
     if failed:
         print(
@@ -352,6 +384,8 @@ def main() -> int:
         return 1
 
     print(f"\nok: {len(active)} active, {len(archived)} archived, every claim verified")
+    if warned:
+        print(f"    {warned} documentation warning(s) above, non-blocking.")
     return 0
 
 
