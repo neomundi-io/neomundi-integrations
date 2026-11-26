@@ -12,9 +12,10 @@
 
 ---
 
-> **Evidence level E1.** Offline tests only. No real measurement was taken
-> and no score was read back from a Langfuse server. See
-> [LIMITATIONS.md §6](LIMITATIONS.md#6-evidence-level-e1-not-e2).
+> **Evidence level E2.** Two real measurements on 2026-11-26, re-read from
+> the NeoMundi API as persisted, **and all six scores re-read from the
+> Langfuse server** on both traces. See
+> [LIMITATIONS.md §6](LIMITATIONS.md#6-evidence-level-e2--and-what-it-does-not-cover).
 
 ## What this is
 
@@ -118,8 +119,8 @@ can wire the bridge up and read what it would write before enabling it.
 | | |
 |---|---|
 | Offline test suite | 33 tests, plus 2 composition tests run when `langchain-neomundi` is installed |
-| Real execution | **none** — E1. No live measurement, no Langfuse read-back |
-| Maturity | experimental |
+| Real execution | **E2** — 2 observations, 2 re-read as persisted, 6/6 scores read back from Langfuse, 0.06 CHF (2026-11-26) |
+| Maturity | beta |
 
 Read [LIMITATIONS.md](LIMITATIONS.md) before drawing a conclusion from any score.
 

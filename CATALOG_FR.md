@@ -54,15 +54,15 @@
 | --- | --- |
 | Paquet | `langfuse-neomundi` 0.1.0 |
 | Installation | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/langfuse'` |
-| Maturité | experimental |
-| Niveau de preuve | **E1** — offline tests, green across platforms |
+| Maturité | beta |
+| Niveau de preuve | **E2** — plus real execution against production, proof committed |
 | Python | 3.11, 3.12, 3.13 |
 | Plateformes | linux, macos, windows |
 | Cible vérifiée | `langfuse` 5.2.0 (bornes 5.2.0 → <6.0) |
 | SDK NeoMundi | ≥ 2.1.0, vérifié 2.1.0 |
 | `measurement_version` vérifiée | **3.3.1 (captured fixture, not a live call)** |
 | Tests hors ligne | 33 |
-| Observations réelles | 0, dont 0 relues persistées |
+| Observations réelles | 2, dont 2 relues persistées |
 | Facturée | non |
 | Livrée | 2026-11-26 · dernière vérification 2026-11-26 |
 

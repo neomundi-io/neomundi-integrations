@@ -23,23 +23,30 @@ package:
 
 # Package lifecycle, not evidence. Experimental: the score names are a
 # public contract that has not yet met a real Langfuse instance.
-maturity: experimental
+maturity: beta
 
 evidence:
-  # E1, deliberately, and not E2.
-  #
-  # The mission window that built this had neither the NeoMundi service
-  # verification key nor a Langfuse instance, so no real measurement was
-  # taken and no score was read back from a Langfuse server. What exists is
-  # an offline suite that asserts the exact wire body Langfuse sends, run
-  # against the real `langfuse` 5.2.0 and `neomundi` 2.1.0 clients.
-  # Claiming E2 would require a proof under evidence/ that does not exist.
-  # See LIMITATIONS.md §6 and MISSION_REPORT.md.
-  level: e1
+  # E2 since 2026-11-26. This integration has TWO destinations, so E2 here
+  # is a double claim and both halves are proven under evidence/.
+  level: e2
   offline_tests: 33
-  real_observations: 0
-  observations_verified_persisted: 0
-  cost_chf: 0.0
+  real_observations: 2
+  observations_verified_persisted: 2
+  cost_chf: 0.06
+  proof: evidence/e2_qualification_20261126T220436Z.json
+  reason: >-
+    Two real measurements through client.trace(), each inside a real
+    Langfuse observation, written by NeoMundiLangfuseBridge. Both served
+    measurement_version 3.5.0 and were re-read from the NeoMundi API as
+    persisted -- 0.06 CHF. That is only half the claim: all six scores, the
+    five numeric signals and the categorical summary, were also re-read
+    from the Langfuse server on both traces. See
+    evidence/langfuse_readback_20261126.json. The bridge's `queued` means
+    handed to the Langfuse client and nothing more, which is why a
+    read-back from Langfuse is what settles it. Two refusals on real calls
+    billed nothing: a valid measurement written outside any observation
+    (not_written_no_trace), and an input that is not a NeoMundi measurement
+    (not_written_unsupported_input).
 
 compatibility:
   python: ["3.11", "3.12", "3.13"]

@@ -12,7 +12,9 @@
 
 ---
 
-> **Niveau de preuve E1.** Tests hors ligne uniquement. Aucune mesure
+> **Niveau de preuve E2.** Deux mesures réelles le 2026-11-26, relues
+> depuis l'API NeoMundi comme persistées, **et les six scores relus depuis
+> le serveur Langfuse** sur les deux traces. Auparavant : aucune mesure
 > réelle n'a été prise et aucun score n'a été relu depuis un serveur
 > Langfuse. Voir [LIMITATIONS.md §6](LIMITATIONS.md#6-evidence-level-e1-not-e2).
 
@@ -120,8 +122,8 @@ brancher le pont et lire ce qu'il écrirait avant de l'activer.
 | | |
 |---|---|
 | Suite hors ligne | 33 tests, plus 2 tests de composition exécutés quand `langchain-neomundi` est installé |
-| Exécution réelle | **aucune** — E1. Pas de mesure réelle, pas de relecture Langfuse |
-| Maturité | experimental |
+| Exécution réelle | **E2** — 2 observations, 2 relues comme persistées, 6/6 scores relus depuis Langfuse, 0,06 CHF (2026-11-26) |
+| Maturité | beta |
 
 Lire [LIMITATIONS.md](LIMITATIONS.md) avant de conclure quoi que ce soit d'un score.
 
