@@ -1,0 +1,97 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mlflow-neomundi"
+version = "0.1.0"
+description = "Measure the model calls MLflow already traces with the NeoMundi measurement API"
+readme = "README.md"
+license = "Apache-2.0"
+authors = [{ name = "Sebastien FAVRE", email = "sebastien@neomundi.org" }]
+# The library floor. mlflow-tracing 3.18.0 itself accepts 3.10.
+requires-python = ">=3.11"
+keywords = ["mlflow", "tracing", "genai", "neomundi", "ai-governance", "llm-measurement", "observability"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+
+# Two dependencies: the measurement client and MLflow's tracing package.
+#
+# `mlflow-tracing` is the light package `mlflow` itself depends on, so this
+# installs next to a full `mlflow` without pulling anything new. It is
+# pinned to the 3.18 minor because what makes a count acceptable was
+# established by execution on 3.18.0: that the `openai` autolog copies the
+# provider's usage verbatim and leaves it absent when the provider is
+# silent, that other writers zero-fill or estimate, and that the
+# `configure(span_processors=...)` hook survives set_experiment. Each of
+# those is MLflow code that can change in a minor; the weekly drift job
+# tests the newest release before the pin moves.
+dependencies = [
+    "mlflow-tracing>=3.18.0,<3.19",
+    "neomundi>=2.1.0,<3.0",
+]
+
+[project.optional-dependencies]
+# MLflow needs a store to trace at all: `mlflow-tracing` alone, with no
+# tracking URI, produces no span (LIMITATIONS.md section 5). The suite uses
+# a throwaway sqlite store, which needs mlflow-skinny + sqlalchemy + alembic.
+# The other packages are the writers the suite drives for real: the openai
+# client (measured), LangChain and the OpenAI Agents SDK (refused).
+dev = [
+    "pytest>=8.0",
+    "openai>=1.26.0",
+    "mlflow-skinny>=3.18.0,<3.19",
+    "sqlalchemy>=1.4.0,<3",
+    "alembic>=1.10.1,<2",
+    "langchain-core>=1.0,<2",
+    "openai-agents>=0.26.0,<0.27",
+]
+
+# The examples drive a real openai client under mlflow.openai.autolog(),
+# offline, against a throwaway sqlite store.
+examples = [
+    "openai>=1.26.0",
+    "mlflow-skinny>=3.18.0,<3.19",
+    "sqlalchemy>=1.4.0,<3",
+    "alembic>=1.10.1,<2",
+]
+
+notebook = [
+    "nbformat>=5.9",
+    "nbclient>=0.9",
+    "ipykernel>=6.29",
+]
+
+[project.urls]
+Homepage = "https://github.com/neomundi-io/neomundi-integrations/tree/main/integrations/mlflow"
+Repository = "https://github.com/neomundi-io/neomundi-integrations"
+Documentation = "https://github.com/neomundi-io/neomundi-integrations/tree/main/integrations/mlflow#readme"
+Changelog = "https://github.com/neomundi-io/neomundi-integrations/blob/main/integrations/mlflow/CHANGELOG.md"
+Issues = "https://github.com/neomundi-io/neomundi-integrations/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+mlflow_neomundi = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-q"
+pythonpath = ["src", "tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501"]

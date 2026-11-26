@@ -1,0 +1,166 @@
+{
+  "proof": "mlflow-neomundi E2 qualification",
+  "dry_run": false,
+  "started_utc": "2026-11-26T16:55:39.059000+00:00",
+  "finished_utc": "2026-11-26T16:56:09.256311+00:00",
+  "api_base_url": "https://api.neomundi.io",
+  "probe": "mlflow.openai.autolog + openai client -> ollama /v1",
+  "authorisation": {
+    "authorised_by": "Sebastien FAVRE, instruction du 2026-11-26",
+    "budget_chf": 0.2,
+    "ceiling_observations": 6
+  },
+  "account": {
+    "note": "service verification account; guard authorised before this run"
+  },
+  "versions": {
+    "neomundi": "2.1.0",
+    "python": "3.12.10"
+  },
+  "metadata_applied": {
+    "role": "devrel-verify",
+    "excluded_from": "Study2_Stage1_Stage2_Stage3",
+    "integration": "mlflow-neomundi",
+    "qualification": "e2"
+  },
+  "billed_observations": 4,
+  "estimated_cost_chf": 0.12,
+  "measurement_versions_served": [
+    "3.5.0"
+  ],
+  "records": [
+    {
+      "phase": "plain 1",
+      "expectation": "submitted, provider usage total; AGENT span refused as aggregate",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "5ff96223-1378-419f-88ca-889b17ea2674",
+      "latency_ms": 3410.7384,
+      "token_count": 65,
+      "token_source": "provider_usage_total_via_mlflow_openai_autolog",
+      "span_type": "CHAT_MODEL",
+      "writer": "openai",
+      "model_name": "llama3.2:3b",
+      "trace_tagged": true,
+      "other_spans": [
+        "not_submitted_aggregate_span"
+      ],
+      "measurement_version": "3.5.0",
+      "reason": null
+    },
+    {
+      "phase": "plain 2",
+      "expectation": "submitted, provider usage total",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "267fa1fe-2696-40a3-b531-111faf64246b",
+      "latency_ms": 1719.748,
+      "token_count": 69,
+      "token_source": "provider_usage_total_via_mlflow_openai_autolog",
+      "span_type": "CHAT_MODEL",
+      "writer": "openai",
+      "model_name": "llama3.2:3b",
+      "trace_tagged": true,
+      "other_spans": [
+        "not_submitted_aggregate_span"
+      ],
+      "measurement_version": "3.5.0",
+      "reason": null
+    },
+    {
+      "phase": "responses api",
+      "expectation": "submitted, provider usage total",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "bb2e84fc-6ea6-473f-be8d-b0cc632a375a",
+      "latency_ms": 2808.9408,
+      "token_count": 80,
+      "token_source": "provider_usage_total_via_mlflow_openai_autolog",
+      "span_type": "CHAT_MODEL",
+      "writer": "openai",
+      "model_name": "llama3.2:3b",
+      "trace_tagged": true,
+      "other_spans": [],
+      "measurement_version": "3.5.0",
+      "reason": null
+    },
+    {
+      "phase": "stream with usage",
+      "expectation": "submitted if Ollama honours include_usage",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "baf9c880-3c4c-4116-898b-89d56d5a011c",
+      "latency_ms": 2690.3606,
+      "token_count": 87,
+      "token_source": "provider_usage_total_via_mlflow_openai_autolog",
+      "span_type": "CHAT_MODEL",
+      "writer": "openai",
+      "model_name": "llama3.2:3b",
+      "trace_tagged": true,
+      "other_spans": [],
+      "measurement_version": "3.5.0",
+      "reason": null
+    },
+    {
+      "phase": "stream without usage",
+      "expectation": "refused: no token count",
+      "status": "not_submitted_no_token_count",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": null,
+      "token_count": null,
+      "token_source": null,
+      "span_type": "CHAT_MODEL",
+      "writer": "openai",
+      "model_name": "llama3.2:3b",
+      "trace_tagged": null,
+      "other_spans": [],
+      "measurement_version": null,
+      "reason": "the provider published no usage (mlflow.chat.tokenUsage is absent); a count is never estimated in its place"
+    },
+    {
+      "phase": "hand-written span",
+      "expectation": "refused: unverified writer",
+      "status": "not_submitted_unverified_token_count",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": null,
+      "token_count": null,
+      "token_source": null,
+      "span_type": "LLM",
+      "writer": null,
+      "model_name": null,
+      "trace_tagged": null,
+      "other_spans": [],
+      "measurement_version": null,
+      "reason": "the span names no writer (mlflow.message.format absent): LiteLLM's MLflow logger writes this way and stores its local estimate as if published, and a manual span's count has no provenance at all"
+    }
+  ],
+  "readback": [
+    {
+      "request_id": "5ff96223-1378-419f-88ca-889b17ea2674",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    },
+    {
+      "request_id": "267fa1fe-2696-40a3-b531-111faf64246b",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    },
+    {
+      "request_id": "bb2e84fc-6ea6-473f-be8d-b0cc632a375a",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    },
+    {
+      "request_id": "baf9c880-3c4c-4116-898b-89d56d5a011c",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    }
+  ],
+  "note": "Prompts and responses are deliberately absent. Observations are marked role=devrel-verify and must be excluded from any analysis."
+}

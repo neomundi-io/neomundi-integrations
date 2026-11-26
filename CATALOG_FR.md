@@ -122,6 +122,44 @@
 [Guide](integrations/litellm/README_FR.md) · [Limites](integrations/litellm/LIMITATIONS.md) · [Valeur et ROI](integrations/litellm/VALUE.md) · [Notebook](integrations/litellm/notebooks/quickstart.ipynb) · [Exemples](integrations/litellm/examples/) · [Rapport de mission](integrations/litellm/MISSION_REPORT.md) · [Journal](integrations/litellm/CHANGELOG.md)
 
 
+## MLflow
+
+> The tracing layer of MLflow, built on OpenTelemetry: autolog instrumentations for model clients and agent frameworks record each call as a span in a trace, stored next to the experiments and runs MLflow users already compare.
+
+| | |
+| --- | --- |
+| Paquet | `mlflow-neomundi` 0.1.0 |
+| Installation | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/mlflow'` |
+| Maturité | beta |
+| Niveau de preuve | **E2** — plus real execution against production, proof committed |
+| Python | 3.11, 3.12, 3.13 |
+| Plateformes | linux, macos, windows |
+| Cible vérifiée | `mlflow-tracing` 3.18.0 (bornes 3.18.0 → <3.19) |
+| SDK NeoMundi | ≥ 2.1.0, vérifié 2.1.0 |
+| `measurement_version` vérifiée | **3.5.0 (served live, 4 observations re-read)** |
+| Tests hors ligne | 75 |
+| Observations réelles | 4, dont 4 relues persistées |
+| Facturée | oui |
+| Livrée | 2026-11-26 · dernière vérification 2026-11-26 |
+
+**Ce que la technologie garde.** MLflow keeps its autolog instrumentation, the traces, the tracking store, the UI, experiments and run comparison. The integration appends one function to MLflow's own span processors and replaces nothing.
+
+**Ce que NeoMundi ajoute.** Signed, independently verifiable behavioural measurement of each model call MLflow traced, with the provider's own token count and the latency MLflow recorded -- and the NeoMundi request_id and measurement version written back on the MLflow trace, next to the run you compare.
+
+**Complète, ne remplace pas :** MLflow Tracing and its autolog integrations, the MLflow UI, experiments and evaluation, otel-neomundi, openai-agents-neomundi, langchain-neomundi.
+
+**Ce qu'elle refuse de faire.**
+
+- A count written by anything but MLflow's openai autolog -- the Agents SDK tracer's zero fill, LiteLLM's estimate, LangChain's usage_metadata, a hand-written span -- is never submitted.
+- No provider usage, a partial one or a zero total; never estimated, never rebuilt.
+- Agent, chain, workflow and task spans are sums of calls already measured; tools, retrievers and embeddings are not model calls.
+- The measurement API is unreachable, so the failure is reported and your call is untouched.
+
+🔴 Every submitted observation is a billed measurement; there is no trace-only route. One observation per measured model call; aggregate spans are never billed. Start with submit=False, which needs no key and opens no socket.
+
+[Guide](integrations/mlflow/README_FR.md) · [Limites](integrations/mlflow/LIMITATIONS.md) · [Valeur et ROI](integrations/mlflow/VALUE.md) · [Notebook](integrations/mlflow/notebooks/quickstart.ipynb) · [Exemples](integrations/mlflow/examples/) · [Rapport de mission](integrations/mlflow/MISSION_REPORT.md) · [Journal](integrations/mlflow/CHANGELOG.md)
+
+
 ## OpenAI Agents SDK
 
 > OpenAI's framework for agentic applications: agents with tools, handoffs, guardrails and sessions, run in a loop by a Runner, with built-in tracing and pluggable trace processors.
