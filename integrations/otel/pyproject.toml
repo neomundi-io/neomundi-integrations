@@ -1,0 +1,93 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "otel-neomundi"
+version = "0.1.0"
+description = "Measure model calls an application already traces with OpenTelemetry, with the NeoMundi measurement API"
+readme = "README.md"
+license = "Apache-2.0"
+authors = [{ name = "Sebastien FAVRE", email = "sebastien@neomundi.org" }]
+# The library floor. OpenTelemetry itself accepts 3.10.
+requires-python = ">=3.11"
+keywords = ["opentelemetry", "otel", "genai", "neomundi", "ai-governance", "llm-measurement", "observability"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+
+# Two dependencies: the measurement client and the SDK's SpanProcessor.
+#
+# No instrumentation is required: the processor reads the GenAI span of
+# whichever instrumentation the application already runs. `opentelemetry-sdk`
+# is floored at 1.45.2 because the span surface this relies on
+# (`ReadableSpan`, `Span.parent`, attributes visible in `on_start`) was
+# introspected on that release.
+dependencies = [
+    "opentelemetry-sdk>=1.45.2,<2.0",
+    "neomundi>=2.1.0,<3.0",
+]
+
+[project.optional-dependencies]
+# The suite drives a REAL instrumentation (contrib openai-v2) around the
+# real `openai` client, on `httpx.MockTransport`: no socket.
+#
+# `opentelemetry-util-genai` is capped below 1.2 on purpose: openai-v2 2.4b0
+# declares it unbounded, but 1.2b0 and 1.3b0 removed a module it imports
+# (`opentelemetry.util.genai.instruments`) and the import fails. Measured on
+# 2026-11-26, LIMITATIONS.md §6.
+dev = [
+    "pytest>=8.0",
+    "openai>=1.26.0",
+    "opentelemetry-instrumentation-openai-v2==2.4b0",
+    "opentelemetry-util-genai>=1.1b0,<1.2",
+]
+
+# The examples drive the same instrumented client, offline.
+examples = [
+    "openai>=1.26.0",
+    "opentelemetry-instrumentation-openai-v2==2.4b0",
+    "opentelemetry-util-genai>=1.1b0,<1.2",
+]
+
+notebook = [
+    "nbformat>=5.9",
+    "nbclient>=0.9",
+    "ipykernel>=6.29",
+]
+
+[project.urls]
+Homepage = "https://github.com/neomundi-io/neomundi-integrations/tree/main/integrations/otel"
+Repository = "https://github.com/neomundi-io/neomundi-integrations"
+Documentation = "https://github.com/neomundi-io/neomundi-integrations/tree/main/integrations/otel#readme"
+Changelog = "https://github.com/neomundi-io/neomundi-integrations/blob/main/integrations/otel/CHANGELOG.md"
+Issues = "https://github.com/neomundi-io/neomundi-integrations/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+otel_neomundi = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-q"
+pythonpath = ["src", "tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/otel_neomundi/__init__.py" = ["E402"]

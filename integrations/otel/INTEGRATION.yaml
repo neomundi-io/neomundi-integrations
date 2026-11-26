@@ -1,0 +1,119 @@
+# The single source of truth for this integration.
+#
+# The library index, the catalogue and the badges are GENERATED from this
+# file and its siblings. `tools/check_conformance.py` validates it.
+
+slug: otel
+name: OpenTelemetry
+technology:
+  name: OpenTelemetry (GenAI semantic conventions)
+  homepage: https://opentelemetry.io/
+  what_it_is: >-
+    The vendor-neutral tracing standard. Instrumentations for model clients
+    (contrib openai-v2, OpenLLMetry and others) emit GenAI spans that the
+    application exports to the backend it already runs.
+
+package:
+  name: otel-neomundi
+  import_name: otel_neomundi
+  version: 0.1.0
+  # Not published. The index renders the repository install line instead
+  # of a `pip install` that would fail.
+  published_on: none
+  pypi_url: https://pypi.org/project/otel-neomundi/
+
+# Package lifecycle, not evidence. It has not measured a real call yet.
+maturity: experimental
+
+evidence:
+  # E0 nothing yet, E1 offline tests, E2 + real execution against
+  # production, E3 + independently reproduced.
+  #
+  # E1, declared as such: the window that built it had no NeoMundi service
+  # verification key, so no real observation exists. qualify.py is ready
+  # and its dry run was run (free); E2 needs a separately authorised run.
+  level: e1
+  offline_tests: 48
+  real_observations: 0
+  observations_verified_persisted: 0
+  cost_chf: 0.0
+  reason: >-
+    No NEOMUNDI_VERIFICATION_KEY in the building window; no billed
+    observation was authorised. E2 is prepared (qualify.py, dry run green
+    against a scripted endpoint) and not run.
+
+compatibility:
+  python: ["3.11", "3.12", "3.13"]
+  platforms: [linux, macos, windows]
+  target:
+    name: opentelemetry-sdk
+    min: "1.45.2"
+    max: "<2.0"
+    verified: "1.45.2"
+  neomundi_sdk:
+    min: "2.1.0"
+    verified: "2.1.0"
+  # Introspected and driven by the suite. Not runtime dependencies.
+  instrumentations_verified:
+    - "opentelemetry-instrumentation-openai-v2 2.4b0 with opentelemetry-util-genai 1.1b0"
+    - "opentelemetry-instrumentation-openai (OpenLLMetry) 0.63.1 and 0.30.0 -- probes only"
+  # No live measurement was taken, so no served version was observed.
+  measurement_version_verified: "none (E1)"
+
+value:
+  host_keeps: >-
+    OpenTelemetry keeps the instrumentation, the pipeline, the exporters,
+    the sampling and the tracing backend you already run. The processor is
+    added next to your exporters and replaces nothing.
+  neomundi_adds: >-
+    Signed, independently verifiable behavioural measurement of a model
+    call you already trace, using the latency the trace observed -- and the
+    NeoMundi request_id written into the same trace. It never turns a span's
+    token count into a measurement: a span cannot prove where that count
+    came from.
+  complements_not_replaces:
+    - OpenTelemetry GenAI instrumentations (contrib openai-v2, OpenLLMetry)
+    - your tracing backend (Jaeger, Tempo, Honeycomb, Datadog...)
+    - litellm-neomundi
+    - langchain-neomundi
+  typical_use:
+    - Measure the model calls of an application that is already traced, without a second timer or a second instrumentation.
+    - Jump from a trace in your backend to its NeoMundi observation, and back, with neomundi.request_id.
+    - Find out, for free, which of your traced calls could be measured, with submit=False.
+
+entrypoint:
+  kind: span_processor
+  symbol: otel_neomundi.NeoMundiSpanProcessor
+  snippet: |
+    processor = NeoMundiSpanProcessor(api_key=..., base_url="https://api.neomundi.io")
+    tracer_provider.add_span_processor(processor)
+    with processor.interaction() as interaction:
+        reply = client.chat.completions.create(model=..., messages=...)
+        interaction.declare(token_count=reply.usage.total_tokens if reply.usage else None)
+
+refusals:
+  - A token count read from a span is never submitted; only the count the caller declares from its provider's response.
+  - No GenAI span, or more than one, inside an interaction -- which call is meant is not guessed.
+  - A failed model call, or an exception in the application's block, is not measured.
+  - The measurement API is unreachable, so the failure is reported and your call is untouched.
+
+billing:
+  metered: true
+  note: >-
+    Every submitted observation is a billed measurement; there is no
+    trace-only route. Nothing is billed for a span alone: only an
+    interaction with a declared count is submitted. Start with
+    submit=False, which needs no key and opens no socket.
+
+links:
+  readme: README.md
+  readme_fr: README_FR.md
+  limitations: LIMITATIONS.md
+  value: VALUE.md
+  mission_report: MISSION_REPORT.md
+  changelog: CHANGELOG.md
+  notebook: notebooks/quickstart.ipynb
+  examples: examples/
+
+delivered: 2026-11-26
+last_verified: 2026-11-26
