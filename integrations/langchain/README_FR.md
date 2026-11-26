@@ -8,7 +8,7 @@
 
 Un seul gestionnaire de rappels. Cinq signaux mesurés par interaction. Des preuves vérifiables.
 
-**[Démarrage](#démarrage)** · **[Ce qu'il refuse de faire](#les-quatre-refus)** · **[Notebook](notebooks/quickstart.ipynb)** · **[Limites](KNOWN_LIMITATIONS.md)** · **[Coût](#ce-que-cela-coûte)**
+**[Démarrage](#démarrage)** · **[Ce qu'il refuse de faire](#les-quatre-refus)** · **[Notebook](notebooks/quickstart.ipynb)** · **[Limites](LIMITATIONS.md)** · **[Coût](#ce-que-cela-coûte)**
 
 [SDK NeoMundi](https://github.com/neomundi-io/neomundi-python-sdk) · [Architecture produit](https://github.com/neomundi-io/.github/blob/main/docs/PRODUCT_ARCHITECTURE.fr.md) · [Créer un compte](https://controltower.neomundi.io/welcome)
 
@@ -35,8 +35,10 @@ votre chaîne ──▶ rappel LangChain ──▶ client.trace() ──▶ POST
 
 ## Installation
 
+🟡 **Pas encore publié sur PyPI.** `pip install langchain-neomundi` ne fonctionne pas aujourd'hui ; le nom est réservé et un flux de publication verrouillé est en place. Installation depuis ce dépôt :
+
 ```bash
-pip install langchain-neomundi
+pip install "git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/langchain"
 ```
 
 Python 3.11 ou plus récent — ce plancher vient de LangChain 1.x, pas de NeoMundi. Deux dépendances : `langchain-core` et `neomundi`.
@@ -122,12 +124,12 @@ La décision est **déterministe selon l'identifiant d'exécution** : un échant
 |---|---|
 | Suite hors ligne | **54 tests**, verts sur Python 3.11–3.13. Aucun réseau, aucune clé, aucun coût. |
 | Exécution réelle | **6 observations** soumises à `https://api.neomundi.io` et **6/6 relues comme persistées**, depuis une vraie chaîne LangChain pilotant un vrai LLM local. Voir [`evidence/`](evidence/). |
-| Version de mesure | La production sert actuellement **3.5.0**, que le SDK n'a **délibérément pas** encore qualifiée. Le gestionnaire avertit une fois par instance. Voir [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md). |
+| Version de mesure | La production sert actuellement **3.5.0**, que le SDK n'a **délibérément pas** encore qualifiée. Le gestionnaire avertit une fois par instance. Voir [LIMITATIONS.md](LIMITATIONS.md). |
 | Maturité | **Alpha.** La surface de rappels est stable ; le paquet est neuf. |
 
-Lire [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md) avant de tirer une conclusion d'un score. C'est court, et ce n'est pas de la communication.
+Lire [LIMITATIONS.md](LIMITATIONS.md) avant de tirer une conclusion d'un score. C'est court, et ce n'est pas de la communication.
 
-Comment cela a été construit, ce qui a cassé en route et ce que cela a coûté : [docs/MISSION_REPORT.md](docs/MISSION_REPORT.md). Pourquoi cela vaut la dépense : [docs/VALUE.md](docs/VALUE.md).
+Comment cela a été construit, ce qui a cassé en route et ce que cela a coûté : [MISSION_REPORT.md](MISSION_REPORT.md). Pourquoi cela vaut la dépense : [VALUE.md](VALUE.md).
 
 ## Référence
 
@@ -155,6 +157,7 @@ Comment cela a été construit, ce qui a cassé en route et ce que cela a coût�
 ## Exécuter les tests
 
 ```bash
+cd integrations/langchain
 pip install -e ".[dev]"
 pytest
 ```

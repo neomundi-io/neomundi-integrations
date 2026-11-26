@@ -1,0 +1,123 @@
+name: Release to PyPI (manual, gated)
+
+# NEVER triggered by a push, a pull request, a tag or a release.
+#
+# Publication requires, all at once: a manual dispatch from `main`, an
+# existing tag whose name matches the integration and its declared version,
+# a typed confirmation string, and an approval on the `pypi` environment.
+#
+# Authentication is PyPI Trusted Publishing (OIDC), as in the neomundi SDK.
+# No token is stored here, so none can leak and none needs rotating.
+#
+# ---------------------------------------------------------------------------
+# PyPI side, to register once per package (a "pending publisher" works for a
+# project that does not exist yet):
+#
+#   owner            neomundi-io
+#   repository       neomundi-integrations
+#   workflow         release.yml
+#   environment      pypi
+#
+# One workflow file serves every integration, so this is registered once per
+# PyPI project name and never changes afterwards.
+# ---------------------------------------------------------------------------
+on:
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: 'Integration slug (e.g. langchain)'
+        required: true
+        type: string
+      tag:
+        description: 'Exact reviewed tag, <slug>-v<version> (e.g. langchain-v0.1.0)'
+        required: true
+        type: string
+      confirmation:
+        description: 'Type exactly PUBLISH_TO_PYPI'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Validate the release source and its distributions
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      inputs.confirmation == 'PUBLISH_TO_PYPI'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: python -m pip install --upgrade pip && python -m pip install -r tools/requirements.txt
+
+      - name: The checked-out source must be exactly the named tag
+        env:
+          RELEASE_SLUG: ${{ inputs.slug }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: python tools/check_release.py
+
+      - name: The integration must still keep its promises at that tag
+        run: |
+          python tools/check_conformance.py
+          python tools/render_index.py --check
+
+      - name: Install and run the full suite at that tag
+        working-directory: integrations/${{ inputs.slug }}
+        run: |
+          python -m pip install -e ".[dev,examples]"
+          pytest -q
+
+      - name: Build both distributions
+        working-directory: integrations/${{ inputs.slug }}
+        run: |
+          python -m pip install build twine
+          python -m build
+          python -m twine check --strict dist/*
+
+      - name: The wheel carries what it promises
+        run: python tools/check_wheel.py integrations/${{ inputs.slug }}
+
+      - name: Install the wheel in a clean environment and import it
+        working-directory: integrations/${{ inputs.slug }}
+        run: |
+          python -m venv /tmp/clean
+          /tmp/clean/bin/python -m pip install --quiet dist/*.whl
+          /tmp/clean/bin/python ../../tools/smoke_import.py .
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: distributions-${{ inputs.slug }}
+          path: integrations/${{ inputs.slug }}/dist/
+          retention-days: 7
+
+  publish:
+    name: Upload to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Configure `pypi` with required reviewers, so a human approves the
+    # upload itself and not merely the dispatch.
+    environment:
+      name: pypi
+      url: https://pypi.org/p/${{ inputs.slug }}
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: distributions-${{ inputs.slug }}
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          print-hash: true

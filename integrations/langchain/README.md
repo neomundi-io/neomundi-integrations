@@ -8,7 +8,7 @@
 
 One callback handler. Five measured signals per interaction. Verifiable evidence.
 
-**[Quickstart](#quickstart)** · **[What it refuses to do](#four-refusals)** · **[Notebook](notebooks/quickstart.ipynb)** · **[Limitations](KNOWN_LIMITATIONS.md)** · **[Cost](#what-it-costs)**
+**[Quickstart](#quickstart)** · **[What it refuses to do](#four-refusals)** · **[Notebook](notebooks/quickstart.ipynb)** · **[Limitations](LIMITATIONS.md)** · **[Cost](#what-it-costs)**
 
 [NeoMundi SDK](https://github.com/neomundi-io/neomundi-python-sdk) · [Product architecture](https://github.com/neomundi-io/.github/blob/main/docs/PRODUCT_ARCHITECTURE.md) · [Create an account](https://controltower.neomundi.io/welcome)
 
@@ -35,8 +35,10 @@ your chain  ──▶  LangChain callback  ──▶  client.trace()  ──▶ 
 
 ## Install
 
+🟡 **Not published on PyPI yet.** `pip install langchain-neomundi` does not work today; the name is reserved and a gated release workflow is in place. Install from this repository:
+
 ```bash
-pip install langchain-neomundi
+pip install "git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/langchain"
 ```
 
 Python 3.11 or newer — the floor comes from LangChain 1.x, not from NeoMundi. Two dependencies: `langchain-core` and `neomundi`.
@@ -122,12 +124,12 @@ The decision is **deterministic in the run id**, so a sampled trace is reproduci
 |---|---|
 | Offline test suite | **54 tests**, green on Python 3.11–3.13. No network, no key, no cost. |
 | Real execution | **6 observations** submitted to `https://api.neomundi.io` and 6/6 read back as persisted, from a real LangChain chain driving a real local LLM. See [`evidence/`](evidence/). |
-| Measurement version | Production currently serves **3.5.0**, which the SDK deliberately has **not** yet qualified. The handler warns once per instance. See [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md). |
+| Measurement version | Production currently serves **3.5.0**, which the SDK deliberately has **not** yet qualified. The handler warns once per instance. See [LIMITATIONS.md](LIMITATIONS.md). |
 | Maturity | **Alpha.** The callback surface is stable; the package is new. |
 
-Read [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md) before drawing a conclusion from any score. It is short, and it is not marketing.
+Read [LIMITATIONS.md](LIMITATIONS.md) before drawing a conclusion from any score. It is short, and it is not marketing.
 
-How this was built, what broke along the way and what it cost: [docs/MISSION_REPORT.md](docs/MISSION_REPORT.md). Why it is worth paying for: [docs/VALUE.md](docs/VALUE.md).
+How this was built, what broke along the way and what it cost: [MISSION_REPORT.md](MISSION_REPORT.md). Why it is worth paying for: [VALUE.md](VALUE.md).
 
 ## Reference
 
@@ -155,6 +157,7 @@ How this was built, what broke along the way and what it cost: [docs/MISSION_REP
 ## Running the tests
 
 ```bash
+cd integrations/langchain
 pip install -e ".[dev]"
 pytest
 ```

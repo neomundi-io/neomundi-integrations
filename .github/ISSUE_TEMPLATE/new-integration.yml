@@ -1,0 +1,73 @@
+name: Propose an integration
+description: Scope a new integration before any code is written.
+title: "integration: <technology>"
+labels: ["integration", "proposed"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Scope first, code second. The prerequisites field is not a
+        formality: on the first mission, checking prerequisites beforehand
+        is what avoided building a package that could never have worked.
+
+  - type: input
+    id: technology
+    attributes:
+      label: Technology
+      placeholder: Langfuse
+    validations:
+      required: true
+
+  - type: textarea
+    id: value
+    attributes:
+      label: What the technology keeps, and what NeoMundi adds
+      description: >-
+        Both halves are required. An integration that cannot say what it
+        adds has no reason to exist; one that overstates it misleads.
+      placeholder: |
+        Keeps: ...
+        Adds: ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: prerequisites
+    attributes:
+      label: Prerequisites, verified rather than assumed
+      description: >-
+        Python floor, dependency conflicts with `neomundi`, the attachment
+        surface, and above all whether the host actually reports a token
+        count. Verify by introspection in a throwaway environment, not by
+        reading documentation.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: evidence_target
+    attributes:
+      label: Evidence level targeted
+      options:
+        - "E1 - offline tests only"
+        - "E2 - plus a real execution proof against production"
+        - "E3 - plus independent reproduction by a third party"
+    validations:
+      required: true
+
+  - type: input
+    id: cost
+    attributes:
+      label: Estimated measurement spend, in CHF
+      placeholder: "~0.20 (6 observations at 0.030)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: risks
+    attributes:
+      label: Known risks or open questions
+      description: >-
+        Anything that could make this integration dishonest rather than
+        merely difficult. State it now, not in the pull request.
+    validations:
+      required: false
