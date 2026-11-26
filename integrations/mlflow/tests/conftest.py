@@ -354,6 +354,20 @@ def by_writer(outcomes: list[Outcome], writer: str | None) -> list[Outcome]:
 
 
 def last_trace() -> Any:
+    """Read the STORED trace, once MLflow has actually finished storing it.
+
+    ``get_trace(flush=True)`` was not enough: MLflow writes a trace to its
+    store through its own asynchronous export queue, and on a slower runner
+    a span could still be in flight when the assertion read the store --
+    which surfaced as a `KeyError` on a span id in
+    ``test_agents_tracer_zero_fill_is_refused``, on macOS only, roughly one
+    run in two. Flushing that queue explicitly first makes the read
+    deterministic on every platform.
+
+    🔴 A flaky test is worse than a missing one: it teaches people to re-run
+    until green, and the day it fails for a real reason nobody looks.
+    """
+    mlflow.flush_trace_async_logging()
     trace_id = mlflow.get_last_active_trace_id()
     return mlflow.get_trace(trace_id, flush=True)
 
