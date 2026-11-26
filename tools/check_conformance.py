@@ -76,6 +76,24 @@ def check_skeleton(integration: Integration) -> list[str]:
     return problems
 
 
+def check_package_name(integration: Integration) -> list[str]:
+    """The package must be named ``<slug>-neomundi``.
+
+    Not cosmetic: the release workflow builds the PyPI project URL from the
+    slug, and a trusted publisher is registered per project name. A package
+    named otherwise would publish under a name nobody registered.
+    """
+    expected = f"{integration.slug}-neomundi"
+    actual = integration.package_name
+    if actual and actual != expected:
+        return [
+            f"package.name is {actual!r} but the convention is {expected!r}: "
+            "the release workflow and the PyPI trusted publisher both derive "
+            "from the slug"
+        ]
+    return []
+
+
 def check_evidence(integration: Integration) -> list[str]:
     """The invariant: evidence is computed, never taken on trust."""
     problems: list[str] = []
@@ -224,6 +242,7 @@ def main() -> int:
     for integration in active + archived:
         problems = list(integration.problems)
         problems += check_skeleton(integration)
+        problems += check_package_name(integration)
         problems += check_evidence(integration)
         problems += check_install_honesty(integration)
         problems += check_no_live_key(integration)
