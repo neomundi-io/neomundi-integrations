@@ -4,7 +4,7 @@
   "counts": {
     "active": 5,
     "archived": 0,
-    "evidence_e2_or_better": 2,
+    "evidence_e2_or_better": 3,
     "published": 0
   },
   "evidence_levels": {
@@ -313,14 +313,15 @@
         "published_on": "none",
         "pypi_url": "https://pypi.org/project/openai-agents-neomundi/"
       },
-      "maturity": "experimental",
+      "maturity": "beta",
       "evidence": {
-        "level": "e1",
+        "level": "e2",
         "offline_tests": 45,
-        "real_observations": 0,
-        "observations_verified_persisted": 0,
-        "cost_chf": 0.0,
-        "reason": "No NEOMUNDI_VERIFICATION_KEY in the building window; no billed observation was authorised. E2 is prepared (qualify.py, dry run green against a mock provider) and not run."
+        "real_observations": 4,
+        "observations_verified_persisted": 4,
+        "cost_chf": 0.12,
+        "proof": "evidence/e2_qualification_20261126T140137Z.json",
+        "reason": "Four model calls of a real Agent run through the real Runner on OpenAIResponsesModel, against Ollama's OpenAI-compatible /v1/responses endpoint, whose usage block publishes integer token counts. Two plain runs plus a tool run that produced two model calls -- the tool-call blind spot, closed on a real run. Two further phases were refused on real spans and billed nothing: a Chat Completions generation span (unverified token count) and a run with trace_include_sensitive_data=False (no provider response on the span). Served measurement_version 3.5.0 on all four."
       },
       "compatibility": {
         "python": [

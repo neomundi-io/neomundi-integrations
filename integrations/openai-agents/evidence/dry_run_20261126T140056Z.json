@@ -1,0 +1,141 @@
+{
+  "proof": "openai-agents-neomundi E2 qualification -- DRY RUN, not a proof",
+  "dry_run": true,
+  "started_utc": "2026-11-26T14:00:56.647757+00:00",
+  "finished_utc": "2026-11-26T14:01:07.892625+00:00",
+  "api_base_url": "https://api.neomundi.io",
+  "probe": "openai-agents Runner + OpenAIResponsesModel -> ollama /v1/responses",
+  "authorisation": {
+    "authorised_by": "Sebastien FAVRE, instruction du 2026-11-26 : prepare et realise la qualification E2 d'OpenAI Agents SDK",
+    "budget_chf": 0.2,
+    "ceiling_observations": 6
+  },
+  "account": {
+    "note": "service verification account; guard authorised before this run"
+  },
+  "versions": {
+    "neomundi": "2.1.0",
+    "python": "3.12.10"
+  },
+  "metadata_applied": {
+    "role": "devrel-verify",
+    "excluded_from": "Study2_Stage1_Stage2_Stage3",
+    "integration": "openai-agents-neomundi",
+    "qualification": "e2"
+  },
+  "billed_observations": 0,
+  "estimated_cost_chf": 0.0,
+  "measurement_versions_served": [],
+  "records": [
+    {
+      "phase": "plain 1",
+      "expectation": "submitted, provider usage total",
+      "status": "not_submitted_local_only",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": 2154.009,
+      "token_count": 65,
+      "token_source": "provider_response_usage_total",
+      "span_type": "ResponseSpanData",
+      "model_name": "llama3.2:3b",
+      "agent_name": "qualify-agent",
+      "tool_calls": [],
+      "tools_executed": [],
+      "measurement_version": null,
+      "reason": "submit=False: nothing left the process"
+    },
+    {
+      "phase": "plain 2",
+      "expectation": "submitted, provider usage total",
+      "status": "not_submitted_local_only",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": 2323.095,
+      "token_count": 76,
+      "token_source": "provider_response_usage_total",
+      "span_type": "ResponseSpanData",
+      "model_name": "llama3.2:3b",
+      "agent_name": "qualify-agent",
+      "tool_calls": [],
+      "tools_executed": [],
+      "measurement_version": null,
+      "reason": "submit=False: nothing left the process"
+    },
+    {
+      "phase": "tool run / call 1",
+      "expectation": "two calls submitted around one tool execution",
+      "status": "not_submitted_local_only",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": 2689.024,
+      "token_count": 189,
+      "token_source": "provider_response_usage_total",
+      "span_type": "ResponseSpanData",
+      "model_name": "llama3.2:3b",
+      "agent_name": "qualify-agent",
+      "tool_calls": [
+        "capital_of"
+      ],
+      "tools_executed": [
+        "capital_of"
+      ],
+      "measurement_version": null,
+      "reason": "submit=False: nothing left the process"
+    },
+    {
+      "phase": "tool run / call 2",
+      "expectation": "two calls submitted around one tool execution",
+      "status": "not_submitted_local_only",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": 1015.305,
+      "token_count": 117,
+      "token_source": "provider_response_usage_total",
+      "span_type": "ResponseSpanData",
+      "model_name": "llama3.2:3b",
+      "agent_name": "qualify-agent",
+      "tool_calls": [],
+      "tools_executed": [
+        "capital_of"
+      ],
+      "measurement_version": null,
+      "reason": "submit=False: nothing left the process"
+    },
+    {
+      "phase": "chat completions",
+      "expectation": "refused: a generation span's count is unverifiable",
+      "status": "not_submitted_unverified_token_count",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": null,
+      "token_count": null,
+      "token_source": null,
+      "span_type": "GenerationSpanData",
+      "model_name": "llama3.2:3b",
+      "agent_name": "qualify-agent",
+      "tool_calls": [],
+      "tools_executed": [],
+      "measurement_version": null,
+      "reason": "a generation span (Chat Completions, LiteLLM) carries a usage dict the SDK rebuilt: zero-filled when the provider is silent, and a local estimate on the LiteLLM route. Its origin cannot be established"
+    },
+    {
+      "phase": "no sensitive data",
+      "expectation": "refused: no provider Response on the span",
+      "status": "not_submitted_no_provider_response",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": null,
+      "token_count": null,
+      "token_source": null,
+      "span_type": "ResponseSpanData",
+      "model_name": null,
+      "agent_name": "qualify-agent",
+      "tool_calls": [],
+      "tools_executed": [],
+      "measurement_version": null,
+      "reason": "the span carries no provider Response: the run does not record sensitive data (trace_include_sensitive_data=False), and the span's own usage dict is zero-filled, so it proves nothing"
+    }
+  ],
+  "readback": [],
+  "note": "Prompts and responses are deliberately absent. Observations are marked role=devrel-verify and must be excluded from any analysis."
+}
