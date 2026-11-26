@@ -4,7 +4,7 @@
   "counts": {
     "active": 6,
     "archived": 0,
-    "evidence_e2_or_better": 3,
+    "evidence_e2_or_better": 4,
     "published": 0
   },
   "evidence_levels": {
@@ -313,14 +313,15 @@
         "published_on": "none",
         "pypi_url": "https://pypi.org/project/mlflow-neomundi/"
       },
-      "maturity": "experimental",
+      "maturity": "beta",
       "evidence": {
-        "level": "e1",
+        "level": "e2",
         "offline_tests": 75,
-        "real_observations": 0,
-        "observations_verified_persisted": 0,
-        "cost_chf": 0.0,
-        "reason": "No NEOMUNDI_VERIFICATION_KEY in the building window; no billed observation was authorised. E2 is prepared (qualify.py: four billed calls against Ollama's /v1, ~0.12 CHF) and its harness dry run is green against a scripted endpoint; it has not been run against Ollama."
+        "real_observations": 4,
+        "observations_verified_persisted": 4,
+        "cost_chf": 0.12,
+        "proof": "evidence/e2_qualification_20261126T165539Z.json",
+        "reason": "Four real model calls traced by the real mlflow.openai.autolog into a throwaway local store, against Ollama's OpenAI-compatible endpoint: two Chat Completions inside an application span, one Responses API call, and one stream with stream_options.include_usage. All four served measurement_version 3.5.0 and were re-read as persisted. Two further phases were refused on real spans and billed nothing: a stream WITHOUT include_usage (the provider published no usage, and a count is never estimated in its place) and a hand-written LLM span carrying a count the way LiteLLM's MLflow logger writes its estimate (unverified provenance). The aggregate application span is refused as an aggregate, so nothing is double-counted."
       },
       "compatibility": {
         "python": [

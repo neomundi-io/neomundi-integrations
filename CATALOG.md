@@ -130,15 +130,15 @@
 | --- | --- |
 | Package | `mlflow-neomundi` 0.1.0 |
 | Install | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/mlflow'` |
-| Maturity | experimental |
-| Evidence level | **E1** — offline tests, green across platforms |
+| Maturity | beta |
+| Evidence level | **E2** — plus real execution against production, proof committed |
 | Python | 3.11, 3.12, 3.13 |
 | Platforms | linux, macos, windows |
 | Target verified | `mlflow-tracing` 3.18.0 (bounds 3.18.0 → <3.19) |
 | NeoMundi SDK | ≥ 2.1.0, verified 2.1.0 |
 | `measurement_version` verified | **none (E1)** |
 | Offline tests | 75 |
-| Real observations | 0, of which 0 re-read as persisted |
+| Real observations | 4, of which 4 re-read as persisted |
 | Metered | yes |
 | Delivered | 2026-11-26 · last verified 2026-11-26 |
 
