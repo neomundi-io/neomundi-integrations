@@ -38,7 +38,7 @@ pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdir
 ```python
 handler = NeoMundiCallbackHandler(api_key=..., base_url="https://api.neomundi.io")
 answer = chain.invoke(question, config={"callbacks": [handler]})
-print(handler.last_outcome.request_id)   # your correlation key
+print(handler.last_outcome.request_id)  # your correlation key
 ```
 
 [Full LangChain guide →](integrations/langchain/README.md)

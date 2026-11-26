@@ -86,7 +86,7 @@
       "entrypoint": {
         "kind": "callback_handler",
         "symbol": "langchain_neomundi.NeoMundiCallbackHandler",
-        "snippet": "handler = NeoMundiCallbackHandler(api_key=..., base_url=\"https://api.neomundi.io\")\nanswer = chain.invoke(question, config={\"callbacks\": [handler]})\nprint(handler.last_outcome.request_id)   # your correlation key\n"
+        "snippet": "handler = NeoMundiCallbackHandler(api_key=..., base_url=\"https://api.neomundi.io\")\nanswer = chain.invoke(question, config={\"callbacks\": [handler]})\nprint(handler.last_outcome.request_id)  # your correlation key\n"
       },
       "refusals": [
         "The provider reports no token count, so nothing is submitted and nothing is estimated.",

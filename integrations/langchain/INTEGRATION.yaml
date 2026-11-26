@@ -85,11 +85,14 @@ value:
 entrypoint:
   kind: callback_handler
   symbol: langchain_neomundi.NeoMundiCallbackHandler
-  # Three lines, rendered verbatim into the index.
+  # Three lines, rendered verbatim into the index. Keep it
+  # ruff-formatted: the generated README is linted like any other
+  # file, so a badly formatted snippet fails CI -- which is a
+  # feature, since the index is the first Python a reader sees.
   snippet: |
     handler = NeoMundiCallbackHandler(api_key=..., base_url="https://api.neomundi.io")
     answer = chain.invoke(question, config={"callbacks": [handler]})
-    print(handler.last_outcome.request_id)   # your correlation key
+    print(handler.last_outcome.request_id)  # your correlation key
 
 # Stated in the index, because a developer should meet them before the
 # install line, not after a surprise.
