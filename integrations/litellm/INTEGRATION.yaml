@@ -36,7 +36,7 @@ evidence:
   offline_tests: 47
   real_observations: 4
   observations_verified_persisted: 4
-  proof: evidence\e2_qualification_20261126T094917Z.json
+  proof: evidence/e2_qualification_20261126T094917Z.json
   cost_chf: 0.12
   # The route matters here. LiteLLM's native `ollama/` route hands the
   # logger original_response = None, so the count cannot be proven to be

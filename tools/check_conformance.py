@@ -112,6 +112,17 @@ def check_evidence(integration: Integration) -> list[str]:
     if not proof_rel:
         return [f"claims {level} but evidence.proof names no file"]
 
+    # A manifest written on Windows carries backslashes, which resolve to
+    # nothing on a Linux runner -- so the proof looks missing and the whole
+    # E2 claim fails for a reason that has nothing to do with the evidence.
+    # Refused explicitly rather than normalised, so the author fixes the
+    # manifest once instead of every reader guessing.
+    if "\\" in str(proof_rel):
+        return [
+            f"evidence.proof uses a backslash: {proof_rel!r}. Paths in a manifest "
+            "are POSIX; a Windows separator resolves to nothing on CI."
+        ]
+
     proof_path = integration.path / str(proof_rel)
     if not proof_path.is_file():
         return [f"claims {level} but evidence.proof points at a missing file: {proof_rel}"]
