@@ -45,11 +45,8 @@ votre backend.
 
 ## Installation
 
-Pas encore sur PyPI — `pip install otel-neomundi` ne fonctionne pas.
-Installer depuis le dépôt :
-
 ```bash
-pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/otel'
+pip install otel-neomundi
 ```
 
 Python ≥ 3.11. Dépend de `opentelemetry-sdk>=1.45.2,<2.0` et

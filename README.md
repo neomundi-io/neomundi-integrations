@@ -5,9 +5,9 @@
 
 # NeoMundi Integrations
 
-**Measure what your AI stack actually does at runtime — from the tools you already use.**
+**Integrate with your existing AI stack.**
 
-One measurement primitive. Many frameworks. Verifiable evidence.
+One measurement API. 6 integrations. Verifiable evidence.
 
 ![](https://img.shields.io/badge/integrations-6-0f766e?style=flat-square) ![](https://img.shields.io/badge/evidence_E2+-6-0f766e?style=flat-square) [![CI](https://github.com/neomundi-io/neomundi-integrations/actions/workflows/ci.yml/badge.svg)](https://github.com/neomundi-io/neomundi-integrations/actions/workflows/ci.yml) ![](https://img.shields.io/badge/licence-Apache----2.0-6b7280?style=flat-square)
 
@@ -23,21 +23,19 @@ One measurement primitive. Many frameworks. Verifiable evidence.
 
 | Integration | Package | Distributed via | Maturity | Evidence | What NeoMundi adds |
 | --- | --- | --- | --- | --- | --- |
-| **[LangChain](integrations/langchain/)** | `langchain-neomundi` | repo | beta | **E2** | Signed, independently verifiable behavioural measurement of each LLM interaction -- five signals with explicit provenance and an explicit measured / not-measured state -- without writing a measurement call per call site. |
-| **[Langfuse](integrations/langfuse/)** | `langfuse-neomundi` | repo | beta | **E2** | Signed, independently verifiable behavioural measurement of the same interaction, written onto that Langfuse trace as scores -- one per signal the server declared measured -- with the NeoMundi request_id attached so the trace links to the signed record. |
-| **[LiteLLM](integrations/litellm/)** | `litellm-neomundi` | repo | beta | **E2** | Signed, independently verifiable behavioural measurement of every chat completion the gateway routes, to any provider, from one attachment point -- with the latency LiteLLM observed, and only token counts the provider itself published. |
-| **[MLflow](integrations/mlflow/)** | `mlflow-neomundi` | repo | beta | **E2** | Signed, independently verifiable behavioural measurement of each model call MLflow traced, with the provider's own token count and the latency MLflow recorded -- and the NeoMundi request_id and measurement version written back on the MLflow trace, next to the run you compare. |
-| **[OpenAI Agents SDK](integrations/openai-agents/)** | `openai-agents-neomundi` | repo | beta | **E2** | Signed, independently verifiable behavioural measurement of every model call the agent loop makes -- the call that decides on a tool and the one that reads its result -- with the provider's own token count and the latency the SDK recorded, each outcome naming the agent and the tools it requested. |
-| **[OpenTelemetry](integrations/otel/)** | `otel-neomundi` | repo | beta | **E2** | Signed, independently verifiable behavioural measurement of a model call you already trace, using the latency the trace observed -- and the NeoMundi request_id written into the same trace. It never turns a span's token count into a measurement: a span cannot prove where that count came from. |
+| **[LangChain](integrations/langchain/)** | [`langchain-neomundi`](https://pypi.org/project/langchain-neomundi/) | PyPI | beta | **E2** | Signed, independently verifiable behavioural measurement of each LLM interaction -- five signals with explicit provenance and an explicit measured / not-measured state -- without writing a measurement call per call site. |
+| **[Langfuse](integrations/langfuse/)** | [`langfuse-neomundi`](https://pypi.org/project/langfuse-neomundi/) | PyPI | beta | **E2** | Signed, independently verifiable behavioural measurement of the same interaction, written onto that Langfuse trace as scores -- one per signal the server declared measured -- with the NeoMundi request_id attached so the trace links to the signed record. |
+| **[LiteLLM](integrations/litellm/)** | [`litellm-neomundi`](https://pypi.org/project/litellm-neomundi/) | PyPI | beta | **E2** | Signed, independently verifiable behavioural measurement of every chat completion the gateway routes, to any provider, from one attachment point -- with the latency LiteLLM observed, and only token counts the provider itself published. |
+| **[MLflow](integrations/mlflow/)** | [`mlflow-neomundi`](https://pypi.org/project/mlflow-neomundi/) | PyPI | beta | **E2** | Signed, independently verifiable behavioural measurement of each model call MLflow traced, with the provider's own token count and the latency MLflow recorded -- and the NeoMundi request_id and measurement version written back on the MLflow trace, next to the run you compare. |
+| **[OpenAI Agents SDK](integrations/openai-agents/)** | [`openai-agents-neomundi`](https://pypi.org/project/openai-agents-neomundi/) | PyPI | beta | **E2** | Signed, independently verifiable behavioural measurement of every model call the agent loop makes -- the call that decides on a tool and the one that reads its result -- with the provider's own token count and the latency the SDK recorded, each outcome naming the agent and the tools it requested. |
+| **[OpenTelemetry](integrations/otel/)** | [`otel-neomundi`](https://pypi.org/project/otel-neomundi/) | PyPI | beta | **E2** | Signed, independently verifiable behavioural measurement of a model call you already trace, using the latency the trace observed -- and the NeoMundi request_id written into the same trace. It never turns a span's token count into a measurement: a span cannot prove where that count came from. |
 
 ## Start in three lines
 
 With **LangChain**. Every integration follows the same shape: build the handler, pass it as a callback, read the outcome.
 
-This package is not published on PyPI yet. Install from the repository:
-
 ```bash
-pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/langchain'
+pip install langchain-neomundi
 ```
 
 ```python
@@ -71,6 +69,26 @@ The scale is the one from [`neomundi-use-cases`](https://github.com/neomundi-io/
 The same skeleton throughout, enforced by `tools/check_conformance.py`: a bilingual README, **explicit limitations**, a value and ROI note, a reproducible notebook, runnable examples, offline tests, and — from E2 — committed execution proofs.
 
 🔴 **Every submitted observation is a billed measurement.** There is no trace-only route. Read the cost section of the integration you care about before pointing it at a busy application.
+
+## Future integrations — roadmap
+
+🔴 **Nothing in this table is a commitment.** The six integrations above are **available**: published on PyPI, with a *computed* evidence level. The eight below are **candidates**: hosts whose official name, Python surface and tracing hook were verified on 2026-11-27 against vendor documentation, and nothing more. A candidate becomes an integration only once it has a mission, a proof under `evidence/` and a published package.
+
+| Candidate | Vendor | Python surface | Tracing | Why it is a candidate |
+| --- | --- | --- | --- | --- |
+| **[Microsoft Agent Framework](https://learn.microsoft.com/en-us/agent-framework/overview/)** | Microsoft | `agent-framework` | **native OpenTelemetry** | Succeeds Semantic Kernel and AutoGen, both now maintenance-only. One attachment point replaces two. |
+| **[Strands Agents](https://strandsagents.com/latest/)** | AWS | `strands-agents` | **native OpenTelemetry** | Open-source agent toolkit with a documented `[otel]` extra -- the shortest path of the eight. |
+| **[Amazon Bedrock AgentCore](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html)** | AWS | `bedrock-agentcore` | **OTel-compatible** | Runtime, memory, gateway and observability for agents in production; its telemetry is documented as OTel-compatible. |
+| **[Claude Agent SDK](https://code.claude.com/docs/en/agent-sdk/overview)** | Anthropic | `claude-agent-sdk` | OpenTelemetry, traces in beta | Renamed from the Claude Code SDK. Tracing is opt-in and still beta, which bounds what a measurement could claim. |
+| **[Microsoft Foundry](https://learn.microsoft.com/en-us/azure/foundry/)** | Microsoft | `azure-ai-projects`, `azure-ai-agents` | OpenTelemetry | Renamed from Azure AI Foundry, itself renamed from Azure AI Studio. Its Agent Service carries its own tracing surface. |
+| **[Agent Development Kit (ADK)](https://adk.dev/)** | Google | `google-adk` | partial -- instrumented downstream | A standalone open-source kit that is also the recommended way to build for Google's agent platform. Its own OTel surface needs qualifying before anything is promised. |
+| **[Gemini Enterprise Agent Platform](https://docs.cloud.google.com/gemini-enterprise-agent-platform/overview)** | Google Cloud | no single package -- built with ADK | partial | Renamed from Vertex AI: Agent Builder became Agent Platform, Agent Engine became Agent Runtime. The platform changed name, not the kit. |
+| **[Microsoft Copilot Studio](https://learn.microsoft.com/en-us/microsoft-copilot-studio/)** | Microsoft | **no Python SDK** | none of its own | Low-code authoring, not a library. Reaching it would need a different attachment point entirely -- which is exactly why it is listed and not scheduled. |
+
+🟢 **Five of these eight emit OpenTelemetry**, and [`otel-neomundi`](integrations/otel/) already exists: the work is then qualification, not a new mechanism.
+
+⚠ Names move fast in this field. These are the **vendor's current** names, not the ones most articles still use.
+
 
 ## Archived
 

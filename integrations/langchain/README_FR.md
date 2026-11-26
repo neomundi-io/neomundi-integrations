@@ -35,10 +35,8 @@ votre chaîne ──▶ rappel LangChain ──▶ client.trace() ──▶ POST
 
 ## Installation
 
-🟡 **Pas encore publié sur PyPI.** `pip install langchain-neomundi` ne fonctionne pas aujourd'hui ; le nom est réservé et un flux de publication verrouillé est en place. Installation depuis ce dépôt :
-
 ```bash
-pip install "git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/langchain"
+pip install langchain-neomundi
 ```
 
 Python 3.11 ou plus récent — ce plancher vient de LangChain 1.x, pas de NeoMundi. Deux dépendances : `langchain-core` et `neomundi`.

@@ -52,6 +52,14 @@ def _row(integration: Integration, *, fr: bool) -> str:
     maturity_text, _ = MATURITY_STYLE.get(integration.maturity, (integration.maturity, "9ca3af"))
     adds = (data.get("value") or {}).get("neomundi_adds", "").strip().replace("\n", " ")
     package = integration.package_name or "—"
+    # A reader who sees a package name wants the index page, not a grep.
+    # Link it only where the declared version is actually installable --
+    # `published_on` is the same field the install line is rendered from.
+    cell = (
+        f"[`{package}`](https://pypi.org/project/{package}/)"
+        if integration.published_on == "pypi"
+        else f"`{package}`"
+    )
     published = (
         "PyPI"
         if integration.published_on == "pypi"
@@ -59,7 +67,7 @@ def _row(integration: Integration, *, fr: bool) -> str:
     )
     return (
         f"| **[{integration.name}]({integration.rel_dir}/)** "
-        f"| `{package}` "
+        f"| {cell} "
         f"| {published} "
         f"| {maturity_text} "
         f"| **{integration.evidence_level.upper()}** "
@@ -105,9 +113,9 @@ def render_readme(active: list[Integration], archived: list[Integration], *, fr:
 
 # NeoMundi Integrations
 
-**Mesurez ce que votre pile d'IA fait réellement à l'exécution, depuis les outils que vous utilisez déjà.**
+**Intégrez NeoMundi à votre pile d'IA existante.**
 
-Une primitive de mesure. Plusieurs frameworks. Des preuves vérifiables.
+Une API de mesure. {counts['active']} intégrations. Des preuves vérifiables.
 
 {badges}
 
@@ -148,6 +156,8 @@ Un squelette identique pour toutes, imposé par `tools/check_conformance.py` : u
 
 🔴 **Chaque observation soumise est une mesure facturée.** Il n'existe aucune route de traçage seul. Lisez la section coût de l'intégration qui vous intéresse avant de la brancher sur une application à fort trafic.
 
+{_render_roadmap(fr=True)}
+
 {_render_archived(archived, fr=True)}
 
 ## Index lisible par machine
@@ -166,9 +176,9 @@ Apache-2.0. Voir [LICENSE](LICENSE).
 
 # NeoMundi Integrations
 
-**Measure what your AI stack actually does at runtime — from the tools you already use.**
+**Integrate with your existing AI stack.**
 
-One measurement primitive. Many frameworks. Verifiable evidence.
+One measurement API. {counts['active']} integrations. Verifiable evidence.
 
 {badges}
 
@@ -208,6 +218,8 @@ The scale is the one from [`neomundi-use-cases`](https://github.com/neomundi-io/
 The same skeleton throughout, enforced by `tools/check_conformance.py`: a bilingual README, **explicit limitations**, a value and ROI note, a reproducible notebook, runnable examples, offline tests, and — from E2 — committed execution proofs.
 
 🔴 **Every submitted observation is a billed measurement.** There is no trace-only route. Read the cost section of the integration you care about before pointing it at a busy application.
+
+{_render_roadmap(fr=False)}
 
 {_render_archived(archived, fr=False)}
 
@@ -254,6 +266,184 @@ def _render_quickstart(active: list[Integration], *, fr: bool) -> str:
         else f"\n[Full {first.name} guide →]({first.rel_dir}/README.md)\n"
     )
     return f"{title}\n\n{lead}\n{install_block}\n```python\n{snippet}\n```\n{more}"
+
+
+
+def _render_roadmap(*, fr: bool) -> str:
+    """The watch list, kept honest about what it is.
+
+    🔴 This table is NOT a commitment and must never read like one. The
+    integrations above are published and carry a computed evidence level;
+    these are hosts whose official name, Python surface and tracing hook
+    were checked on 2026-11-27 against vendor documentation, and nothing
+    more. Several were renamed during 2025-2026 -- `Azure AI Foundry` ->
+    `Microsoft Foundry`, `Vertex AI` -> `Gemini Enterprise Agent Platform`,
+    `Claude Code SDK` -> `Claude Agent SDK` -- so the names here are the
+    current ones, not the ones most articles still use.
+    """
+    rows_en = [
+        (
+            "[Microsoft Agent Framework](https://learn.microsoft.com/en-us/agent-framework/overview/)",
+            "Microsoft",
+            "`agent-framework`",
+            "**native OpenTelemetry**",
+            "Succeeds Semantic Kernel and AutoGen, both now maintenance-only. One attachment point replaces two.",
+        ),
+        (
+            "[Strands Agents](https://strandsagents.com/latest/)",
+            "AWS",
+            "`strands-agents`",
+            "**native OpenTelemetry**",
+            "Open-source agent toolkit with a documented `[otel]` extra -- the shortest path of the eight.",
+        ),
+        (
+            "[Amazon Bedrock AgentCore](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html)",
+            "AWS",
+            "`bedrock-agentcore`",
+            "**OTel-compatible**",
+            "Runtime, memory, gateway and observability for agents in production; its telemetry is documented as OTel-compatible.",
+        ),
+        (
+            "[Claude Agent SDK](https://code.claude.com/docs/en/agent-sdk/overview)",
+            "Anthropic",
+            "`claude-agent-sdk`",
+            "OpenTelemetry, traces in beta",
+            "Renamed from the Claude Code SDK. Tracing is opt-in and still beta, which bounds what a measurement could claim.",
+        ),
+        (
+            "[Microsoft Foundry](https://learn.microsoft.com/en-us/azure/foundry/)",
+            "Microsoft",
+            "`azure-ai-projects`, `azure-ai-agents`",
+            "OpenTelemetry",
+            "Renamed from Azure AI Foundry, itself renamed from Azure AI Studio. Its Agent Service carries its own tracing surface.",
+        ),
+        (
+            "[Agent Development Kit (ADK)](https://adk.dev/)",
+            "Google",
+            "`google-adk`",
+            "partial -- instrumented downstream",
+            "A standalone open-source kit that is also the recommended way to build for Google's agent platform. Its own OTel surface needs qualifying before anything is promised.",
+        ),
+        (
+            "[Gemini Enterprise Agent Platform](https://docs.cloud.google.com/gemini-enterprise-agent-platform/overview)",
+            "Google Cloud",
+            "no single package -- built with ADK",
+            "partial",
+            "Renamed from Vertex AI: Agent Builder became Agent Platform, Agent Engine became Agent Runtime. The platform changed name, not the kit.",
+        ),
+        (
+            "[Microsoft Copilot Studio](https://learn.microsoft.com/en-us/microsoft-copilot-studio/)",
+            "Microsoft",
+            "**no Python SDK**",
+            "none of its own",
+            "Low-code authoring, not a library. Reaching it would need a different attachment point entirely -- which is exactly why it is listed and not scheduled.",
+        ),
+    ]
+    rows_fr = [
+        (
+            "[Microsoft Agent Framework](https://learn.microsoft.com/fr-fr/agent-framework/overview/)",
+            "Microsoft",
+            "`agent-framework`",
+            "**OpenTelemetry natif**",
+            "Succède à Semantic Kernel et AutoGen, désormais en maintenance seule. Un point d'attache en remplace deux.",
+        ),
+        (
+            "[Strands Agents](https://strandsagents.com/latest/)",
+            "AWS",
+            "`strands-agents`",
+            "**OpenTelemetry natif**",
+            "Boîte à outils ouverte, avec un extra `[otel]` documenté : le chemin le plus court des huit.",
+        ),
+        (
+            "[Amazon Bedrock AgentCore](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html)",
+            "AWS",
+            "`bedrock-agentcore`",
+            "**compatible OTel**",
+            "Exécution, mémoire, passerelle et observabilité pour des agents en production ; sa télémétrie est documentée comme compatible OTel.",
+        ),
+        (
+            "[Claude Agent SDK](https://code.claude.com/docs/en/agent-sdk/overview)",
+            "Anthropic",
+            "`claude-agent-sdk`",
+            "OpenTelemetry, traces en bêta",
+            "Renommé depuis Claude Code SDK. Le traçage est optionnel et encore en bêta, ce qui borne ce qu'une mesure pourrait affirmer.",
+        ),
+        (
+            "[Microsoft Foundry](https://learn.microsoft.com/fr-fr/azure/foundry/)",
+            "Microsoft",
+            "`azure-ai-projects`, `azure-ai-agents`",
+            "OpenTelemetry",
+            "Renommé depuis Azure AI Foundry, lui-même renommé depuis Azure AI Studio. Son Agent Service porte sa propre surface de traçage.",
+        ),
+        (
+            "[Agent Development Kit (ADK)](https://adk.dev/)",
+            "Google",
+            "`google-adk`",
+            "partielle -- instrumentée en aval",
+            "Une boîte à outils ouverte et autonome, qui est aussi la voie recommandée pour la plateforme d'agents de Google. Sa propre surface OTel reste à qualifier avant toute promesse.",
+        ),
+        (
+            "[Gemini Enterprise Agent Platform](https://docs.cloud.google.com/gemini-enterprise-agent-platform/overview)",
+            "Google Cloud",
+            "aucun paquet unique -- construite avec ADK",
+            "partielle",
+            "Renommée depuis Vertex AI : Agent Builder est devenu Agent Platform, Agent Engine est devenu Agent Runtime. C'est la plateforme qui a changé de nom, pas la boîte à outils.",
+        ),
+        (
+            "[Microsoft Copilot Studio](https://learn.microsoft.com/fr-fr/microsoft-copilot-studio/)",
+            "Microsoft",
+            "**aucun SDK Python**",
+            "aucune en propre",
+            "Atelier à faible code, pas une bibliothèque. L'atteindre demanderait un tout autre point d'attache -- raison précise pour laquelle elle est listée et non planifiée.",
+        ),
+    ]
+
+    if fr:
+        head = (
+            "## Intégrations futures — feuille de route\n\n"
+            "🔴 **Rien dans ce tableau n'est un engagement.** Les six intégrations "
+            "ci-dessus sont **disponibles** : publiées sur PyPI, avec un niveau de "
+            "preuve *calculé*. Les huit ci-dessous sont des **candidates** : des "
+            "hôtes dont le nom officiel, la surface Python et le point de traçage "
+            "ont été vérifiés le 2026-11-27 dans la documentation de l'éditeur, et "
+            "rien de plus. Une candidate ne devient une intégration qu'avec une "
+            "mission, une preuve sous `evidence/` et un paquet publié.\n\n"
+            "| Candidate | Éditeur | Surface Python | Traçage | Pourquoi elle est candidate |\n"
+            "| --- | --- | --- | --- | --- |"
+        )
+        tail = (
+            "\n\n🟢 **Cinq de ces huit émettent de l'OpenTelemetry**, et "
+            "[`otel-neomundi`](integrations/otel/) existe déjà : le travail porte "
+            "alors sur la qualification, pas sur un mécanisme nouveau.\n\n"
+            "⚠ Les dénominations bougent vite dans ce domaine. Celles-ci sont les "
+            "dénominations **courantes de l'éditeur**, pas celles que la plupart "
+            "des articles emploient encore.\n"
+        )
+        rows = rows_fr
+    else:
+        head = (
+            "## Future integrations — roadmap\n\n"
+            "🔴 **Nothing in this table is a commitment.** The six integrations "
+            "above are **available**: published on PyPI, with a *computed* "
+            "evidence level. The eight below are **candidates**: hosts whose "
+            "official name, Python surface and tracing hook were verified on "
+            "2026-11-27 against vendor documentation, and nothing more. A "
+            "candidate becomes an integration only once it has a mission, a "
+            "proof under `evidence/` and a published package.\n\n"
+            "| Candidate | Vendor | Python surface | Tracing | Why it is a candidate |\n"
+            "| --- | --- | --- | --- | --- |"
+        )
+        tail = (
+            "\n\n🟢 **Five of these eight emit OpenTelemetry**, and "
+            "[`otel-neomundi`](integrations/otel/) already exists: the work is "
+            "then qualification, not a new mechanism.\n\n"
+            "⚠ Names move fast in this field. These are the **vendor's current** "
+            "names, not the ones most articles still use.\n"
+        )
+        rows = rows_en
+
+    body = "\n".join(f"| **{n}** | {v} | {p} | {t} | {w} |" for n, v, p, t, w in rows)
+    return f"{head}\n{body}{tail}"
 
 
 def _render_archived(archived: list[Integration], *, fr: bool) -> str:

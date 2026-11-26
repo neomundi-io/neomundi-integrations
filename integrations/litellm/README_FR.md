@@ -44,11 +44,8 @@ retrouve pas.
 
 ## Installation
 
-Pas encore sur PyPI — `pip install litellm-neomundi` ne fonctionne pas.
-Installation depuis le dépôt :
-
 ```bash
-pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/litellm'
+pip install litellm-neomundi
 ```
 
 Python ≥ 3.11. Dépend de `litellm>=1.111.0,<2.0` et `neomundi>=2.1.0,<3.0`.

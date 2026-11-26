@@ -41,11 +41,8 @@ trace**, which your exporter ships to your backend.
 
 ## Install
 
-Not on PyPI yet — `pip install otel-neomundi` does not work. Install from
-the repository:
-
 ```bash
-pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/otel'
+pip install otel-neomundi
 ```
 
 Python ≥ 3.11. Depends on `opentelemetry-sdk>=1.45.2,<2.0` and

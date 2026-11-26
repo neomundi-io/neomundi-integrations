@@ -47,11 +47,8 @@ d'appels déjà mesurés.
 
 ## Installation
 
-Pas encore sur PyPI : `pip install openai-agents-neomundi` ne fonctionne
-pas. Installation depuis le dépôt :
-
 ```bash
-pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/openai-agents'
+pip install openai-agents-neomundi
 ```
 
 Python ≥ 3.11. Dépend de `openai-agents>=0.26.0,<0.27` (épinglé à la

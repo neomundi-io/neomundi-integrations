@@ -43,11 +43,8 @@ provider's raw payload and **refuses** what it cannot trace there.
 
 ## Install
 
-Not on PyPI yet — `pip install litellm-neomundi` does not work. Install
-from the repository:
-
 ```bash
-pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/litellm'
+pip install litellm-neomundi
 ```
 
 Python ≥ 3.11. Depends on `litellm>=1.111.0,<2.0` and `neomundi>=2.1.0,<3.0`.
