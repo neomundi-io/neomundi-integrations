@@ -1,0 +1,103 @@
+name: CI
+
+# The matrix is DISCOVERED from the registry, never written out here. A new
+# integration is tested the moment its directory exists, without anybody
+# remembering to edit this file -- which is the same reason the index is
+# generated rather than maintained.
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  conformance:
+    name: Conformance and generated index
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      matrix: ${{ steps.discover.outputs.matrix }}
+      slugs: ${{ steps.discover.outputs.slugs }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --upgrade pip && python -m pip install -r tools/requirements.txt
+
+      # Every integration must keep its own promises, and an integration
+      # claiming E2 must carry a proof this script can read.
+      - name: Every integration keeps its promises
+        run: python tools/check_conformance.py
+
+      # The index is generated, so a stale index is a defect, not a chore.
+      - name: The generated index is current
+        run: python tools/render_index.py --check
+
+      - name: Discover the integration matrix
+        id: discover
+        run: python tools/ci_matrix.py >> "$GITHUB_OUTPUT"
+
+  tests:
+    name: ${{ matrix.slug }} · Python ${{ matrix.python }} · ${{ matrix.os }}
+    needs: conformance
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.conformance.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      # No secret, no network, no cost. An integration whose suite needs a
+      # key does not belong in this library.
+      - name: Install the integration
+        working-directory: integrations/${{ matrix.slug }}
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev,examples]"
+      - name: Tests
+        working-directory: integrations/${{ matrix.slug }}
+        run: pytest -q
+
+  build:
+    name: ${{ matrix.slug }} · distributions
+    needs: conformance
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        slug: ${{ fromJson(needs.conformance.outputs.slugs) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --upgrade pip build twine
+      - name: Build and inspect
+        working-directory: integrations/${{ matrix.slug }}
+        run: |
+          python -m build
+          python -m twine check --strict dist/*
+      - name: The wheel carries what it promises
+        run: python tools/check_wheel.py integrations/${{ matrix.slug }}
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      # Pinned via tools/requirements.txt so CI and a contributor's
+      # machine cannot disagree about formatting.
+      - run: python -m pip install -r tools/requirements.txt
+      - run: ruff check .
+      - run: ruff format --check .

@@ -1,0 +1,87 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "langchain-neomundi"
+version = "0.1.0"
+description = "Measure the runtime behaviour of a LangChain application with the NeoMundi measurement API"
+readme = "README.md"
+license = "Apache-2.0"
+authors = [{ name = "Sebastien FAVRE", email = "sebastien@neomundi.org" }]
+requires-python = ">=3.11"
+keywords = ["langchain", "neomundi", "ai-governance", "llm-measurement", "observability"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+
+# Two dependencies, both unavoidable: the measurement client and the
+# callback base class. Nothing else is added -- the SDK deliberately keeps
+# `httpx` as its only production dependency, and this package does not
+# widen that surface.
+#
+# `langchain-core` is pinned at >=1.0 because the callback signatures this
+# handler implements were introspected on the 1.x surface. `neomundi` is
+# pinned at >=2.1.0 because `client.trace()` -- the brick this package
+# drives -- does not exist before it.
+dependencies = [
+    "langchain-core>=1.0,<2.0",
+    "neomundi>=2.1.0,<3.0",
+]
+
+[project.optional-dependencies]
+# No respx, no vcr: `httpx.MockTransport` ships with httpx and keeps the
+# suite runnable with `pytest` alone, offline and free.
+dev = [
+    "pytest>=8.0",
+]
+
+# Only what `examples/` and the notebook drive. Never a runtime dependency
+# of the package: the handler is provider-agnostic.
+examples = [
+    "langchain-ollama>=0.2",
+]
+
+notebook = [
+    "nbformat>=5.9",
+    "nbclient>=0.9",
+    "ipykernel>=6.29",
+]
+
+[project.urls]
+Homepage = "https://github.com/neomundi-io/langchain-neomundi"
+Repository = "https://github.com/neomundi-io/langchain-neomundi"
+Documentation = "https://github.com/neomundi-io/langchain-neomundi#readme"
+Changelog = "https://github.com/neomundi-io/langchain-neomundi/blob/main/CHANGELOG.md"
+Issues = "https://github.com/neomundi-io/langchain-neomundi/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+langchain_neomundi = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-q"
+# Runnable by a bare `pytest`, with no prior install and no env var.
+pythonpath = ["src", "tests"]
+filterwarnings = ["error::RuntimeWarning"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/langchain_neomundi/__init__.py" = ["E402"]

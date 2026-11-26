@@ -1,0 +1,173 @@
+{
+  "proof": "langchain-neomundi real execution",
+  "started_utc": "2026-11-25T23:49:24.823883+00:00",
+  "finished_utc": "2026-11-25T23:49:50.538400+00:00",
+  "api_base_url": "https://api.neomundi.io",
+  "llm": {
+    "provider": "ollama",
+    "model": "llama3.2:3b",
+    "host": "local",
+    "cost": "free"
+  },
+  "versions": {
+    "neomundi": "2.1.0",
+    "langchain_neomundi": "0.1.0",
+    "python": "3.12.10"
+  },
+  "account": {
+    "note": "service verification account; guard must have authorised before this run",
+    "service_account": "verification service account (guard authorised before the run)"
+  },
+  "metadata_applied": {
+    "role": "devrel-verify",
+    "excluded_from": "Study2_Stage1_Stage2_Stage3",
+    "integration": "langchain-neomundi"
+  },
+  "billed_observations": 6,
+  "estimated_cost_chf": 0.18,
+  "records": [
+    {
+      "phase": "plain_chain",
+      "run_id": "01a2151d-34ae-77a6-8902-1cbfbb053dbb",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "037c9491-7e20-4aff-95a7-373c3ba69052",
+      "latency_ms": 640.0000000139698,
+      "token_count": 44,
+      "model_name": "llama3.2:3b",
+      "measurement_version": "3.5.0",
+      "reason": null,
+      "error_type": null
+    },
+    {
+      "phase": "plain_chain",
+      "run_id": "01a2151d-3b78-7061-96e2-eee8eb147256",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "89257d57-d035-4aaa-9d27-ee1c86138cb4",
+      "latency_ms": 2312.999999994645,
+      "token_count": 71,
+      "model_name": "llama3.2:3b",
+      "measurement_version": "3.5.0",
+      "reason": null,
+      "error_type": null
+    },
+    {
+      "phase": "plain_chain",
+      "run_id": "01a2151d-477f-7485-bef8-11e46395cfa7",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "2de40ed9-d3c1-4e07-b874-75395d9f743b",
+      "latency_ms": 2453.0000000086147,
+      "token_count": 73,
+      "model_name": "llama3.2:3b",
+      "measurement_version": "3.5.0",
+      "reason": null,
+      "error_type": null
+    },
+    {
+      "phase": "plain_chain",
+      "run_id": "01a2151d-545e-70c8-9190-014eedd33973",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "e23c6571-e5c8-4f96-b516-e47b77b3e805",
+      "latency_ms": 2265.999999974156,
+      "token_count": 72,
+      "model_name": "llama3.2:3b",
+      "measurement_version": "3.5.0",
+      "reason": null,
+      "error_type": null
+    },
+    {
+      "phase": "plain_chain",
+      "run_id": "01a2151d-6096-7030-8d7c-88b58c3e18ff",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "9e9fe636-2828-48cc-98b6-4c7d3c6c6f9a",
+      "latency_ms": 2265.999999974156,
+      "token_count": 66,
+      "model_name": "llama3.2:3b",
+      "measurement_version": "3.5.0",
+      "reason": null,
+      "error_type": null
+    },
+    {
+      "phase": "rag_chain",
+      "run_id": "01a2151d-702e-77c9-95a8-d7bcbe400721",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "8b2384b1-712c-4fb4-8722-edb29b8b3b38",
+      "latency_ms": 1625.0,
+      "token_count": 113,
+      "model_name": "llama3.2:3b",
+      "measurement_version": "3.5.0",
+      "reason": null,
+      "error_type": null
+    },
+    {
+      "phase": "sampling_off",
+      "run_id": "01a2151d-7aae-7283-bff6-1cb214db3a96",
+      "status": "skipped_sampling",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": null,
+      "token_count": null,
+      "model_name": null,
+      "measurement_version": null,
+      "reason": "excluded by sample_rate=0.0",
+      "error_type": null
+    },
+    {
+      "phase": "local_only",
+      "run_id": "01a2151d-8a4d-776c-8cfc-2a9a3e959cec",
+      "status": "not_submitted_local_only",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": 1766.0000000032596,
+      "token_count": 57,
+      "model_name": "llama3.2:3b",
+      "measurement_version": null,
+      "reason": "submit=False: nothing left the process",
+      "error_type": null
+    }
+  ],
+  "readback": [
+    {
+      "request_id": "037c9491-7e20-4aff-95a7-373c3ba69052",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    },
+    {
+      "request_id": "89257d57-d035-4aaa-9d27-ee1c86138cb4",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    },
+    {
+      "request_id": "2de40ed9-d3c1-4e07-b874-75395d9f743b",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    },
+    {
+      "request_id": "e23c6571-e5c8-4f96-b516-e47b77b3e805",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    },
+    {
+      "request_id": "9e9fe636-2828-48cc-98b6-4c7d3c6c6f9a",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    },
+    {
+      "request_id": "8b2384b1-712c-4fb4-8722-edb29b8b3b38",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    }
+  ],
+  "note": "Prompts and responses are deliberately absent from this file. Observations are marked role=devrel-verify and must be excluded from any analysis."
+}

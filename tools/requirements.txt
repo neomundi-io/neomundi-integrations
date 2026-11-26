@@ -1,0 +1,8 @@
+# Only what the library's own tooling needs. Each integration declares its
+# own dependencies in its own pyproject.toml.
+pyyaml>=6.0
+
+# Pinned on purpose. An unpinned linter means CI and a contributor's machine
+# disagree the day a new release changes formatting -- which is exactly how
+# this file came to exist.
+ruff==0.17.6

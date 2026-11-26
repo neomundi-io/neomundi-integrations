@@ -1,0 +1,86 @@
+name: Upstream drift watch
+
+# The real risk at a hundred integrations is not building them, it is an
+# upstream release breaking one of them silently. This replays every
+# integration's suite against the LATEST published version of its host
+# technology, and opens an issue when something breaks.
+on:
+  schedule:
+    # Mondays, 06:17 UTC. Odd minute on purpose: the top of the hour is
+    # congested on shared runners.
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      slugs: ${{ steps.discover.outputs.slugs }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r tools/requirements.txt
+      - id: discover
+        run: python tools/ci_matrix.py >> "$GITHUB_OUTPUT"
+
+  against-latest:
+    name: ${{ matrix.slug }} against the latest upstream
+    needs: discover
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        slug: ${{ fromJson(needs.discover.outputs.slugs) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install, then force every dependency to its newest release
+        working-directory: integrations/${{ matrix.slug }}
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev,examples]"
+          python -m pip install --upgrade $(python ../../tools/upstream_targets.py .)
+          python -m pip list
+      - name: Tests
+        id: tests
+        working-directory: integrations/${{ matrix.slug }}
+        run: pytest -q
+
+      - name: Open an issue when the latest upstream breaks us
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const slug = '${{ matrix.slug }}';
+            const title = `upstream drift: ${slug} fails against the latest release`;
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              state: 'open', labels: 'upstream-drift',
+            });
+            if (existing.data.some(i => i.title === title)) return;
+            await github.rest.issues.create({
+              owner: context.repo.owner, repo: context.repo.repo,
+              title,
+              labels: ['upstream-drift', `integration:${slug}`],
+              body: [
+                `The scheduled run of \`${slug}\` against the **latest** published`,
+                `version of its host technology failed, while the pinned bounds in`,
+                `\`integrations/${slug}/INTEGRATION.yaml\` still pass on CI.`,
+                '',
+                `[Failing run](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`,
+                '',
+                'This is a real finding, not noise: users installing today get that',
+                'latest version. Either widen the verified bounds after fixing the',
+                'integration, or state the incompatibility in its LIMITATIONS.md.',
+              ].join('\n'),
+            });
