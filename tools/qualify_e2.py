@@ -120,11 +120,11 @@ def main() -> int:
     }
 
     print("=" * 72)
-    print(f"  E2 qualification — {args.slug}")
+    print(f"  E2 qualification - {args.slug}")
     print("=" * 72)
     print(f"  probe            : {module.PROBE_NAME}")
     print(f"  authorised by    : {args.authorised_by}")
-    print(f"  budget           : {args.budget_chf} CHF  →  {ceiling} observation(s) max")
+    print(f"  budget           : {args.budget_chf} CHF  ->  {ceiling} observation(s) max")
     print(f"  submit           : {submit}")
     print(f"  sdk              : neomundi {neomundi.__version__}")
     print("=" * 72)
@@ -240,7 +240,7 @@ def main() -> int:
     print("\n" + "=" * 72)
     print(f"  billed              : {billed}  (~{billed * COST_PER_OBSERVATION_CHF:.2f} CHF)")
     print(f"  re-read as persisted: {persisted}/{len(readback)}")
-    print(f"  measurement version : {', '.join(versions) or '—'}")
+    print(f"  measurement version : {', '.join(versions) or '-'}")
     print(f"  evidence            : {out_path.relative_to(ROOT)}")
     print("=" * 72)
 
