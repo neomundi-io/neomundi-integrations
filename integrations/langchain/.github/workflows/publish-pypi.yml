@@ -1,0 +1,106 @@
+name: PyPI release (manual, gated)
+
+# NEVER triggered by a push, a pull request, a tag or a release.
+#
+# Publication requires, all at once: a manual dispatch from `main`, an
+# exact tag that already exists, a typed confirmation string, and an
+# approval on the `pypi` GitHub environment.
+#
+# No credentials are stored anywhere. Authentication uses PyPI Trusted
+# Publishing (OIDC), the same mechanism as the neomundi SDK, so there is
+# no token to leak and none to rotate.
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Exact reviewed release tag (e.g. v0.1.0)'
+        required: true
+        type: string
+      confirmation:
+        description: 'Type exactly PUBLISH_LANGCHAIN_NEOMUNDI_TO_PYPI'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Validate the release source and its distributions
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      inputs.confirmation == 'PUBLISH_LANGCHAIN_NEOMUNDI_TO_PYPI'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: The checked-out source must be exactly the named tag
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: python scripts/check_release.py
+
+      - name: Install and run the full suite at that tag
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev,examples]"
+          pytest -q
+
+      - name: Build both distributions
+        run: |
+          python -m pip install build twine
+          python -m build
+          python scripts/check_wheel.py
+          python -m twine check --strict dist/*
+
+      - name: Install the built wheel in a clean environment and import it
+        run: |
+          python -m venv /tmp/clean
+          /tmp/clean/bin/python -m pip install --quiet dist/*.whl
+          /tmp/clean/bin/python - <<'PY'
+          import langchain_neomundi as m
+          print("version:", m.__version__)
+          print("contract:", m.INTEGRATION_CONTRACT["neomundi_min"])
+          assert m.NeoMundiCallbackHandler is not None
+          # The declared typing marker must survive packaging.
+          import importlib.resources as r
+          assert r.files("langchain_neomundi").joinpath("py.typed").is_file()
+          print("clean-environment import ok")
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: distributions
+          path: dist/
+          retention-days: 7
+
+  publish:
+    name: Upload to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Configure the `pypi` environment with required reviewers, so that a
+    # human approves the upload itself and not merely the dispatch.
+    environment:
+      name: pypi
+      url: https://pypi.org/p/langchain-neomundi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: distributions
+          path: dist/
+
+      - name: Publish with Trusted Publishing
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          print-hash: true
