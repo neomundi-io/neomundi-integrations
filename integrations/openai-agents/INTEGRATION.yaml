@@ -1,0 +1,121 @@
+# The single source of truth for this integration.
+#
+# The library index, the catalogue and the badges are GENERATED from this
+# file and its siblings. `tools/check_conformance.py` validates it.
+
+slug: openai-agents
+name: OpenAI Agents SDK
+technology:
+  name: OpenAI Agents SDK
+  homepage: https://openai.github.io/openai-agents-python/
+  what_it_is: >-
+    OpenAI's framework for agentic applications: agents with tools,
+    handoffs, guardrails and sessions, run in a loop by a Runner, with
+    built-in tracing and pluggable trace processors.
+
+package:
+  name: openai-agents-neomundi
+  import_name: openai_agents_neomundi
+  version: 0.1.0
+  # Not published. The index renders the repository install line instead
+  # of a `pip install` that would fail.
+  published_on: none
+  pypi_url: https://pypi.org/project/openai-agents-neomundi/
+
+# Package lifecycle, not evidence. It has not measured a real call yet.
+maturity: experimental
+
+evidence:
+  # E0 nothing yet, E1 offline tests, E2 + real execution against
+  # production, E3 + independently reproduced.
+  #
+  # E1, declared as such: the window that built it had no NeoMundi service
+  # verification key, so no real observation exists. qualify.py is ready
+  # and its dry run is green against a mock provider; E2 needs a
+  # separately authorised run (about 0.12 CHF).
+  level: e1
+  offline_tests: 45
+  real_observations: 0
+  observations_verified_persisted: 0
+  cost_chf: 0.0
+  reason: >-
+    No NEOMUNDI_VERIFICATION_KEY in the building window; no billed
+    observation was authorised. E2 is prepared (qualify.py, dry run green
+    against a mock provider) and not run.
+
+compatibility:
+  python: ["3.11", "3.12", "3.13"]
+  platforms: [linux, macos, windows]
+  target:
+    name: openai-agents
+    min: "0.26.0"
+    max: "<0.27"
+    verified: "0.26.0"
+  neomundi_sdk:
+    min: "2.1.0"
+    verified: "2.1.0"
+  # Introspected by the mission probes. Not runtime dependencies.
+  routes_verified:
+    - "OpenAIResponsesModel (measured) -- openai 3.60.0"
+    - "OpenAIChatCompletionsModel (refused) -- openai 3.60.0"
+    - "LitellmModel (refused) -- litellm 1.111.0, estimate observed on a silent provider"
+    - "AnyLLMModel (refused while loaded) -- any-llm-sdk 1.55.0, source read, not run"
+  # No live measurement was taken, so no served version was observed.
+  measurement_version_verified: "none (E1)"
+
+value:
+  host_keeps: >-
+    The Agents SDK keeps the agent loop, tools, handoffs, guardrails and
+    its tracing -- including its own exporter to the OpenAI dashboard and
+    any processor you registered. The processor is appended and evicts
+    nobody.
+  neomundi_adds: >-
+    Signed, independently verifiable behavioural measurement of every model
+    call the agent loop makes -- the call that decides on a tool and the one
+    that reads its result -- with the provider's own token count and the
+    latency the SDK recorded, each outcome naming the agent and the tools
+    it requested.
+  complements_not_replaces:
+    - the Agents SDK's tracing and the OpenAI traces dashboard
+    - litellm-neomundi
+    - langchain-neomundi
+    - otel-neomundi
+  typical_use:
+    - Measure each step of a tool-using agent, not only its final answer.
+    - Detect a behavioural regression that appears only when the model decides on, or reads, a tool.
+    - Find out, for free, which of your agents' calls could be measured, with submit=False.
+
+entrypoint:
+  kind: tracing_processor
+  symbol: openai_agents_neomundi.NeoMundiTraceProcessor
+  snippet: |
+    processor = NeoMundiTraceProcessor(api_key=..., base_url="https://api.neomundi.io").install()
+    result = await Runner.run(agent, "What is the weather in Paris?")
+    processor.flush()
+
+refusals:
+  - A Chat Completions or LiteLLM generation span is never submitted; its usage is zero-filled, or a local estimate, and cannot be traced to the provider.
+  - Turn and task spans are sums of calls already measured; tool executions and agent steps are not model calls.
+  - No provider usage, a partial one, a run without sensitive data, or AnyLLMModel loaded -- the count's origin cannot be established.
+  - The measurement API is unreachable, so the failure is reported and your agent run is untouched.
+
+billing:
+  metered: true
+  note: >-
+    Every submitted observation is a billed measurement; there is no
+    trace-only route. An agent run is billed once per model call, so a
+    tool-using run costs several observations. Start with submit=False,
+    which needs no key and opens no socket.
+
+links:
+  readme: README.md
+  readme_fr: README_FR.md
+  limitations: LIMITATIONS.md
+  value: VALUE.md
+  mission_report: MISSION_REPORT.md
+  changelog: CHANGELOG.md
+  notebook: notebooks/quickstart.ipynb
+  examples: examples/
+
+delivered: 2026-11-26
+last_verified: 2026-11-26
