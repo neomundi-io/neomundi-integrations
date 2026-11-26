@@ -12,12 +12,14 @@
 
 ---
 
-> **Niveau de preuve : E1, hors ligne uniquement.** Aucune mesure réelle
-> n'a été prise avec ce paquet. La fenêtre qui l'a construit n'avait pas
-> de clé de vérification de service NeoMundi. La suite pilote le vrai
-> `mlflow.openai.autolog()` autour du vrai client `openai`, à travers des
-> transports simulés et une base sqlite jetable. Voir
-> [LIMITATIONS.md §8](LIMITATIONS.md#8-evidence-level-e1-not-e2).
+> **Niveau de preuve : E2.** Quatre appels de modèle réels, tracés par le
+> vrai `mlflow.openai.autolog()` contre le `/v1` compatible OpenAI d'un
+> Ollama local, ont été mesurés sur le compte de vérification du service
+> le 2026-11-26 et relus depuis l'API comme persistés : 4/4,
+> `measurement_version` 3.5.0 servie, 0,12 CHF. Deux autres phases ont été
+> refusées sur des spans réels et n'ont rien facturé : un flux sans usage,
+> et un span portant un compte d'origine inconnue. Preuve :
+> [`evidence/e2_qualification_20261126T165539Z.json`](evidence/e2_qualification_20261126T165539Z.json). Voir [LIMITATIONS.md §8](LIMITATIONS.md#8-evidence-level-e2-one-writer-one-provider).
 
 ## Ce que c'est
 
@@ -137,8 +139,8 @@ deux fois.
 | | |
 |---|---|
 | Suite de tests hors ligne | 75 tests, verts sous Python 3.12 / Linux en local ; la CI couvre 3.11–3.13 sous Linux, macOS, Windows |
-| Exécution réelle | **aucune** : E1. 0 observation soumise, 0 relue. `qualify.py` est prêt, et son essai à blanc par le harnais est vert contre un point d'accès scripté en vrai HTTP. Il n'a pas été lancé contre Ollama |
-| Maturité | expérimental |
+| Exécution réelle | **E2** : 4 observations soumises à `https://api.neomundi.io`, 4/4 relues comme persistées (2026-11-26, Python 3.12, `neomundi` 2.1.0). Voir [`evidence/`](evidence/) |
+| Maturité | bêta |
 
 Lisez [LIMITATIONS.md](LIMITATIONS.md) avant de tirer une conclusion d'un score.
 

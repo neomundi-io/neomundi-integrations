@@ -3,7 +3,9 @@
 Brief: [neomundi-devrel#33](https://github.com/neomundi-io/neomundi-devrel/issues/33).
 Scope, probes and criteria:
 [neomundi-devrel/missions/006-mlflow](https://github.com/neomundi-io/neomundi-devrel/tree/main/missions/006-mlflow).
-Evidence level delivered: **E1**, declared as such. Spend: **0.00 CHF**.
+Evidence level delivered: **E2**. The building window delivered E1 at
+0.00 CHF; the authorised E2 run on the workstation followed the same day
+(4 observations, 4/4 re-read as persisted, **0.12 CHF**).
 
 ## What was settled before any code
 
@@ -45,7 +47,7 @@ stay attached to MLflow. `NOT_SUBMITTED_AGGREGATE_SPAN` and
 
 | # | Criterion | Evidence |
 |---|---|---|
-| C1 | persisted observation, re-read | **not reached (E1)**; offline: `request_id` on the outcome and on the trace |
+| C1 | persisted observation, re-read | **E2**: 4/4 re-read as persisted, mv 3.5.0 ([`evidence/e2_qualification_20261126T165539Z.json`](evidence/e2_qualification_20261126T165539Z.json)); offline: `request_id` on the outcome and on the trace |
 | C2 | refusals submit nothing, say why | `test_refusals.py`, zero requests asserted on each |
 | C3 | ≥ 4 API failures never reach the host | `test_never_raises.py`: 8 failures |
 | C4 | latency is the host's call | `test_latency_is_the_span_mlflow_recorded`: equal to the stored span's end − start |
@@ -92,16 +94,18 @@ check runs first. It is an equivalent mutation, not a gap in the tests.
 
 ## Spend
 
-0.00 CHF. No NeoMundi key existed in the window, and no paid provider was
+**0.12 CHF** in total, all of it the E2 run: four billed observations on
+the service verification account, authorised beforehand (budget 0.20 CHF,
+ceiling 6 observations), account guard run first. The building window
+spent 0.00 CHF: no NeoMundi key existed in it, and no paid provider was
 contacted. Every model provider was a mock transport or a scripted server
 on 127.0.0.1.
 
 ## Not done, and why
 
-- **E2.** It needs the workstation's verification key and an authorised
-  run: the account guard, then
-  `qualify_e2.py mlflow --budget-chf 0.15` against Ollama. That is four
-  billed observations, ~0.12 CHF. It is not verified that Ollama honours
+- **E2 is done**, not by the building window: it had no key. The
+  authorised run on the workstation (c82d3be) settled the one assumption
+  the probe declared unverified -- Ollama honours
   `stream_options.include_usage`.
 - **Writers beyond `openai`.** Anthropic, Gemini, Bedrock and other
   autologs may copy provider counts faithfully. None was driven, so all

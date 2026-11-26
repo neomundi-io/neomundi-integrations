@@ -350,7 +350,7 @@
           "langchain (mlflow.langchain.autolog) -- langchain-core 1.8.5 -- refused, copies any usage_metadata",
           "no writer (LiteLLM's MlflowLogger) -- litellm 1.111.0 -- refused, estimate 14/7/21 on a silent provider (probe only)"
         ],
-        "measurement_version_verified": "none (E1)"
+        "measurement_version_verified": "3.5.0 (served live, 4 observations re-read)"
       },
       "value": {
         "host_keeps": "MLflow keeps its autolog instrumentation, the traces, the tracking store, the UI, experiments and run comparison. The integration appends one function to MLflow's own span processors and replaces nothing.",

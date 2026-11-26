@@ -117,15 +117,33 @@ this one** and is respected. Turn either off with `capture_prompt=False` /
 `capture_response=False`: only their lengths are lost. The count and the
 latency stay.
 
-## 8. Evidence level E1, not E2
+## 8. Evidence level E2, one writer, one provider
 
-No real observation has been submitted with this package. The window that
-built it had no NeoMundi service verification key. `qualify.py` drives
-four billed calls against Ollama's OpenAI-compatible `/v1` (~0.12 CHF),
-and its harness dry run is green against a **scripted** endpoint over real
-HTTP. That proves the harness and the probe, not Ollama. Not verified:
-that Ollama honours `stream_options.include_usage`. If it does not, that
-phase is refused and bills nothing.
+**Measured 2026-11-26.** Four real model calls traced by the real
+`mlflow.openai.autolog()` into a throwaway local store, against
+`llama3.2:3b` on a local Ollama's OpenAI-compatible `/v1`, from the service
+verification account: two Chat Completions inside an application span, one
+Responses API call, and one stream with `stream_options.include_usage`.
+Re-read by `request_id`: 4/4 persisted, served `measurement_version`
+3.5.0, 0.12 CHF ([`evidence/e2_qualification_20261126T165539Z.json`](evidence/e2_qualification_20261126T165539Z.json)).
+
+The assumption this section used to list as unverified is now measured:
+Ollama honours `stream_options.include_usage`. The stream with it produced
+a provider count; the stream without it produced none, and was refused
+(`not_submitted_no_token_count`) rather than estimated.
+
+What that does **not** cover, and what it means for you:
+
+- **One writer.** Only the `openai` autolog was measured for real. The
+  application span was refused as an aggregate, and a hand-written span
+  carrying a count the way LiteLLM's MLflow logger writes its estimate was
+  refused as unverified provenance. Both billed nothing. Other autologs
+  stay refused (§1).
+- **One provider, one platform.** Paid providers were exercised only
+  through mock transports. The real run was Python 3.12 with `neomundi`
+  2.1.0; the CI matrix covers 3.11–3.13 on Linux, macOS and Windows
+  offline.
+- **Not E3.** Nobody outside the team has reproduced it.
 
 ## 9. Pinned to mlflow-tracing 3.18.x
 

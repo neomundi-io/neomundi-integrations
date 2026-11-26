@@ -23,7 +23,9 @@ package:
   published_on: none
   pypi_url: https://pypi.org/project/mlflow-neomundi/
 
-# Package lifecycle, not evidence. It has not measured a real call yet.
+# Package lifecycle, not evidence. It has measured real calls against
+# production, which is what moved litellm and openai-agents to beta on the
+# same axis. Not "stable": the package is new.
 maturity: beta
 
 evidence:
@@ -71,8 +73,8 @@ compatibility:
     - "openai-agent (Agents SDK tracer) -- openai-agents 0.26.0 -- refused, 0/0/0 on a silent provider"
     - "langchain (mlflow.langchain.autolog) -- langchain-core 1.8.5 -- refused, copies any usage_metadata"
     - "no writer (LiteLLM's MlflowLogger) -- litellm 1.111.0 -- refused, estimate 14/7/21 on a silent provider (probe only)"
-  # No live measurement was taken, so no served version was observed.
-  measurement_version_verified: "none (E1)"
+  # Observed live on every observation of the E2 run.
+  measurement_version_verified: "3.5.0 (served live, 4 observations re-read)"
 
 value:
   host_keeps: >-

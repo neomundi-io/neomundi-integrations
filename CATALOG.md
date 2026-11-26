@@ -136,7 +136,7 @@
 | Platforms | linux, macos, windows |
 | Target verified | `mlflow-tracing` 3.18.0 (bounds 3.18.0 → <3.19) |
 | NeoMundi SDK | ≥ 2.1.0, verified 2.1.0 |
-| `measurement_version` verified | **none (E1)** |
+| `measurement_version` verified | **3.5.0 (served live, 4 observations re-read)** |
 | Offline tests | 75 |
 | Real observations | 4, of which 4 re-read as persisted |
 | Metered | yes |
