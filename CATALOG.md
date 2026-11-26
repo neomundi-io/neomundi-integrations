@@ -14,7 +14,7 @@
 
 | | |
 | --- | --- |
-| Package | `langchain-neomundi` 0.1.1 |
+| Package | `langchain-neomundi` 0.2.0 |
 | Install | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/langchain'` |
 | Maturity | beta |
 | Evidence level | **E2** — plus real execution against production, proof committed |

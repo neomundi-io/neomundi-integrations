@@ -6,7 +6,6 @@ import warnings
 from uuid import uuid4
 
 import httpx
-import neomundi
 import pytest
 from conftest import (
     TEST_API_KEY,
@@ -161,7 +160,12 @@ def test_context_does_not_leak_between_separate_invocations(client, recorder):
 
 
 def test_unverified_measurement_version_warns_but_does_not_block(recorder):
-    """R9: warn on a version this SDK never verified. Never block."""
+    """R9: warn on a version nobody verified. Never block.
+
+    The warning now comes from ``neomundi`` itself, not from this handler —
+    which is why this test still passes unchanged after the duplicate was
+    removed. It is the better place for it: a direct SDK user gets it too.
+    """
     payload = load_fixture("rest_complete_allow.json")
     payload["audit"] = dict(payload["audit"], measurement_version="9.9.9")
 
@@ -188,28 +192,32 @@ def test_verified_version_does_not_warn(client, recorder):
     assert handler.last_outcome.measurement_version == "3.3.1"
 
 
-def test_production_version_350_is_currently_unverified_and_warns(client):
-    """Pins a fact about today's production, not a hypothetical.
+def test_production_version_350_is_verified_and_no_longer_warns(client):
+    """The inverse of the test that used to live here, and its own successor.
 
-    Measured on 2026-11-25: ``api.neomundi.io`` serves
-    ``measurement_version = 3.5.0``, and the SDK's own
-    ``docs/COMPATIBILITY_350.md`` says 3.5.0 is deliberately **not** in
-    ``verified_measurement_versions`` yet. So every production measurement
-    through this integration warns once, by design.
+    That test pinned a fact about production — 3.5.0 served, 3.5.0 not
+    verified — and said in its docstring that it would turn red when the SDK
+    qualified 3.5.0, as "the intended signal to revisit
+    KNOWN_LIMITATIONS.md section 1". The signal fired on 2026-11-26: the SDK
+    qualified 3.5.0 live on REST and SSE. So the fact is replaced by the new
+    one rather than the assertion being relaxed.
 
-    When the SDK qualifies 3.5.0 this test turns red, which is the intended
-    signal to revisit KNOWN_LIMITATIONS.md section 1.
+    And this handler no longer warns at all: ``neomundi`` >= 2.2.0 performs
+    the comparison itself, so warning here too would emit two identical
+    RuntimeWarnings for one drift.
     """
-    assert "3.5.0" not in neomundi.API_CONTRACT["verified_measurement_versions"]
+    import neomundi as sdk
+
+    assert "3.5.0" in sdk.API_CONTRACT["verified_measurement_versions"]
+    assert not hasattr(NeoMundiCallbackHandler, "_warn_on_version"), (
+        "the duplicate warning is the SDK's job now"
+    )
 
     handler = NeoMundiCallbackHandler(client)
-    with warnings.catch_warnings(record=True) as caught:
-        warnings.simplefilter("always")
-        handler._warn_on_version("3.5.0")
-        handler._warn_on_version("3.5.0")
-
-    assert len(caught) == 1, "warn once per handler, not once per call"
-    assert "3.5.0" in str(caught[0].message)
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        run_chat(handler)
+    assert handler.last_outcome.measurement_version == "3.3.1"
 
 
 def test_integration_contract_does_not_restate_the_measurement_version():

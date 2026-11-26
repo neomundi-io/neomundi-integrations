@@ -3,6 +3,25 @@
 All notable changes to this project are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## 0.2.0 — unreleased
+
+### Changed
+
+- 🔴 **Requires `neomundi>=2.2.0`.** The floor rises because the SDK now
+  performs the measurement-version comparison itself; below 2.2.0 nothing
+  would warn once this handler stopped.
+- The handler no longer emits its own measurement-version `RuntimeWarning`.
+  On `neomundi` 2.2.0 one version drift produced **two identical warnings**,
+  proven by execution. The SDK is the single source of truth, and it warns
+  for direct SDK users too, which this handler never could.
+  `Outcome.measurement_version` is unchanged: recording the version is still
+  this integration's job.
+
+### Fixed
+
+- `LIMITATIONS.md` §1 said production ran a measurement version the SDK had
+  not qualified. It has, since 2026-11-26, on live REST and SSE evidence.
+
 ## 0.1.1 — unreleased
 
 ### Fixed
