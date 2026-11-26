@@ -116,3 +116,26 @@ not exist yet.
 enough to trust the refusals and the safety guarantee; it is not enough to
 call the package battle-tested. The LangChain callback surface it depends on
 is stable; this package is new.
+
+## 11. Version 0.1.0 on PyPI links to an archived repository
+
+🔴 Measured on **2026-11-26**, by installing the published package from PyPI
+rather than reading the working tree: every `Project-URL` of
+`langchain-neomundi` **0.1.0** points at `neomundi-io/langchain-neomundi`,
+the standalone repository this integration lived in before it moved into the
+library. That repository is archived and read-only, and its own description
+says so, which makes the `Issues` link functionally dead -- an archived
+repository accepts no issue.
+
+PyPI metadata for a released version is immutable, so 0.1.0 keeps those
+links for as long as it exists. **0.1.1 carries the correction.** Until it
+is published, follow the links from this repository, not from the PyPI
+page.
+
+⚠ The library's conformance check did not catch this: it verifies the
+package *name* against the slug and refuses an install line that would
+fail, but it does not confront `[project.urls]` with where the integration
+actually lives. Deliberately not fixed here -- closing it means a new
+blocking rule, which is a decision for the owner, not a side effect of a
+correction.
+

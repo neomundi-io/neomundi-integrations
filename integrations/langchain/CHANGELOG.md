@@ -3,7 +3,21 @@
 All notable changes to this project are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
-## 0.1.0 — unreleased
+## 0.1.1 — unreleased
+
+### Fixed
+
+- Every `[project.urls]` entry pointed at `neomundi-io/langchain-neomundi`,
+  the standalone repository this integration lived in before it moved into
+  the library. That repository is archived and read-only, so `Issues` was
+  functionally dead: an archived repository accepts none. All five links now
+  point at the library, where the code and the issue tracker actually are.
+
+  Found by verifying the published package from PyPI rather than from the
+  working tree. 0.1.0's metadata is immutable, so it keeps the old links;
+  see `LIMITATIONS.md`.
+
+## 0.1.0 — released 2026-11-26
 
 First release. Measures LangChain LLM interactions through the NeoMundi
 measurement API.
