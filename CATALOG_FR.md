@@ -84,6 +84,44 @@
 [Guide](integrations/langfuse/README_FR.md) · [Limites](integrations/langfuse/LIMITATIONS.md) · [Valeur et ROI](integrations/langfuse/VALUE.md) · [Notebook](integrations/langfuse/notebooks/quickstart.ipynb) · [Exemples](integrations/langfuse/examples/) · [Rapport de mission](integrations/langfuse/MISSION_REPORT.md) · [Journal](integrations/langfuse/CHANGELOG.md)
 
 
+## LiteLLM
+
+> An LLM gateway: one OpenAI-style API to 100+ providers, as a Python library or as a proxy server, with routing, retries, budgets and logging callbacks.
+
+| | |
+| --- | --- |
+| Paquet | `litellm-neomundi` 0.1.0 |
+| Installation | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/litellm'` |
+| Maturité | experimental |
+| Niveau de preuve | **E1** — offline tests, green across platforms |
+| Python | 3.11, 3.12, 3.13 |
+| Plateformes | linux, macos, windows |
+| Cible vérifiée | `litellm` 1.111.0 (bornes 1.111.0 → <2.0) |
+| SDK NeoMundi | ≥ 2.1.0, vérifié 2.1.0 |
+| `measurement_version` vérifiée | **3.3.1 (captured fixture, not a live call)** |
+| Tests hors ligne | 47 |
+| Observations réelles | 0, dont 0 relues persistées |
+| Facturée | oui |
+| Livrée | 2026-11-26 · dernière vérification 2026-11-26 |
+
+**Ce que la technologie garde.** LiteLLM keeps routing, retries, fallbacks, budgets, virtual keys, its cost table and whatever logging callbacks you already run.
+
+**Ce que NeoMundi ajoute.** Signed, independently verifiable behavioural measurement of every chat completion the gateway routes, to any provider, from one attachment point -- with the latency LiteLLM observed, and only token counts the provider itself published.
+
+**Complète, ne remplace pas :** LiteLLM logging callbacks, Langfuse, langchain-neomundi.
+
+**Ce qu'elle refuse de faire.**
+
+- The provider published no token count; LiteLLM's zero or estimate is refused, never forwarded.
+- An async stream hides the provider's payload from the logger, so it is refused rather than trusted.
+- A cache hit, a failed call or a non-chat call is not a model interaction to measure.
+- The measurement API is unreachable, so the failure is reported and your call is untouched.
+
+🔴 Every submitted observation is a billed measurement; there is no trace-only route. sample_rate defaults to 1.0 and a gateway sees every call -- start with submit=False, which needs no key and opens no socket.
+
+[Guide](integrations/litellm/README_FR.md) · [Limites](integrations/litellm/LIMITATIONS.md) · [Valeur et ROI](integrations/litellm/VALUE.md) · [Notebook](integrations/litellm/notebooks/quickstart.ipynb) · [Exemples](integrations/litellm/examples/) · [Rapport de mission](integrations/litellm/MISSION_REPORT.md) · [Journal](integrations/litellm/CHANGELOG.md)
+
+
 ## Niveaux de preuve
 
 - **E0** — nothing probative yet
