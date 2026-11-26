@@ -6,6 +6,30 @@ Read this before relying on any NeoMundi score produced through LiteLLM.
 
 ---
 
+
+## 0. LiteLLM's native Ollama route cannot be measured at all
+
+🔴 Measured on 2026-11-26, litellm 1.111.0. On the **native** `ollama/`
+route LiteLLM hands the logger `original_response = None`. It still reports
+a usage block, and those numbers may well be the provider's own — **but
+nothing reaching the logger can prove they are not LiteLLM's own tokenizer
+estimate**, so the integration refuses with
+`not_submitted_unverified_token_count`.
+
+That is the invariant working, not a defect: an unprovable count is not a
+measurement.
+
+🟢 **The OpenAI-compatible route is measurable.** Pointing LiteLLM at
+Ollama's `/v1` endpoint with the `openai/` prefix makes it pass the
+provider's JSON body through, usage block included, and the provenance
+check verifies against it. The E2 qualification used exactly that route:
+four observations submitted, four re-read as persisted.
+
+**What to do.** If your calls take a route where `original_response` is
+absent, this integration measures nothing and says so on every call. Check
+`outcome.status` before relying on coverage. Whether a route populates it
+is LiteLLM's choice, not ours, and it varies **by route**, not by provider.
+
 ## 1. A silent provider is still refused — LiteLLM hides the silence, it does not fill it
 
 LiteLLM normalises usage into one `Usage` object across providers. When the
