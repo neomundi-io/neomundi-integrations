@@ -12,11 +12,13 @@
 
 ---
 
-> **Evidence level: E1, offline only.** No real measurement has been
-> taken with this package. The window that built it had no NeoMundi
-> service verification key. The suite drives a real `Agent`, the real
-> `Runner` and the real SDK model classes through mock transports. See
-> [LIMITATIONS.md §9](LIMITATIONS.md#9-evidence-level-e1-not-e2).
+> **Evidence level: E2.** Four model calls of a real `Agent` run, through
+> the real `Runner` on `OpenAIResponsesModel` against a local Ollama's
+> `/v1/responses`, were measured on the service verification account on
+> 2026-11-26 and re-read from the API as persisted: 4/4, served
+> `measurement_version` 3.5.0, 0.12 CHF. A tool run produced two model
+> calls and both were measured. Proof: [`evidence/e2_qualification_20261126T140137Z.json`](evidence/e2_qualification_20261126T140137Z.json). See
+> [LIMITATIONS.md §9](LIMITATIONS.md#9-evidence-level-e2-on-the-responses-route).
 
 ## What this is
 
@@ -115,8 +117,8 @@ retires the first, so re-running a notebook cell does not bill twice.
 | | |
 |---|---|
 | Offline test suite | 45 tests, green on Python 3.12 / Linux locally; CI runs 3.11–3.13 on Linux, macOS, Windows |
-| Real execution | **none**: E1. 0 observations submitted, 0 re-read. `qualify.py` is ready and its dry run is green against a mock provider. It has not been run against Ollama |
-| Maturity | experimental |
+| Real execution | **E2**: 4 observations submitted to `https://api.neomundi.io`, 4/4 re-read as persisted (2026-11-26, Python 3.12, `neomundi` 2.1.0). See [`evidence/`](evidence/) |
+| Maturity | beta |
 
 Read [LIMITATIONS.md](LIMITATIONS.md) before drawing a conclusion from any score.
 

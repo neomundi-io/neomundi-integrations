@@ -135,21 +135,25 @@ install of this package does not carry.
 It is `kwargs["model"]`, the model the caller requested from LiteLLM, not a
 model the provider proved served the call.
 
-## 9. Evidence level: E1, not E2
+## 9. Evidence level: E2, on one route
 
-**No real measurement was taken.** The window that built this had no
-`NEOMUNDI_VERIFICATION_KEY`, so nothing was submitted to the production API
-and nothing was read back. What exists is an offline suite that drives the
-real `litellm.completion` and the real `NeoMundiClient` through mock
-transports and asserts the exact body sent to `POST /v1/govern`. That
-proves the payload and the refusals, not persistence.
+**Measured 2026-11-26.** Four completions through LiteLLM's
+OpenAI-compatible route to `llama3.2:3b` on a local Ollama were submitted
+from the service verification account and re-read by `request_id`: 4/4
+persisted, served `measurement_version` 3.5.0, 0.12 CHF
+([`evidence/e2_qualification_20261126T094917Z.json`](evidence/e2_qualification_20261126T094917Z.json)).
 
-Reaching E2 needs one guarded run on the service verification account
-(about 0.15 CHF for five observations), with a free local model through
-LiteLLM (Ollama reports its counts), and the observations re-read by
-`request_id`.
+What that does **not** cover, and what it means for you:
 
-Only Python 3.12 on Linux ran in the building window; the CI matrix
-covers 3.11–3.13 on Linux, macOS and Windows. Real providers other than
+- **One route.** The same model through LiteLLM's native `ollama/` route
+  was refused on a real call (`not_submitted_unverified_token_count`):
+  LiteLLM hands the logger no provider response there, so the count cannot
+  be proven to be the provider's. If you use that route, expect refusals,
+  not measurements.
+- **One provider.** Paid providers and Anthropic's usage block were
+  exercised only through mock transports.
+- **One platform.** The real run was Python 3.12 with `neomundi` 2.1.0.
+  The CI matrix covers 3.11–3.13 on Linux, macOS and Windows offline.
+- **Not E3.** Nobody outside the team has reproduced it. Real providers other than
 the mocked shapes (OpenAI-compatible, Ollama, Anthropic's usage block)
 were not exercised.

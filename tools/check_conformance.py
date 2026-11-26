@@ -16,6 +16,12 @@ Run by CI on every pull request. Three classes of check:
 3. **Honesty of the install line.** A package marked ``published_on: none``
    may not be documented with a ``pip install <name>`` that would fail.
 
+4. **The prose agrees with the manifest.** Wherever a README or
+   ``LIMITATIONS.md`` states an evidence level or a maturity, it states the
+   one the manifest declares. A verified E2 badge above a README that says
+   "E1, no real measurement" is a library contradicting itself, and the
+   reader cannot tell which half to believe.
+
 Exit code 0 when everything holds, 1 otherwise, with every problem listed
 rather than only the first.
 """
@@ -177,6 +183,76 @@ def check_evidence(integration: Integration) -> list[str]:
     return problems
 
 
+#: Lines where a document states the integration's evidence level, in either
+#: language: the banner, the status-table row, and the LIMITATIONS heading.
+#: Lines that merely mention a level ("Reaching E2 needs ...") are not
+#: statements about this integration's level and are left alone.
+_LEVEL_STATEMENT = re.compile(
+    r"evidence level|niveau de preuve|^\|\s*(real execution|exécution réelle)\s*\|",
+    re.IGNORECASE,
+)
+_LEVEL_TOKEN = re.compile(r"\bE([0-3])\b")
+_MATURITY_ROW = re.compile(r"^\|\s*(maturity|maturité)\s*\|(?P<cell>[^|]*)\|", re.IGNORECASE)
+
+#: Spellings accepted for each maturity, English and French.
+_MATURITY_WORDS = {
+    "experimental": ("experimental", "expérimental", "expérimentale"),
+    "alpha": ("alpha",),
+    "beta": ("beta", "bêta"),
+    "stable": ("stable",),
+    "deprecated": ("deprecated", "déprécié", "dépréciée", "obsolète"),
+    "archived": ("archived", "archivé", "archivée"),
+}
+
+
+def check_prose_agrees(integration: Integration) -> list[str]:
+    """A README may not state a level or a maturity the manifest does not.
+
+    Written after three integrations reached E2 through a manifest-only
+    commit and kept telling readers, in two languages, that no real
+    measurement had ever been taken.
+    """
+    problems: list[str] = []
+    level = integration.evidence_level.upper()
+    maturity = integration.maturity
+
+    # The manifest can contradict itself too, and the catalogue renders it:
+    # "measurement_version verified: none (E1)" beside four real observations.
+    compatibility = integration.data.get("compatibility") or {}
+    served = str(compatibility.get("measurement_version_verified", ""))
+    if any(f"E{token}" != level for token in _LEVEL_TOKEN.findall(served)):
+        problems.append(
+            f"compatibility.measurement_version_verified says {served!r} but the "
+            f"manifest declares {level}"
+        )
+
+    for name in ("README.md", "README_FR.md", "LIMITATIONS.md"):
+        path = integration.path / name
+        if not path.is_file():
+            continue  # the skeleton check reports it
+        lines = path.read_text(encoding="utf-8").splitlines()
+        for number, line in enumerate(lines, start=1):
+            if _LEVEL_STATEMENT.search(line):
+                tokens = _LEVEL_TOKEN.findall(line)
+                # The level stated is the first one on the line: "E1, not E2"
+                # states E1. A heading or banner naming no level is fine.
+                if tokens and f"E{tokens[0]}" != level:
+                    problems.append(
+                        f"{name}:{number} states E{tokens[0]} but the manifest declares "
+                        f"{level}: {line.strip()[:90]}"
+                    )
+            row = _MATURITY_ROW.match(line)
+            if row:
+                cell = row.group("cell").strip().strip("*").lower()
+                accepted = _MATURITY_WORDS.get(maturity, (maturity,))
+                if not any(word in cell for word in accepted):
+                    problems.append(
+                        f"{name}:{number} states maturity {row.group('cell').strip()!r} "
+                        f"but the manifest declares {maturity!r}"
+                    )
+    return problems
+
+
 def _fenced_blocks(markdown: str) -> list[str]:
     """Return the contents of every fenced code block.
 
@@ -256,6 +332,7 @@ def main() -> int:
         problems += check_package_name(integration)
         problems += check_evidence(integration)
         problems += check_install_honesty(integration)
+        problems += check_prose_agrees(integration)
         problems += check_no_live_key(integration)
 
         label = f"{integration.slug} ({integration.maturity}, {integration.evidence_level})"

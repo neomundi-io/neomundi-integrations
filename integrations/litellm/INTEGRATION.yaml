@@ -55,8 +55,8 @@ compatibility:
   neomundi_sdk:
     min: "2.1.0"
     verified: "2.1.0"
-  # The fixture the suite replays was produced under 3.3.1. No live
-  # measurement was taken, so no served version was observed.
+  # The fixture the suite replays was produced under 3.3.1. The E2 run
+  # observed 3.5.0 served live on every one of its four observations.
   measurement_version_verified: "3.5.0 (served live, 4 observations re-read)"
 
 value:
