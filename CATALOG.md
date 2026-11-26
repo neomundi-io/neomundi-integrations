@@ -122,6 +122,44 @@
 [Guide](integrations/litellm/README.md) · [Limitations](integrations/litellm/LIMITATIONS.md) · [Value and ROI](integrations/litellm/VALUE.md) · [Notebook](integrations/litellm/notebooks/quickstart.ipynb) · [Examples](integrations/litellm/examples/) · [Mission report](integrations/litellm/MISSION_REPORT.md) · [Changelog](integrations/litellm/CHANGELOG.md)
 
 
+## OpenTelemetry
+
+> The vendor-neutral tracing standard. Instrumentations for model clients (contrib openai-v2, OpenLLMetry and others) emit GenAI spans that the application exports to the backend it already runs.
+
+| | |
+| --- | --- |
+| Package | `otel-neomundi` 0.1.0 |
+| Install | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/otel'` |
+| Maturity | experimental |
+| Evidence level | **E1** — offline tests, green across platforms |
+| Python | 3.11, 3.12, 3.13 |
+| Platforms | linux, macos, windows |
+| Target verified | `opentelemetry-sdk` 1.45.2 (bounds 1.45.2 → <2.0) |
+| NeoMundi SDK | ≥ 2.1.0, verified 2.1.0 |
+| `measurement_version` verified | **none (E1)** |
+| Offline tests | 48 |
+| Real observations | 0, of which 0 re-read as persisted |
+| Metered | yes |
+| Delivered | 2026-11-26 · last verified 2026-11-26 |
+
+**What the technology keeps.** OpenTelemetry keeps the instrumentation, the pipeline, the exporters, the sampling and the tracing backend you already run. The processor is added next to your exporters and replaces nothing.
+
+**What NeoMundi adds.** Signed, independently verifiable behavioural measurement of a model call you already trace, using the latency the trace observed -- and the NeoMundi request_id written into the same trace. It never turns a span's token count into a measurement: a span cannot prove where that count came from.
+
+**Complements, does not replace:** OpenTelemetry GenAI instrumentations (contrib openai-v2, OpenLLMetry), your tracing backend (Jaeger, Tempo, Honeycomb, Datadog...), litellm-neomundi, langchain-neomundi.
+
+**What it refuses to do.**
+
+- A token count read from a span is never submitted; only the count the caller declares from its provider's response.
+- No GenAI span, or more than one, inside an interaction -- which call is meant is not guessed.
+- A failed model call, or an exception in the application's block, is not measured.
+- The measurement API is unreachable, so the failure is reported and your call is untouched.
+
+🔴 Every submitted observation is a billed measurement; there is no trace-only route. Nothing is billed for a span alone: only an interaction with a declared count is submitted. Start with submit=False, which needs no key and opens no socket.
+
+[Guide](integrations/otel/README.md) · [Limitations](integrations/otel/LIMITATIONS.md) · [Value and ROI](integrations/otel/VALUE.md) · [Notebook](integrations/otel/notebooks/quickstart.ipynb) · [Examples](integrations/otel/examples/) · [Mission report](integrations/otel/MISSION_REPORT.md) · [Changelog](integrations/otel/CHANGELOG.md)
+
+
 ## Evidence levels
 
 - **E0** — nothing probative yet

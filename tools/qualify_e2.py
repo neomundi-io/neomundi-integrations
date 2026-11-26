@@ -17,7 +17,8 @@ must name who approved it and `--budget-chf` must state the ceiling they
 approved. Both are written into the evidence, so a proof says who allowed
 it to exist.
 
-Credentials: `NEOMUNDI_VERIFICATION_KEY`, read from the environment, never
+Credentials: `NEOMUNDI_VERIFICATION_KEY`, read from the environment for a
+real run only -- a `--dry-run` neither needs nor reads it -- never
 printed and never written — not even a fragment. Run the service account
 guard before this, every time.
 
@@ -96,8 +97,11 @@ def main() -> int:
             f"{allowed_by_budget} observations at {COST_PER_OBSERVATION_CHF} CHF each."
         )
 
-    api_key = os.environ.get("NEOMUNDI_VERIFICATION_KEY", "").strip()
-    if not api_key:
+    # A dry run submits nothing and re-reads nothing, so it needs no key and
+    # does not read one: the free check stays runnable where the key is
+    # absent (a CI window), and a key is never loaded without a reason.
+    api_key = os.environ.get("NEOMUNDI_VERIFICATION_KEY", "").strip() if submit else ""
+    if submit and not api_key:
         raise SystemExit(
             "REFUSED: NEOMUNDI_VERIFICATION_KEY is not set.\n"
             "It lives in the Windows USER scope, which a shell does not inherit.\n"
@@ -125,7 +129,11 @@ def main() -> int:
     print(f"  sdk              : neomundi {neomundi.__version__}")
     print("=" * 72)
 
-    client = neomundi.NeoMundiClient(api_key=api_key, base_url=BASE_URL, timeout=60.0)
+    client = (
+        neomundi.NeoMundiClient(api_key=api_key, base_url=BASE_URL, timeout=60.0)
+        if submit
+        else None
+    )
     records: list[dict[str, Any]] = []
     readback: list[dict[str, Any]] = []
 
@@ -182,7 +190,8 @@ def main() -> int:
                 print(f"      {request_id}  readback failed: {type(exc).__name__}")
             time.sleep(0.25)  # stay well under 60 req/min
     finally:
-        client.close()
+        if client is not None:
+            client.close()
 
     billed = sum(1 for r in records if r.get("submitted"))
     persisted = sum(1 for r in readback if r.get("persisted"))
@@ -191,7 +200,9 @@ def main() -> int:
     )
 
     evidence = {
-        "proof": f"{args.slug}-neomundi E2 qualification",
+        "proof": f"{args.slug}-neomundi E2 qualification"
+        + ("" if submit else " -- DRY RUN, not a proof"),
+        "dry_run": not submit,
         "started_utc": stamp.isoformat(),
         "finished_utc": datetime.now(UTC).isoformat(),
         "api_base_url": BASE_URL,
@@ -221,7 +232,9 @@ def main() -> int:
 
     out_dir = ROOT / "integrations" / args.slug / "evidence"
     out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / f"e2_qualification_{stamp:%Y%m%dT%H%M%SZ}.json"
+    # A dry run is named so it can never be mistaken for, or cited as, a proof.
+    prefix = "e2_qualification" if submit else "dry_run"
+    out_path = out_dir / f"{prefix}_{stamp:%Y%m%dT%H%M%SZ}.json"
     out_path.write_text(json.dumps(evidence, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
     print("\n" + "=" * 72)
@@ -231,6 +244,18 @@ def main() -> int:
     print(f"  evidence            : {out_path.relative_to(ROOT)}")
     print("=" * 72)
 
+    unreached = {"host_call_failed", "no_outcome_recorded"}
+    if records and all(r.get("status") in unreached for r in records):
+        # Nothing about the integration was exercised. Green would be a lie.
+        print(
+            "\nINCONCLUSIVE: the host was never reached in any phase; nothing about "
+            "the integration was exercised.",
+            file=sys.stderr,
+        )
+        return 1
+    if not submit and billed:
+        print(f"\nDRY RUN DEFECT: the probe submitted {billed} observation(s).", file=sys.stderr)
+        return 1
     if submit and persisted == 0:
         print("\nE2 NOT established: nothing was re-read as persisted.", file=sys.stderr)
         return 1
