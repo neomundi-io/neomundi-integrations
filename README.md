@@ -9,7 +9,7 @@
 
 One measurement primitive. Many frameworks. Verifiable evidence.
 
-![](https://img.shields.io/badge/integrations-1-0f766e?style=flat-square) ![](https://img.shields.io/badge/evidence_E2+-1-0f766e?style=flat-square) [![CI](https://github.com/neomundi-io/neomundi-integrations/actions/workflows/ci.yml/badge.svg)](https://github.com/neomundi-io/neomundi-integrations/actions/workflows/ci.yml) ![](https://img.shields.io/badge/licence-Apache----2.0-6b7280?style=flat-square)
+![](https://img.shields.io/badge/integrations-2-0f766e?style=flat-square) ![](https://img.shields.io/badge/evidence_E2+-1-0f766e?style=flat-square) [![CI](https://github.com/neomundi-io/neomundi-integrations/actions/workflows/ci.yml/badge.svg)](https://github.com/neomundi-io/neomundi-integrations/actions/workflows/ci.yml) ![](https://img.shields.io/badge/licence-Apache----2.0-6b7280?style=flat-square)
 
 **[Full catalogue](CATALOG.md)** · **[How maturity is decided](#maturity-and-evidence-level)** · **[Contribute](CONTRIBUTING.md)** · **[Maintenance](MAINTENANCE.md)**
 
@@ -24,6 +24,7 @@ One measurement primitive. Many frameworks. Verifiable evidence.
 | Integration | Package | Distributed via | Maturity | Evidence | What NeoMundi adds |
 | --- | --- | --- | --- | --- | --- |
 | **[LangChain](integrations/langchain/)** | `langchain-neomundi` | repo | beta | **E2** | Signed, independently verifiable behavioural measurement of each LLM interaction -- five signals with explicit provenance and an explicit measured / not-measured state -- without writing a measurement call per call site. |
+| **[Langfuse](integrations/langfuse/)** | `langfuse-neomundi` | repo | experimental | **E1** | Signed, independently verifiable behavioural measurement of the same interaction, written onto that Langfuse trace as scores -- one per signal the server declared measured -- with the NeoMundi request_id attached so the trace links to the signed record. |
 
 ## Start in three lines
 

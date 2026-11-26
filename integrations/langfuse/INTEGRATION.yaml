@@ -1,0 +1,108 @@
+# The single source of truth for this integration.
+#
+# The library index, the catalogue and the badges are GENERATED from this
+# file and its siblings. `tools/check_conformance.py` validates it.
+
+slug: langfuse
+name: Langfuse
+technology:
+  name: Langfuse
+  homepage: https://langfuse.com/
+  what_it_is: >-
+    An open-source LLM observability platform: traces, prompts, cost,
+    sessions, datasets and evaluation scores, self-hosted or in the cloud.
+
+package:
+  name: langfuse-neomundi
+  import_name: langfuse_neomundi
+  version: 0.1.0
+  # Not published. The index renders the repository install line instead
+  # of a `pip install` that would fail.
+  published_on: none
+  pypi_url: https://pypi.org/project/langfuse-neomundi/
+
+# Package lifecycle, not evidence. Experimental: the score names are a
+# public contract that has not yet met a real Langfuse instance.
+maturity: experimental
+
+evidence:
+  # E1, deliberately, and not E2.
+  #
+  # The mission window that built this had neither the NeoMundi service
+  # verification key nor a Langfuse instance, so no real measurement was
+  # taken and no score was read back from a Langfuse server. What exists is
+  # an offline suite that asserts the exact wire body Langfuse sends, run
+  # against the real `langfuse` 5.2.0 and `neomundi` 2.1.0 clients.
+  # Claiming E2 would require a proof under evidence/ that does not exist.
+  # See LIMITATIONS.md §6 and MISSION_REPORT.md.
+  level: e1
+  offline_tests: 33
+  real_observations: 0
+  observations_verified_persisted: 0
+  cost_chf: 0.0
+
+compatibility:
+  python: ["3.11", "3.12", "3.13"]
+  platforms: [linux, macos, windows]
+  target:
+    name: langfuse
+    min: "5.2.0"
+    max: "<6.0"
+    verified: "5.2.0"
+  neomundi_sdk:
+    min: "2.1.0"
+    verified: "2.1.0"
+  # The fixture the suite replays was produced under 3.3.1. No live
+  # measurement was taken, so no served version was observed.
+  measurement_version_verified: "3.3.1 (captured fixture, not a live call)"
+
+value:
+  host_keeps: >-
+    Langfuse keeps the trace: prompt, completion, latency, cost, sessions,
+    datasets, experiments, and the UI the developer already has open.
+  neomundi_adds: >-
+    Signed, independently verifiable behavioural measurement of the same
+    interaction, written onto that Langfuse trace as scores -- one per
+    signal the server declared measured -- with the NeoMundi request_id
+    attached so the trace links to the signed record.
+  complements_not_replaces:
+    - Langfuse
+    - langchain-neomundi
+  typical_use:
+    - See NeoMundi signals next to latency and cost on the trace you are already debugging.
+    - Filter or chart Langfuse traces by a measured behavioural signal.
+    - Jump from a Langfuse trace to the signed, third-party-verifiable NeoMundi record.
+
+entrypoint:
+  kind: bridge
+  symbol: langfuse_neomundi.NeoMundiLangfuseBridge
+  snippet: |
+    bridge = NeoMundiLangfuseBridge(langfuse)  # your existing Langfuse client
+    outcome = bridge.write(trace.close())  # a neomundi TraceRecord or GovernResult
+    print(outcome.status, outcome.signals_written)
+
+refusals:
+  - A signal the server did not declare measured gets no numeric score, not even its conventional value.
+  - There is no Langfuse trace to attach to, so nothing is written.
+  - A measurement that was not submitted writes only a summary saying so, never a signal.
+  - A Langfuse or bridge failure is reported as an outcome and never reaches your application.
+
+billing:
+  metered: false
+  note: >-
+    The bridge never contacts NeoMundi and bills nothing by itself. The
+    measurement it transports was billed when it was submitted, at 0.030
+    CHF per observation, by whatever produced it.
+
+links:
+  readme: README.md
+  readme_fr: README_FR.md
+  limitations: LIMITATIONS.md
+  value: VALUE.md
+  mission_report: MISSION_REPORT.md
+  changelog: CHANGELOG.md
+  notebook: notebooks/quickstart.ipynb
+  examples: examples/
+
+delivered: 2026-11-26
+last_verified: 2026-11-26
