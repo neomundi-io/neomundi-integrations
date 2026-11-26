@@ -2,7 +2,7 @@
   "library": "neomundi-integrations",
   "generated_by": "tools/build_registry.py",
   "counts": {
-    "active": 5,
+    "active": 6,
     "archived": 0,
     "evidence_e2_or_better": 3,
     "published": 0
@@ -297,6 +297,107 @@
       "directory": "integrations/litellm",
       "archived": false,
       "install": "pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/litellm'"
+    },
+    {
+      "slug": "mlflow",
+      "name": "MLflow",
+      "technology": {
+        "name": "MLflow Tracing",
+        "homepage": "https://mlflow.org/docs/latest/genai/tracing/",
+        "what_it_is": "The tracing layer of MLflow, built on OpenTelemetry: autolog instrumentations for model clients and agent frameworks record each call as a span in a trace, stored next to the experiments and runs MLflow users already compare."
+      },
+      "package": {
+        "name": "mlflow-neomundi",
+        "import_name": "mlflow_neomundi",
+        "version": "0.1.0",
+        "published_on": "none",
+        "pypi_url": "https://pypi.org/project/mlflow-neomundi/"
+      },
+      "maturity": "experimental",
+      "evidence": {
+        "level": "e1",
+        "offline_tests": 75,
+        "real_observations": 0,
+        "observations_verified_persisted": 0,
+        "cost_chf": 0.0,
+        "reason": "No NEOMUNDI_VERIFICATION_KEY in the building window; no billed observation was authorised. E2 is prepared (qualify.py: four billed calls against Ollama's /v1, ~0.12 CHF) and its harness dry run is green against a scripted endpoint; it has not been run against Ollama."
+      },
+      "compatibility": {
+        "python": [
+          "3.11",
+          "3.12",
+          "3.13"
+        ],
+        "platforms": [
+          "linux",
+          "macos",
+          "windows"
+        ],
+        "target": {
+          "name": "mlflow-tracing",
+          "min": "3.18.0",
+          "max": "<3.19",
+          "verified": "3.18.0"
+        },
+        "neomundi_sdk": {
+          "min": "2.1.0",
+          "verified": "2.1.0"
+        },
+        "writers_verified": [
+          "openai (mlflow.openai.autolog) -- openai 3.60.0 -- measured",
+          "openai-agent (Agents SDK tracer) -- openai-agents 0.26.0 -- refused, 0/0/0 on a silent provider",
+          "langchain (mlflow.langchain.autolog) -- langchain-core 1.8.5 -- refused, copies any usage_metadata",
+          "no writer (LiteLLM's MlflowLogger) -- litellm 1.111.0 -- refused, estimate 14/7/21 on a silent provider (probe only)"
+        ],
+        "measurement_version_verified": "none (E1)"
+      },
+      "value": {
+        "host_keeps": "MLflow keeps its autolog instrumentation, the traces, the tracking store, the UI, experiments and run comparison. The integration appends one function to MLflow's own span processors and replaces nothing.",
+        "neomundi_adds": "Signed, independently verifiable behavioural measurement of each model call MLflow traced, with the provider's own token count and the latency MLflow recorded -- and the NeoMundi request_id and measurement version written back on the MLflow trace, next to the run you compare.",
+        "complements_not_replaces": [
+          "MLflow Tracing and its autolog integrations",
+          "the MLflow UI, experiments and evaluation",
+          "otel-neomundi",
+          "openai-agents-neomundi",
+          "langchain-neomundi"
+        ],
+        "typical_use": [
+          "Measure the model calls of an application MLflow already traces, without a second instrumentation.",
+          "Open an MLflow trace and find the NeoMundi observation that measured it, by its request_id tag.",
+          "Compare two runs only when their measurement_version matches, as you already do for model versions.",
+          "Find out, for free, which of your traced calls could be measured, with submit=False."
+        ]
+      },
+      "entrypoint": {
+        "kind": "span_processor_hook",
+        "symbol": "mlflow_neomundi.NeoMundiMlflowProcessor",
+        "snippet": "mlflow.openai.autolog()\nprocessor = NeoMundiMlflowProcessor(api_key=..., base_url=\"https://api.neomundi.io\").install()\nclient.chat.completions.create(model=..., messages=...)\nprocessor.flush()\n"
+      },
+      "refusals": [
+        "A count written by anything but MLflow's openai autolog -- the Agents SDK tracer's zero fill, LiteLLM's estimate, LangChain's usage_metadata, a hand-written span -- is never submitted.",
+        "No provider usage, a partial one or a zero total; never estimated, never rebuilt.",
+        "Agent, chain, workflow and task spans are sums of calls already measured; tools, retrievers and embeddings are not model calls.",
+        "The measurement API is unreachable, so the failure is reported and your call is untouched."
+      ],
+      "billing": {
+        "metered": true,
+        "note": "Every submitted observation is a billed measurement; there is no trace-only route. One observation per measured model call; aggregate spans are never billed. Start with submit=False, which needs no key and opens no socket."
+      },
+      "links": {
+        "readme": "README.md",
+        "readme_fr": "README_FR.md",
+        "limitations": "LIMITATIONS.md",
+        "value": "VALUE.md",
+        "mission_report": "MISSION_REPORT.md",
+        "changelog": "CHANGELOG.md",
+        "notebook": "notebooks/quickstart.ipynb",
+        "examples": "examples/"
+      },
+      "delivered": "2026-11-26",
+      "last_verified": "2026-11-26",
+      "directory": "integrations/mlflow",
+      "archived": false,
+      "install": "pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/mlflow'"
     },
     {
       "slug": "openai-agents",
