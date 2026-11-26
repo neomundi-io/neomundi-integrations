@@ -1,0 +1,131 @@
+{
+  "proof": "litellm-neomundi E2 qualification",
+  "started_utc": "2026-11-26T09:49:17.088693+00:00",
+  "finished_utc": "2026-11-26T09:49:38.927300+00:00",
+  "api_base_url": "https://api.neomundi.io",
+  "probe": "litellm -> ollama (OpenAI-compatible route, provider publishes its counts)",
+  "authorisation": {
+    "authorised_by": "Sebastien (session du 26/11)",
+    "budget_chf": 0.5,
+    "ceiling_observations": 6
+  },
+  "account": {
+    "note": "service verification account; guard authorised before this run"
+  },
+  "versions": {
+    "neomundi": "2.1.0",
+    "python": "3.12.10"
+  },
+  "metadata_applied": {
+    "role": "devrel-verify",
+    "excluded_from": "Study2_Stage1_Stage2_Stage3",
+    "integration": "litellm-neomundi",
+    "qualification": "e2"
+  },
+  "billed_observations": 4,
+  "estimated_cost_chf": 0.12,
+  "measurement_versions_served": [
+    "3.5.0"
+  ],
+  "records": [
+    {
+      "phase": "openai-compatible 1",
+      "expectation": "submitted, count verified against the provider's payload",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "7ed83303-985e-4957-ab62-55b4fa9e0855",
+      "latency_ms": 3064.654,
+      "token_count": 44,
+      "model_name": "llama3.2:3b",
+      "measurement_version": "3.5.0",
+      "reason": null
+    },
+    {
+      "phase": "openai-compatible 2",
+      "expectation": "submitted, count verified against the provider's payload",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "269e75f7-1a7d-40ac-bd40-0cc5017cc196",
+      "latency_ms": 1786.642,
+      "token_count": 69,
+      "model_name": "llama3.2:3b",
+      "measurement_version": "3.5.0",
+      "reason": null
+    },
+    {
+      "phase": "openai-compatible 3",
+      "expectation": "submitted, count verified against the provider's payload",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "e74538c1-c187-44a2-8cd3-1ee609995b35",
+      "latency_ms": 1920.496,
+      "token_count": 71,
+      "model_name": "llama3.2:3b",
+      "measurement_version": "3.5.0",
+      "reason": null
+    },
+    {
+      "phase": "openai-compatible 4",
+      "expectation": "submitted, count verified against the provider's payload",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "187e3c40-9535-4382-9846-a018caf04f2a",
+      "latency_ms": 1457.7469999999998,
+      "token_count": 62,
+      "model_name": "llama3.2:3b",
+      "measurement_version": "3.5.0",
+      "reason": null
+    },
+    {
+      "phase": "ollama native route",
+      "expectation": "refused: the provider's payload is not reachable",
+      "status": "not_submitted_unverified_token_count",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": 4565.182,
+      "token_count": null,
+      "model_name": "llama3.2:3b",
+      "measurement_version": null,
+      "reason": "the provider's raw payload is not available"
+    },
+    {
+      "phase": "embedding",
+      "expectation": "not measured: outside the declared scope",
+      "status": "not_submitted_unsupported_call",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": null,
+      "token_count": null,
+      "model_name": "nomic-embed-text",
+      "measurement_version": null,
+      "reason": "call type 'embedding' is not a chat completion"
+    }
+  ],
+  "readback": [
+    {
+      "request_id": "7ed83303-985e-4957-ab62-55b4fa9e0855",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    },
+    {
+      "request_id": "269e75f7-1a7d-40ac-bd40-0cc5017cc196",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    },
+    {
+      "request_id": "e74538c1-c187-44a2-8cd3-1ee609995b35",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    },
+    {
+      "request_id": "187e3c40-9535-4382-9846-a018caf04f2a",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    }
+  ],
+  "note": "Prompts and responses are deliberately absent. Observations are marked role=devrel-verify and must be excluded from any analysis."
+}

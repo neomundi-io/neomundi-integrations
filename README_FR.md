@@ -9,7 +9,7 @@
 
 Une primitive de mesure. Plusieurs frameworks. Des preuves vérifiables.
 
-![](https://img.shields.io/badge/integrations-3-0f766e?style=flat-square) ![](https://img.shields.io/badge/evidence_E2+-1-0f766e?style=flat-square) [![CI](https://github.com/neomundi-io/neomundi-integrations/actions/workflows/ci.yml/badge.svg)](https://github.com/neomundi-io/neomundi-integrations/actions/workflows/ci.yml) ![](https://img.shields.io/badge/licence-Apache----2.0-6b7280?style=flat-square)
+![](https://img.shields.io/badge/integrations-3-0f766e?style=flat-square) ![](https://img.shields.io/badge/evidence_E2+-2-0f766e?style=flat-square) [![CI](https://github.com/neomundi-io/neomundi-integrations/actions/workflows/ci.yml/badge.svg)](https://github.com/neomundi-io/neomundi-integrations/actions/workflows/ci.yml) ![](https://img.shields.io/badge/licence-Apache----2.0-6b7280?style=flat-square)
 
 **[Catalogue détaillé](CATALOG_FR.md)** · **[Comment la maturité est décidée](#maturité-et-niveau-de-preuve)** · **[Contribuer](CONTRIBUTING.md)** · **[Maintenance](MAINTENANCE.md)**
 
@@ -25,7 +25,7 @@ Une primitive de mesure. Plusieurs frameworks. Des preuves vérifiables.
 | --- | --- | --- | --- | --- | --- |
 | **[LangChain](integrations/langchain/)** | `langchain-neomundi` | dépôt | beta | **E2** | Signed, independently verifiable behavioural measurement of each LLM interaction -- five signals with explicit provenance and an explicit measured / not-measured state -- without writing a measurement call per call site. |
 | **[Langfuse](integrations/langfuse/)** | `langfuse-neomundi` | dépôt | experimental | **E1** | Signed, independently verifiable behavioural measurement of the same interaction, written onto that Langfuse trace as scores -- one per signal the server declared measured -- with the NeoMundi request_id attached so the trace links to the signed record. |
-| **[LiteLLM](integrations/litellm/)** | `litellm-neomundi` | dépôt | experimental | **E1** | Signed, independently verifiable behavioural measurement of every chat completion the gateway routes, to any provider, from one attachment point -- with the latency LiteLLM observed, and only token counts the provider itself published. |
+| **[LiteLLM](integrations/litellm/)** | `litellm-neomundi` | dépôt | beta | **E2** | Signed, independently verifiable behavioural measurement of every chat completion the gateway routes, to any provider, from one attachment point -- with the latency LiteLLM observed, and only token counts the provider itself published. |
 
 ## Démarrer en trois lignes
 

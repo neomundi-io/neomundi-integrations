@@ -24,23 +24,25 @@ package:
 
 # Package lifecycle, not evidence. Experimental: it has not yet measured a
 # single real completion.
-maturity: experimental
+maturity: beta
 
 evidence:
-  # E1, deliberately, and not E2.
+  # E0 nothing yet, E1 offline tests, E2 + real execution against
+  # production, E3 + independently reproduced.
   #
-  # The mission window that built this (2026-11-26) had no
-  # NEOMUNDI_VERIFICATION_KEY in its environment, so no real measurement
-  # could be taken and nothing was re-read from the API. What exists is an
-  # offline suite that drives the real `litellm.completion` (1.111.0) and
-  # the real `neomundi` 2.1.0 client through mock transports, and asserts
-  # the exact body sent to POST /v1/govern. Claiming E2 would require a
-  # proof under evidence/ that does not exist. See LIMITATIONS.md §9.
-  level: e1
+  # CHECKED, NOT TRUSTED: tools/check_conformance.py opens the proof and
+  # compares these numbers against what it actually contains.
+  level: e2
   offline_tests: 47
-  real_observations: 0
-  observations_verified_persisted: 0
-  cost_chf: 0.0
+  real_observations: 4
+  observations_verified_persisted: 4
+  proof: evidence/e2_qualification_20261126T094917Z.json
+  cost_chf: 0.12
+  # The route matters here. LiteLLM's native `ollama/` route hands the
+  # logger original_response = None, so the count cannot be proven to be
+  # the provider's and is refused. The proof records that refusal on a
+  # real call, which is why it carries six phases for four observations.
+  route: "openai-compatible endpoint (the provider publishes its usage block)"
 
 compatibility:
   python: ["3.11", "3.12", "3.13"]
@@ -55,7 +57,7 @@ compatibility:
     verified: "2.1.0"
   # The fixture the suite replays was produced under 3.3.1. No live
   # measurement was taken, so no served version was observed.
-  measurement_version_verified: "3.3.1 (captured fixture, not a live call)"
+  measurement_version_verified: "3.5.0 (served live, 4 observations re-read)"
 
 value:
   host_keeps: >-

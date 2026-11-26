@@ -4,7 +4,7 @@
   "counts": {
     "active": 3,
     "archived": 0,
-    "evidence_e2_or_better": 1,
+    "evidence_e2_or_better": 2,
     "published": 0
   },
   "evidence_levels": {
@@ -220,13 +220,15 @@
         "published_on": "none",
         "pypi_url": "https://pypi.org/project/litellm-neomundi/"
       },
-      "maturity": "experimental",
+      "maturity": "beta",
       "evidence": {
-        "level": "e1",
+        "level": "e2",
         "offline_tests": 47,
-        "real_observations": 0,
-        "observations_verified_persisted": 0,
-        "cost_chf": 0.0
+        "real_observations": 4,
+        "observations_verified_persisted": 4,
+        "proof": "evidence/e2_qualification_20261126T094917Z.json",
+        "cost_chf": 0.12,
+        "route": "openai-compatible endpoint (the provider publishes its usage block)"
       },
       "compatibility": {
         "python": [
@@ -249,7 +251,7 @@
           "min": "2.1.0",
           "verified": "2.1.0"
         },
-        "measurement_version_verified": "3.3.1 (captured fixture, not a live call)"
+        "measurement_version_verified": "3.5.0 (served live, 4 observations re-read)"
       },
       "value": {
         "host_keeps": "LiteLLM keeps routing, retries, fallbacks, budgets, virtual keys, its cost table and whatever logging callbacks you already run.",

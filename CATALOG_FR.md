@@ -92,15 +92,15 @@
 | --- | --- |
 | Paquet | `litellm-neomundi` 0.1.0 |
 | Installation | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/litellm'` |
-| Maturité | experimental |
-| Niveau de preuve | **E1** — offline tests, green across platforms |
+| Maturité | beta |
+| Niveau de preuve | **E2** — plus real execution against production, proof committed |
 | Python | 3.11, 3.12, 3.13 |
 | Plateformes | linux, macos, windows |
 | Cible vérifiée | `litellm` 1.111.0 (bornes 1.111.0 → <2.0) |
 | SDK NeoMundi | ≥ 2.1.0, vérifié 2.1.0 |
-| `measurement_version` vérifiée | **3.3.1 (captured fixture, not a live call)** |
+| `measurement_version` vérifiée | **3.5.0 (served live, 4 observations re-read)** |
 | Tests hors ligne | 47 |
-| Observations réelles | 0, dont 0 relues persistées |
+| Observations réelles | 4, dont 4 relues persistées |
 | Facturée | oui |
 | Livrée | 2026-11-26 · dernière vérification 2026-11-26 |
 
