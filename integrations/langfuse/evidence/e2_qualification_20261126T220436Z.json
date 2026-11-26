@@ -1,0 +1,115 @@
+{
+  "proof": "langfuse-neomundi E2 qualification",
+  "dry_run": false,
+  "started_utc": "2026-11-26T22:04:36.688405+00:00",
+  "finished_utc": "2026-11-26T22:04:55.404179+00:00",
+  "api_base_url": "https://api.neomundi.io",
+  "probe": "langfuse-neomundi bridge -> Langfuse (scores read back from the server)",
+  "authorisation": {
+    "authorised_by": "Sebastien FAVRE, instruction du 2026-11-26",
+    "budget_chf": 0.06,
+    "ceiling_observations": 2
+  },
+  "account": {
+    "note": "service verification account; guard authorised before this run"
+  },
+  "versions": {
+    "neomundi": "2.2.0",
+    "python": "3.12.10"
+  },
+  "metadata_applied": {
+    "role": "devrel-verify",
+    "excluded_from": "Study2_Stage1_Stage2_Stage3",
+    "integration": "langfuse-neomundi",
+    "qualification": "e2"
+  },
+  "billed_observations": 2,
+  "estimated_cost_chf": 0.06,
+  "measurement_versions_served": [
+    "3.5.0"
+  ],
+  "records": [
+    {
+      "phase": "measure + write 1",
+      "expectation": "submitted to NeoMundi, scores written to Langfuse and read back",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "deb31937-3bcd-4460-9ea0-43c01830d118",
+      "latency_ms": 0.0,
+      "token_count": 12,
+      "measurement_version": null,
+      "write_status": "queued",
+      "signals_written": [
+        "stability_score",
+        "coherence_score",
+        "factual_hallucination_score",
+        "semantic_instability_score",
+        "semantic_risk"
+      ],
+      "langfuse_trace_id": "110a3365a775d49a48799b8558c1bc46",
+      "scores_read_back": 2,
+      "expected_scores_read_back": 2,
+      "score_names_read_back": [
+        "neomundi.factual_hallucination_score",
+        "neomundi.stability_score"
+      ],
+      "readback_error_type": null,
+      "persisted_in_langfuse": true
+    },
+    {
+      "phase": "measure + write 2",
+      "expectation": "submitted to NeoMundi, scores written to Langfuse and read back",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "82e402b3-4a86-4d03-bcfd-31a0d964bf81",
+      "latency_ms": 0.0,
+      "token_count": 12,
+      "measurement_version": null,
+      "write_status": "queued",
+      "signals_written": [
+        "stability_score",
+        "coherence_score",
+        "factual_hallucination_score",
+        "semantic_instability_score",
+        "semantic_risk"
+      ],
+      "langfuse_trace_id": "a74a100f8f52f0bc4306c25f0c8279d9",
+      "scores_read_back": 1,
+      "expected_scores_read_back": 1,
+      "score_names_read_back": [
+        "neomundi.coherence_score"
+      ],
+      "readback_error_type": null,
+      "persisted_in_langfuse": true
+    },
+    {
+      "phase": "no active trace",
+      "expectation": "refused: a valid measurement, written outside any observation, would be an orphaned score",
+      "status": "not_written_no_trace",
+      "submitted": false,
+      "reason": "the measurement is valid; there is simply nothing to attach it to, and nothing is re-billed to find that out"
+    },
+    {
+      "phase": "unsupported input",
+      "expectation": "refused: not a NeoMundi measurement this bridge understands",
+      "status": "not_written_unsupported_input",
+      "submitted": false,
+      "reason": "the input is not a TraceRecord or a GovernResult"
+    }
+  ],
+  "readback": [
+    {
+      "request_id": "deb31937-3bcd-4460-9ea0-43c01830d118",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    },
+    {
+      "request_id": "82e402b3-4a86-4d03-bcfd-31a0d964bf81",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    }
+  ],
+  "note": "Prompts and responses are deliberately absent. Observations are marked role=devrel-verify and must be excluded from any analysis."
+}

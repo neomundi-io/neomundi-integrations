@@ -1,0 +1,45 @@
+{
+  "proof": "langfuse-neomundi: the six scores of each E2 trace, re-read from the Langfuse server",
+  "read_at_utc": "2026-11-26T22:06:18.793893+00:00",
+  "langfuse_host": "https://cloud.langfuse.com",
+  "why": "The billed E2 run's own evidence records 2 of 6 and 1 of 6, because that run's poll stopped at the FIRST score instead of waiting for all six. Langfuse ingests asynchronously. This free re-read, minutes later and billing nothing, establishes what actually persisted. qualify.py now waits for all six. The integration was never at fault; the probe was.",
+  "billed_observations": 0,
+  "traces": [
+    {
+      "langfuse_trace_id": "110a3365a775d49a48799b8558c1bc46",
+      "scores_present": 6,
+      "expected_present": [
+        "neomundi.measurement",
+        "neomundi.stability_score",
+        "neomundi.coherence_score",
+        "neomundi.factual_hallucination_score",
+        "neomundi.semantic_instability_score",
+        "neomundi.semantic_risk"
+      ],
+      "expected_missing": [],
+      "all_six_persisted": true,
+      "data_types": [
+        "CATEGORICAL",
+        "NUMERIC"
+      ]
+    },
+    {
+      "langfuse_trace_id": "a74a100f8f52f0bc4306c25f0c8279d9",
+      "scores_present": 6,
+      "expected_present": [
+        "neomundi.measurement",
+        "neomundi.stability_score",
+        "neomundi.coherence_score",
+        "neomundi.factual_hallucination_score",
+        "neomundi.semantic_instability_score",
+        "neomundi.semantic_risk"
+      ],
+      "expected_missing": [],
+      "all_six_persisted": true,
+      "data_types": [
+        "CATEGORICAL",
+        "NUMERIC"
+      ]
+    }
+  ]
+}

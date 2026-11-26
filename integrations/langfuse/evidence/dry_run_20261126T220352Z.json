@@ -1,0 +1,63 @@
+{
+  "proof": "langfuse-neomundi E2 qualification -- DRY RUN, not a proof",
+  "dry_run": true,
+  "started_utc": "2026-11-26T22:03:52.747499+00:00",
+  "finished_utc": "2026-11-26T22:03:52.773083+00:00",
+  "api_base_url": "https://api.neomundi.io",
+  "probe": "langfuse-neomundi bridge -> Langfuse (scores read back from the server)",
+  "authorisation": {
+    "authorised_by": "Sebastien FAVRE, instruction du 2026-11-26 : budget 0,06 CHF autorise pour l E2 Langfuse",
+    "budget_chf": 0.06,
+    "ceiling_observations": 2
+  },
+  "account": {
+    "note": "service verification account; guard authorised before this run"
+  },
+  "versions": {
+    "neomundi": "2.2.0",
+    "python": "3.12.10"
+  },
+  "metadata_applied": {
+    "role": "devrel-verify",
+    "excluded_from": "Study2_Stage1_Stage2_Stage3",
+    "integration": "langfuse-neomundi",
+    "qualification": "e2"
+  },
+  "billed_observations": 0,
+  "estimated_cost_chf": 0.0,
+  "measurement_versions_served": [],
+  "records": [
+    {
+      "phase": "measure + write 1",
+      "expectation": "dry run: scores computed, nothing handed to Langfuse",
+      "status": "not_submitted_local_only",
+      "submitted": false,
+      "write_status": "not_written_unsupported_input",
+      "reason": "no NeoMundi client in a dry run, and no socket opened"
+    },
+    {
+      "phase": "measure + write 2",
+      "expectation": "dry run: scores computed, nothing handed to Langfuse",
+      "status": "not_submitted_local_only",
+      "submitted": false,
+      "write_status": "not_written_unsupported_input",
+      "reason": "no NeoMundi client in a dry run, and no socket opened"
+    },
+    {
+      "phase": "no trace",
+      "expectation": "refused: a score with no trace would be orphaned",
+      "status": "not_written_unsupported_input",
+      "submitted": false,
+      "reason": "nothing to attach the score to"
+    },
+    {
+      "phase": "unsupported input",
+      "expectation": "refused: not a NeoMundi measurement this bridge understands",
+      "status": "not_written_unsupported_input",
+      "submitted": false,
+      "reason": "the input is not a TraceRecord or a GovernResult"
+    }
+  ],
+  "readback": [],
+  "note": "Prompts and responses are deliberately absent. Observations are marked role=devrel-verify and must be excluded from any analysis."
+}

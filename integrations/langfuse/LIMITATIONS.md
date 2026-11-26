@@ -65,17 +65,37 @@ that was not attempted can carry a conventional value (`coherence_score:
 `signals_withheld`. An older server response with neither provenance list
 yields **no signal score at all**, by design.
 
-## 6. Evidence level: E1, not E2
+## 6. Evidence level: E2 — and what it does not cover
 
-No real measurement was taken and no score was read back from a Langfuse
-server. The window that built this had neither the NeoMundi service
-verification key nor a Langfuse instance. The suite asserts the exact body
-Langfuse sends, using the real clients with mock transports; that proves
-the payload, not its persistence.
+🟢 Measured on **2026-11-26**, after the service account's guard. This
+integration has **two** destinations, so E2 here is a double claim and both
+halves were proven:
 
-Reaching E2 needs: one guarded real measurement on the service account
-(about 0.18 CHF for six), a Langfuse target (self-hosted or free tier), and
-a read-back of the scores from that Langfuse.
+- two real measurements through `client.trace()`, each inside a real
+  Langfuse observation, both serving `measurement_version 3.5.0` and both
+  **re-read from the NeoMundi API** as persisted — 0.06 CHF;
+- **all six scores re-read from the Langfuse server** on both traces: the
+  five numeric signals and the categorical summary.
+
+🔴 **The second half is the one that matters here.** `WriteOutcome.status
+== "queued"` means handed to the Langfuse client and nothing more — this
+file's §1 says so. Only a read-back from Langfuse settles it.
+
+⚠ The billed run's own evidence file records 2 of 6 and 1 of 6, because
+that run's poll stopped at the **first** score instead of waiting for all
+six, and Langfuse ingests asynchronously. A free re-read minutes later
+found 6/6 on both traces — `evidence/langfuse_readback_20261126.json`.
+`qualify.py` now waits for all six. The defect was the probe's, never the
+bridge's, and the record is left as it was rather than tidied.
+
+Two refusals were exercised on real calls and billed nothing: a **valid**
+measurement written outside any observation
+(`not_written_no_trace`), and an input that is not a NeoMundi measurement
+(`not_written_unsupported_input`).
+
+**What E2 still does not cover**: a self-hosted Langfuse, Langfuse versions
+other than 5.2.0, and the `langchain-neomundi` path, where only the summary
+is written — see §3.
 
 ## 7. What is not measured at all
 
