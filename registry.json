@@ -226,7 +226,7 @@
         "offline_tests": 47,
         "real_observations": 4,
         "observations_verified_persisted": 4,
-        "proof": "evidence\\e2_qualification_20261126T094917Z.json",
+        "proof": "evidence/e2_qualification_20261126T094917Z.json",
         "cost_chf": 0.12,
         "route": "openai-compatible endpoint (the provider publishes its usage block)"
       },
