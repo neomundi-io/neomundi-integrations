@@ -6,7 +6,6 @@ import warnings
 from uuid import uuid4
 
 import httpx
-import neomundi
 import pytest
 from conftest import (
     TEST_API_KEY,
@@ -210,9 +209,9 @@ def test_production_version_350_is_verified_and_no_longer_warns(client):
     import neomundi as sdk
 
     assert "3.5.0" in sdk.API_CONTRACT["verified_measurement_versions"]
-    assert not hasattr(
-        NeoMundiCallbackHandler, "_warn_on_version"
-    ), "the duplicate warning is the SDK's job now"
+    assert not hasattr(NeoMundiCallbackHandler, "_warn_on_version"), (
+        "the duplicate warning is the SDK's job now"
+    )
 
     handler = NeoMundiCallbackHandler(client)
     with warnings.catch_warnings():
