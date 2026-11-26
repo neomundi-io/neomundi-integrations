@@ -21,7 +21,7 @@ technology:
 package:
   name: langchain-neomundi
   import_name: langchain_neomundi
-  version: 0.1.1
+  version: 0.2.0
   # This field describes the version declared just above, not the project's
   # whole history. 0.1.0 IS on PyPI since 2026-11-26; 0.1.1 is not, so the
   # honest value here is `none` and the index renders the repository install

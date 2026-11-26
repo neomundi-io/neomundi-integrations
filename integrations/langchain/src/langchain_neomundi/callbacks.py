@@ -19,14 +19,12 @@ from __future__ import annotations
 
 import hashlib
 import threading
-import warnings
 from collections import OrderedDict
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
 from typing import Any
 from uuid import UUID
 
-import neomundi
 from langchain_core.callbacks import BaseCallbackHandler
 from neomundi import NeoMundiClient
 
@@ -318,7 +316,6 @@ class NeoMundiCallbackHandler(BaseCallbackHandler):
         self._parents: OrderedDict[str, str | None] = OrderedDict()
         self._documents: OrderedDict[str, list[str]] = OrderedDict()
         self._outcomes: list[Outcome] = []
-        self._version_warned = False
 
     # ---------------------------------------------------------------- state
 
@@ -422,28 +419,6 @@ class NeoMundiCallbackHandler(BaseCallbackHandler):
     def _pop(self, run_id: Any) -> _Pending | None:
         with self._lock:
             return self._pending.pop(str(run_id), None)
-
-    def _warn_on_version(self, measurement_version: str | None) -> None:
-        """Warn once when the served measurement version was not verified.
-
-        Two results produced under two different measurement versions are
-        not comparable for the same input. This warns; it never blocks.
-        """
-        if not measurement_version or self._version_warned:
-            return
-        verified = neomundi.API_CONTRACT.get("verified_measurement_versions", ())
-        if measurement_version in tuple(verified):
-            return
-        self._version_warned = True
-        warnings.warn(
-            "NeoMundi served measurement_version "
-            f"{measurement_version!r}, which is not among the versions this "
-            f"SDK verified ({tuple(verified)!r}). Measurements taken under "
-            "different measurement versions are not comparable for the same "
-            "input.",
-            RuntimeWarning,
-            stacklevel=2,
-        )
 
     def _fail(
         self, run_id: Any, status: str, reason: str, error: BaseException | None = None
@@ -568,8 +543,11 @@ class NeoMundiCallbackHandler(BaseCallbackHandler):
         result = getattr(record, "result", None)
         audit = getattr(result, "audit", None)
         measurement_version = getattr(audit, "measurement_version", None)
-        self._warn_on_version(measurement_version)
-
+        # No warning here. `neomundi` >= 2.2.0 compares the served version to
+        # `verified_measurement_versions` itself, on the funnel of every REST
+        # response and on stream completion. Warning again would emit two
+        # identical RuntimeWarnings for one drift. The version is still
+        # recorded on the Outcome below, which is this integration's job.
         submitted = bool(getattr(record, "submitted", False))
         status = SUBMITTED if submitted else NOT_SUBMITTED_LOCAL_ONLY
         self._record(

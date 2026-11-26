@@ -33,7 +33,7 @@
       "package": {
         "name": "langchain-neomundi",
         "import_name": "langchain_neomundi",
-        "version": "0.1.1",
+        "version": "0.2.0",
         "published_on": "none",
         "pypi_url": "https://pypi.org/project/langchain-neomundi/"
       },

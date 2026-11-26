@@ -5,24 +5,33 @@ Read this before drawing a conclusion from any score.
 
 ---
 
-## 1. Production runs a measurement version this SDK has not qualified
+## 1. Measurement versions are not comparable, and the SDK says so — not this package
 
-🔴 Measured on **2026-11-25** against `https://api.neomundi.io`: production
-serves `measurement_version = 3.5.0`. The installed `neomundi` 2.1.0 declares
-`verified_measurement_versions = ("3.3.0", "3.3.1")`, and the SDK's own
-`docs/COMPATIBILITY_350.md` is explicit: *"PARTIALLY QUALIFIED; DO NOT add
-3.5.0 to `verified_measurement_versions` yet."*
+🟢 **Resolved on 2026-11-26.** Production serves
+`measurement_version = 3.5.0`, and `neomundi` 2.2.0 now declares it in
+`verified_measurement_versions = ("3.3.0", "3.3.1", "3.5.0")` on live
+evidence: an authenticated REST observation (5/5 signals, zero parse
+warnings, re-read as persisted) and a bounded authenticated stream
+(integrity verified, `contract_version neomundi.govern.sse/1.0`). See the
+SDK's `docs/COMPATIBILITY_350.md`.
 
-**Consequence:** the handler emits one `RuntimeWarning` per instance on your
-first production measurement. That is correct behaviour, not a defect.
+Until 0.1.1 this handler compared the served version itself and warned. It
+no longer does: **`neomundi` >= 2.2.0 performs that comparison**, on the
+funnel of every REST response and on stream completion. Keeping both would
+have emitted two identical `RuntimeWarning`s for one drift — measured, not
+assumed. This is why the dependency floor is `>=2.2.0`: below it nothing
+would warn at all, which is worse than warning twice.
 
-**Why it matters:** two results produced under two different measurement
-versions **are not comparable for the same input**. If you are building a
-time series, record the `measurement_version` of every observation and do
-not mix them.
+**What still matters, and is not fixable by any package:** two results
+produced under two different measurement versions **are not comparable for
+the same input**. The `Outcome` of every run carries its
+`measurement_version` for exactly that reason. If you build a time series,
+record it per observation and never mix values.
 
-This is not something this package can fix. It is resolved when the SDK
-qualifies 3.5.0.
+⚠ A version NeoMundi has not qualified can appear again at any deployment.
+When it does, the SDK emits one `RuntimeWarning` per distinct version per
+process. That is correct behaviour, not a defect, and it never blocks a
+measurement.
 
 ## 2. The token count comes from your provider, and many providers are silent
 
