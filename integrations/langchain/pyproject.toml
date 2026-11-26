@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "langchain-neomundi"
-version = "0.1.0"
+version = "0.1.1"
 description = "Measure the runtime behaviour of a LangChain application with the NeoMundi measurement API"
 readme = "README.md"
 license = "Apache-2.0"
@@ -55,11 +55,17 @@ notebook = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/neomundi-io/langchain-neomundi"
-Repository = "https://github.com/neomundi-io/langchain-neomundi"
-Documentation = "https://github.com/neomundi-io/langchain-neomundi#readme"
-Changelog = "https://github.com/neomundi-io/langchain-neomundi/blob/main/CHANGELOG.md"
-Issues = "https://github.com/neomundi-io/langchain-neomundi/issues"
+# The integration lives in the library monorepo. Its former standalone
+# repository `neomundi-io/langchain-neomundi` is archived and read-only, so
+# every link below must point at the library -- an archived repository
+# accepts no issue, which made the old `Issues` link functionally dead.
+# 0.1.0 shipped the old links and PyPI metadata is immutable, so this is the
+# correction 0.1.1 exists for.
+Homepage = "https://github.com/neomundi-io/neomundi-integrations/tree/main/integrations/langchain"
+Repository = "https://github.com/neomundi-io/neomundi-integrations"
+Documentation = "https://github.com/neomundi-io/neomundi-integrations/tree/main/integrations/langchain#readme"
+Changelog = "https://github.com/neomundi-io/neomundi-integrations/blob/main/integrations/langchain/CHANGELOG.md"
+Issues = "https://github.com/neomundi-io/neomundi-integrations/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]

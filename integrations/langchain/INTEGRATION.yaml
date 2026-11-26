@@ -21,10 +21,13 @@ technology:
 package:
   name: langchain-neomundi
   import_name: langchain_neomundi
-  version: 0.1.0
-  # Deliberately not "pypi" yet: the package is built and verified but not
-  # published. The index renders the install line from this field, so it
-  # cannot claim a pip install that does not work.
+  version: 0.1.1
+  # This field describes the version declared just above, not the project's
+  # whole history. 0.1.0 IS on PyPI since 2026-11-26; 0.1.1 is not, so the
+  # honest value here is `none` and the index renders the repository install
+  # line. It flips to `pypi` when 0.1.1 is published -- never before, because
+  # the index renders a copyable install from this field and must not claim
+  # a version that cannot be installed.
   published_on: none
   pypi_url: https://pypi.org/project/langchain-neomundi/
 
