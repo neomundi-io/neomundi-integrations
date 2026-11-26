@@ -1,0 +1,150 @@
+{
+  "proof": "otel-neomundi E2 qualification",
+  "dry_run": false,
+  "started_utc": "2026-11-26T21:07:19.849624+00:00",
+  "finished_utc": "2026-11-26T21:07:36.610613+00:00",
+  "api_base_url": "https://api.neomundi.io",
+  "probe": "openai client + openai-v2 instrumentation -> ollama (caller declares the count)",
+  "authorisation": {
+    "authorised_by": "Sebastien FAVRE, instruction du 2026-11-26",
+    "budget_chf": 0.2,
+    "ceiling_observations": 6
+  },
+  "account": {
+    "note": "service verification account; guard authorised before this run"
+  },
+  "versions": {
+    "neomundi": "2.2.0",
+    "python": "3.12.10"
+  },
+  "metadata_applied": {
+    "role": "devrel-verify",
+    "excluded_from": "Study2_Stage1_Stage2_Stage3",
+    "integration": "otel-neomundi",
+    "qualification": "e2"
+  },
+  "billed_observations": 4,
+  "estimated_cost_chf": 0.12,
+  "measurement_versions_served": [
+    "3.5.0"
+  ],
+  "records": [
+    {
+      "phase": "declared 1",
+      "expectation": "submitted, count declared from the provider's usage block",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "441da6e1-38e9-4b28-9285-599a0bdaa236",
+      "latency_ms": 2681.1267,
+      "token_count": 44,
+      "token_source": "caller_declared",
+      "span_reported_usage": true,
+      "model_name": "llama3.2:3b",
+      "trace_id": "f7e92ba8c9f161bc64cafb325a8eb53f",
+      "measurement_version": "3.5.0",
+      "reason": null
+    },
+    {
+      "phase": "declared 2",
+      "expectation": "submitted, count declared from the provider's usage block",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "d7baeebe-caae-4baf-8239-d74c786312b6",
+      "latency_ms": 2587.1485,
+      "token_count": 79,
+      "token_source": "caller_declared",
+      "span_reported_usage": true,
+      "model_name": "llama3.2:3b",
+      "trace_id": "c5390d465d85b6621dd989e9be5a599b",
+      "measurement_version": "3.5.0",
+      "reason": null
+    },
+    {
+      "phase": "declared 3",
+      "expectation": "submitted, count declared from the provider's usage block",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "ed8b0251-0a21-40e1-b360-0e7907b38b8d",
+      "latency_ms": 2087.0767,
+      "token_count": 68,
+      "token_source": "caller_declared",
+      "span_reported_usage": true,
+      "model_name": "llama3.2:3b",
+      "trace_id": "bbe077cf7a9da254048acc8c38f89384",
+      "measurement_version": "3.5.0",
+      "reason": null
+    },
+    {
+      "phase": "declared 4",
+      "expectation": "submitted, count declared from the provider's usage block",
+      "status": "submitted",
+      "submitted": true,
+      "request_id": "b654136b-30dc-4312-b3bb-24e7597ef9b4",
+      "latency_ms": 2435.713,
+      "token_count": 76,
+      "token_source": "caller_declared",
+      "span_reported_usage": true,
+      "model_name": "llama3.2:3b",
+      "trace_id": "159d9fff42c4c74cb10e1b437b25e98f",
+      "measurement_version": "3.5.0",
+      "reason": null
+    },
+    {
+      "phase": "span usage only",
+      "expectation": "refused: a span's count is never submitted",
+      "status": "not_submitted_no_token_count",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": 320.386,
+      "token_count": null,
+      "token_source": null,
+      "span_reported_usage": true,
+      "model_name": "llama3.2:3b",
+      "trace_id": "b5c6cb4de9a94a22507f57afe6c5e3a9",
+      "measurement_version": null,
+      "reason": "no token count was declared by the caller; the span carries gen_ai.usage.* but a span attribute cannot be traced to the provider, so it is never submitted -- declare the count the provider returned"
+    },
+    {
+      "phase": "stream without usage",
+      "expectation": "refused: the provider published no count, nothing to declare",
+      "status": "not_submitted_no_token_count",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": 329.9165,
+      "token_count": null,
+      "token_source": null,
+      "span_reported_usage": false,
+      "model_name": "llama3.2:3b",
+      "trace_id": "d39f5c0c9d0d2e74b752763b1ec2f576",
+      "measurement_version": null,
+      "reason": "no token count was declared by the caller"
+    }
+  ],
+  "readback": [
+    {
+      "request_id": "441da6e1-38e9-4b28-9285-599a0bdaa236",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    },
+    {
+      "request_id": "d7baeebe-caae-4baf-8239-d74c786312b6",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    },
+    {
+      "request_id": "ed8b0251-0a21-40e1-b360-0e7907b38b8d",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    },
+    {
+      "request_id": "b654136b-30dc-4312-b3bb-24e7597ef9b4",
+      "http_status": 200,
+      "persisted": true,
+      "measurement_version": "3.5.0"
+    }
+  ],
+  "note": "Prompts and responses are deliberately absent. Observations are marked role=devrel-verify and must be excluded from any analysis."
+}

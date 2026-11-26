@@ -12,8 +12,11 @@
 
 ---
 
-> **Evidence level: E1 — offline only.** No real measurement has been
-> taken with this package: the window that built it had no NeoMundi
+> **Evidence level: E2 — measured against production.** Four real
+> observations on 2026-11-26, each re-read from the API as persisted,
+> served `measurement_version 3.5.0`. Two further phases were refused on
+> real spans and billed nothing. Earlier text said E1; that was true until
+> the qualification ran. The window that built it had no NeoMundi
 > service verification key. The suite drives the real `openai` client, the
 > real contrib openai-v2 instrumentation and the real OpenTelemetry SDK
 > through mock transports. See [LIMITATIONS.md §9](LIMITATIONS.md#9-evidence-level-e1-not-e2).
@@ -104,8 +107,8 @@ count. `sample_rate` (default `1.0`) is deterministic in the trace id.
 | | |
 |---|---|
 | Offline test suite | 48 tests, green on Python 3.12 / Linux locally; CI runs 3.11–3.13 on Linux, macOS, Windows |
-| Real execution | **none** — E1. 0 observations submitted, 0 re-read. `qualify.py` ready; dry run green against a scripted endpoint |
-| Maturity | experimental |
+| Real execution | **E2** — 4 observations submitted against production, 4 re-read as persisted, `measurement_version 3.5.0`, 0.12 CHF (2026-11-26) |
+| Maturity | beta |
 
 Read [LIMITATIONS.md](LIMITATIONS.md) before drawing a conclusion from any score.
 

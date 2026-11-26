@@ -1,0 +1,123 @@
+{
+  "proof": "otel-neomundi E2 qualification -- DRY RUN, not a proof",
+  "dry_run": true,
+  "started_utc": "2026-11-26T21:06:46.719180+00:00",
+  "finished_utc": "2026-11-26T21:07:10.847925+00:00",
+  "api_base_url": "https://api.neomundi.io",
+  "probe": "openai client + openai-v2 instrumentation -> ollama (caller declares the count)",
+  "authorisation": {
+    "authorised_by": "Sebastien FAVRE, instruction du 2026-11-26 : depenses experimentales raisonnables autorisees pour les E2 otel et langfuse, avec estimation prealable",
+    "budget_chf": 0.2,
+    "ceiling_observations": 6
+  },
+  "account": {
+    "note": "service verification account; guard authorised before this run"
+  },
+  "versions": {
+    "neomundi": "2.2.0",
+    "python": "3.12.10"
+  },
+  "metadata_applied": {
+    "role": "devrel-verify",
+    "excluded_from": "Study2_Stage1_Stage2_Stage3",
+    "integration": "otel-neomundi",
+    "qualification": "e2"
+  },
+  "billed_observations": 0,
+  "estimated_cost_chf": 0.0,
+  "measurement_versions_served": [],
+  "records": [
+    {
+      "phase": "declared 1",
+      "expectation": "submitted, count declared from the provider's usage block",
+      "status": "not_submitted_local_only",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": 9130.0163,
+      "token_count": 44,
+      "token_source": "caller_declared",
+      "span_reported_usage": true,
+      "model_name": "llama3.2:3b",
+      "trace_id": "c712a744eb8e2c4abcd224c376fce1bb",
+      "measurement_version": null,
+      "reason": "submit=False: nothing left the process"
+    },
+    {
+      "phase": "declared 2",
+      "expectation": "submitted, count declared from the provider's usage block",
+      "status": "not_submitted_local_only",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": 2463.0785,
+      "token_count": 77,
+      "token_source": "caller_declared",
+      "span_reported_usage": true,
+      "model_name": "llama3.2:3b",
+      "trace_id": "56e8038821c487f437f09292e6f243f6",
+      "measurement_version": null,
+      "reason": "submit=False: nothing left the process"
+    },
+    {
+      "phase": "declared 3",
+      "expectation": "submitted, count declared from the provider's usage block",
+      "status": "not_submitted_local_only",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": 2243.664,
+      "token_count": 70,
+      "token_source": "caller_declared",
+      "span_reported_usage": true,
+      "model_name": "llama3.2:3b",
+      "trace_id": "a4cc08f09152ac873eea2bca0ce9142c",
+      "measurement_version": null,
+      "reason": "submit=False: nothing left the process"
+    },
+    {
+      "phase": "declared 4",
+      "expectation": "submitted, count declared from the provider's usage block",
+      "status": "not_submitted_local_only",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": 1001.103,
+      "token_count": 50,
+      "token_source": "caller_declared",
+      "span_reported_usage": true,
+      "model_name": "llama3.2:3b",
+      "trace_id": "fa57eb7b8d72161ca622186e8cc9de7f",
+      "measurement_version": null,
+      "reason": "submit=False: nothing left the process"
+    },
+    {
+      "phase": "span usage only",
+      "expectation": "refused: a span's count is never submitted",
+      "status": "not_submitted_no_token_count",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": 312.8971,
+      "token_count": null,
+      "token_source": null,
+      "span_reported_usage": true,
+      "model_name": "llama3.2:3b",
+      "trace_id": "211ea9519914e94c5c052e45c22584e4",
+      "measurement_version": null,
+      "reason": "no token count was declared by the caller; the span carries gen_ai.usage.* but a span attribute cannot be traced to the provider, so it is never submitted -- declare the count the provider returned"
+    },
+    {
+      "phase": "stream without usage",
+      "expectation": "refused: the provider published no count, nothing to declare",
+      "status": "not_submitted_no_token_count",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": 355.2869,
+      "token_count": null,
+      "token_source": null,
+      "span_reported_usage": false,
+      "model_name": "llama3.2:3b",
+      "trace_id": "cb47da745d88631d40a17ba942f83d87",
+      "measurement_version": null,
+      "reason": "no token count was declared by the caller"
+    }
+  ],
+  "readback": [],
+  "note": "Prompts and responses are deliberately absent. Observations are marked role=devrel-verify and must be excluded from any analysis."
+}

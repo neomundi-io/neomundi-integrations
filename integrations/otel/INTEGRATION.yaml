@@ -23,7 +23,7 @@ package:
   pypi_url: https://pypi.org/project/otel-neomundi/
 
 # Package lifecycle, not evidence. It has not measured a real call yet.
-maturity: experimental
+maturity: beta
 
 evidence:
   # E0 nothing yet, E1 offline tests, E2 + real execution against
@@ -32,15 +32,24 @@ evidence:
   # E1, declared as such: the window that built it had no NeoMundi service
   # verification key, so no real observation exists. qualify.py is ready
   # and its dry run was run (free); E2 needs a separately authorised run.
-  level: e1
+  level: e2
   offline_tests: 48
-  real_observations: 0
-  observations_verified_persisted: 0
-  cost_chf: 0.0
+  real_observations: 4
+  observations_verified_persisted: 4
+  cost_chf: 0.12
+  proof: evidence/e2_qualification_20261126T210719Z.json
   reason: >-
-    No NEOMUNDI_VERIFICATION_KEY in the building window; no billed
-    observation was authorised. E2 is prepared (qualify.py, dry run green
-    against a scripted endpoint) and not run.
+    Four real interactions through the openai client instrumented by
+    opentelemetry-instrumentation-openai-v2, against Ollama's
+    OpenAI-compatible endpoint, with NeoMundiSpanProcessor on the tracer
+    provider. The application declares the count from
+    reply.usage.total_tokens; all four served measurement_version 3.5.0 and
+    were re-read as persisted. Two further phases were refused on real
+    spans and billed nothing: a span carrying the provider's usage where the
+    application declared nothing, and a streamed call without
+    include_usage. OpenTelemetry has no attribute distinguishing a published
+    count from an estimate, so a count the application does not declare is
+    refused rather than read off the span.
 
 compatibility:
   python: ["3.11", "3.12", "3.13"]
@@ -58,7 +67,7 @@ compatibility:
     - "opentelemetry-instrumentation-openai-v2 2.4b0 with opentelemetry-util-genai 1.1b0"
     - "opentelemetry-instrumentation-openai (OpenLLMetry) 0.63.1 and 0.30.0 -- probes only"
   # No live measurement was taken, so no served version was observed.
-  measurement_version_verified: "none (E1)"
+  measurement_version_verified: "3.5.0 (E2, 2026-11-26)"
 
 value:
   host_keeps: >-
