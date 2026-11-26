@@ -115,7 +115,7 @@ def render_readme(active: list[Integration], archived: list[Integration], *, fr:
 
 **Intégrez NeoMundi à votre pile d'IA existante.**
 
-Une API de mesure. {counts['active']} intégrations. Des preuves vérifiables.
+Une API de mesure. {counts["active"]} intégrations. Des preuves vérifiables.
 
 {badges}
 
@@ -178,7 +178,7 @@ Apache-2.0. Voir [LICENSE](LICENSE).
 
 **Integrate with your existing AI stack.**
 
-One measurement API. {counts['active']} integrations. Verifiable evidence.
+One measurement API. {counts["active"]} integrations. Verifiable evidence.
 
 {badges}
 
@@ -266,7 +266,6 @@ def _render_quickstart(active: list[Integration], *, fr: bool) -> str:
         else f"\n[Full {first.name} guide →]({first.rel_dir}/README.md)\n"
     )
     return f"{title}\n\n{lead}\n{install_block}\n```python\n{snippet}\n```\n{more}"
-
 
 
 def _render_roadmap(*, fr: bool) -> str:
