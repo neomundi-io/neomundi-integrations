@@ -145,15 +145,28 @@ for it: no GenAI span is observed and the interaction is refused with
 Measured with `ALWAYS_OFF`. If you sample traces at 10 %, at most 10 % of
 interactions can be measured, before `sample_rate` applies.
 
-## 9. Evidence level: E1, not E2
+## 9. Evidence level: E2 — and what E2 does not say
 
-No real observation exists. The window that built this had no NeoMundi
-service verification key, and no billed observation was authorised.
-`qualify.py` is written against the library's E2 harness and its dry run
-was run — free, no key — against a scripted endpoint: 4 interactions
-checked locally, 2 real refusals, 0 billed. Against a real Ollama it has
-**not** been run. E2 requires a separately authorised run on the service
-account, after its guard.
+🟢 Measured on **2026-11-26**, after the service account's guard: four real
+interactions through the `openai` client instrumented by
+`opentelemetry-instrumentation-openai-v2`, against Ollama's
+OpenAI-compatible endpoint, with `NeoMundiSpanProcessor` on the tracer
+provider. All four served `measurement_version 3.5.0` and were **re-read
+from the API as persisted** — an acknowledged submission is not a persisted
+one. 0.12 CHF.
+
+Two further phases were refused on **real** spans and billed nothing: a
+span carrying the provider's usage where the application declared nothing,
+and a streamed call without `include_usage`. Those refusals are the point
+of this integration, and they now rest on real spans rather than on a
+scripted endpoint.
+
+⚠ **E2 is not a statement about your provider.** It says this package
+submitted real observations and they persisted. It says nothing about the
+accuracy of the counts your application declares — OpenTelemetry has no
+attribute distinguishing a published count from an estimate, which is
+exactly why a count the application does not declare is refused rather than
+read off the span. See section 1.
 
 Not verified either: Python 3.11 and 3.13, macOS and Windows locally (CI
 runs them), instrumentations other than the three named above.

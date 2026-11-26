@@ -9,7 +9,7 @@
 
 One measurement primitive. Many frameworks. Verifiable evidence.
 
-![](https://img.shields.io/badge/integrations-6-0f766e?style=flat-square) ![](https://img.shields.io/badge/evidence_E2+-4-0f766e?style=flat-square) [![CI](https://github.com/neomundi-io/neomundi-integrations/actions/workflows/ci.yml/badge.svg)](https://github.com/neomundi-io/neomundi-integrations/actions/workflows/ci.yml) ![](https://img.shields.io/badge/licence-Apache----2.0-6b7280?style=flat-square)
+![](https://img.shields.io/badge/integrations-6-0f766e?style=flat-square) ![](https://img.shields.io/badge/evidence_E2+-5-0f766e?style=flat-square) [![CI](https://github.com/neomundi-io/neomundi-integrations/actions/workflows/ci.yml/badge.svg)](https://github.com/neomundi-io/neomundi-integrations/actions/workflows/ci.yml) ![](https://img.shields.io/badge/licence-Apache----2.0-6b7280?style=flat-square)
 
 **[Full catalogue](CATALOG.md)** · **[How maturity is decided](#maturity-and-evidence-level)** · **[Contribute](CONTRIBUTING.md)** · **[Maintenance](MAINTENANCE.md)**
 
@@ -28,7 +28,7 @@ One measurement primitive. Many frameworks. Verifiable evidence.
 | **[LiteLLM](integrations/litellm/)** | `litellm-neomundi` | repo | beta | **E2** | Signed, independently verifiable behavioural measurement of every chat completion the gateway routes, to any provider, from one attachment point -- with the latency LiteLLM observed, and only token counts the provider itself published. |
 | **[MLflow](integrations/mlflow/)** | `mlflow-neomundi` | repo | beta | **E2** | Signed, independently verifiable behavioural measurement of each model call MLflow traced, with the provider's own token count and the latency MLflow recorded -- and the NeoMundi request_id and measurement version written back on the MLflow trace, next to the run you compare. |
 | **[OpenAI Agents SDK](integrations/openai-agents/)** | `openai-agents-neomundi` | repo | beta | **E2** | Signed, independently verifiable behavioural measurement of every model call the agent loop makes -- the call that decides on a tool and the one that reads its result -- with the provider's own token count and the latency the SDK recorded, each outcome naming the agent and the tools it requested. |
-| **[OpenTelemetry](integrations/otel/)** | `otel-neomundi` | repo | experimental | **E1** | Signed, independently verifiable behavioural measurement of a model call you already trace, using the latency the trace observed -- and the NeoMundi request_id written into the same trace. It never turns a span's token count into a measurement: a span cannot prove where that count came from. |
+| **[OpenTelemetry](integrations/otel/)** | `otel-neomundi` | repo | beta | **E2** | Signed, independently verifiable behavioural measurement of a model call you already trace, using the latency the trace observed -- and the NeoMundi request_id written into the same trace. It never turns a span's token count into a measurement: a span cannot prove where that count came from. |
 
 ## Start in three lines
 

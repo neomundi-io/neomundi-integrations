@@ -12,7 +12,12 @@
 
 ---
 
-> **Niveau de preuve : E1 — hors ligne uniquement.** Aucune mesure réelle
+> **Niveau de preuve : E2 — mesuré contre la production.** Quatre
+> observations réelles le 2026-11-26, chacune relue depuis l'API comme
+> persistée, sous `measurement_version 3.5.0`. Deux phases supplémentaires
+> ont été refusées sur des spans réels, sans rien facturer. Le texte
+> précédent disait E1 ; c'était vrai jusqu'à la qualification. Aucune mesure
+> réelle
 > n'a été prise avec ce paquet : la fenêtre qui l'a construit n'avait pas
 > de clé de vérification du compte de service NeoMundi. La suite pilote le
 > vrai client `openai`, la vraie instrumentation contrib openai-v2 et le
@@ -109,8 +114,8 @@ dans l'identifiant de trace. **Coupe-circuit :** `processor.sample_rate =
 | | |
 |---|---|
 | Suite hors ligne | 48 tests, verts en Python 3.12 / Linux en local ; la CI couvre 3.11–3.13 sur Linux, macOS, Windows |
-| Exécution réelle | **aucune** — E1. 0 observation soumise, 0 relue. `qualify.py` prêt ; dry run vert contre un endpoint scripté |
-| Maturité | experimental |
+| Exécution réelle | **E2** — 4 observations soumises contre la production, 4 relues comme persistées, `measurement_version 3.5.0`, 0,12 CHF (2026-11-26) |
+| Maturité | beta |
 
 Lire [LIMITATIONS.md](LIMITATIONS.md) avant de tirer une conclusion d'un score.
 

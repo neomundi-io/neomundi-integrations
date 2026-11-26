@@ -206,15 +206,15 @@
 | --- | --- |
 | Paquet | `otel-neomundi` 0.1.0 |
 | Installation | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/otel'` |
-| Maturité | experimental |
-| Niveau de preuve | **E1** — offline tests, green across platforms |
+| Maturité | beta |
+| Niveau de preuve | **E2** — plus real execution against production, proof committed |
 | Python | 3.11, 3.12, 3.13 |
 | Plateformes | linux, macos, windows |
 | Cible vérifiée | `opentelemetry-sdk` 1.45.2 (bornes 1.45.2 → <2.0) |
 | SDK NeoMundi | ≥ 2.1.0, vérifié 2.1.0 |
-| `measurement_version` vérifiée | **none (E1)** |
+| `measurement_version` vérifiée | **3.5.0 (E2, 2026-11-26)** |
 | Tests hors ligne | 48 |
-| Observations réelles | 0, dont 0 relues persistées |
+| Observations réelles | 4, dont 4 relues persistées |
 | Facturée | oui |
 | Livrée | 2026-11-26 · dernière vérification 2026-11-26 |
 
