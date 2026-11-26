@@ -5,7 +5,7 @@
     "active": 6,
     "archived": 0,
     "evidence_e2_or_better": 6,
-    "published": 0
+    "published": 6
   },
   "evidence_levels": {
     "e0": "nothing probative yet",
@@ -34,7 +34,7 @@
         "name": "langchain-neomundi",
         "import_name": "langchain_neomundi",
         "version": "0.2.0",
-        "published_on": "none",
+        "published_on": "pypi",
         "pypi_url": "https://pypi.org/project/langchain-neomundi/"
       },
       "maturity": "beta",
@@ -113,7 +113,7 @@
       "last_verified": "2026-11-26",
       "directory": "integrations/langchain",
       "archived": false,
-      "install": "pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/langchain'"
+      "install": "pip install langchain-neomundi"
     },
     {
       "slug": "langfuse",
@@ -127,7 +127,7 @@
         "name": "langfuse-neomundi",
         "import_name": "langfuse_neomundi",
         "version": "0.1.0",
-        "published_on": "none",
+        "published_on": "pypi",
         "pypi_url": "https://pypi.org/project/langfuse-neomundi/"
       },
       "maturity": "beta",
@@ -205,7 +205,7 @@
       "last_verified": "2026-11-26",
       "directory": "integrations/langfuse",
       "archived": false,
-      "install": "pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/langfuse'"
+      "install": "pip install langfuse-neomundi"
     },
     {
       "slug": "litellm",
@@ -219,7 +219,7 @@
         "name": "litellm-neomundi",
         "import_name": "litellm_neomundi",
         "version": "0.1.0",
-        "published_on": "none",
+        "published_on": "pypi",
         "pypi_url": "https://pypi.org/project/litellm-neomundi/"
       },
       "maturity": "beta",
@@ -298,7 +298,7 @@
       "last_verified": "2026-11-26",
       "directory": "integrations/litellm",
       "archived": false,
-      "install": "pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/litellm'"
+      "install": "pip install litellm-neomundi"
     },
     {
       "slug": "mlflow",
@@ -312,7 +312,7 @@
         "name": "mlflow-neomundi",
         "import_name": "mlflow_neomundi",
         "version": "0.1.0",
-        "published_on": "none",
+        "published_on": "pypi",
         "pypi_url": "https://pypi.org/project/mlflow-neomundi/"
       },
       "maturity": "beta",
@@ -400,7 +400,7 @@
       "last_verified": "2026-11-26",
       "directory": "integrations/mlflow",
       "archived": false,
-      "install": "pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/mlflow'"
+      "install": "pip install mlflow-neomundi"
     },
     {
       "slug": "openai-agents",
@@ -414,7 +414,7 @@
         "name": "openai-agents-neomundi",
         "import_name": "openai_agents_neomundi",
         "version": "0.1.0",
-        "published_on": "none",
+        "published_on": "pypi",
         "pypi_url": "https://pypi.org/project/openai-agents-neomundi/"
       },
       "maturity": "beta",
@@ -500,7 +500,7 @@
       "last_verified": "2026-11-26",
       "directory": "integrations/openai-agents",
       "archived": false,
-      "install": "pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/openai-agents'"
+      "install": "pip install openai-agents-neomundi"
     },
     {
       "slug": "otel",
@@ -514,7 +514,7 @@
         "name": "otel-neomundi",
         "import_name": "otel_neomundi",
         "version": "0.1.0",
-        "published_on": "none",
+        "published_on": "pypi",
         "pypi_url": "https://pypi.org/project/otel-neomundi/"
       },
       "maturity": "beta",
@@ -598,7 +598,7 @@
       "last_verified": "2026-11-26",
       "directory": "integrations/otel",
       "archived": false,
-      "install": "pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/otel'"
+      "install": "pip install otel-neomundi"
     }
   ],
   "archived": []

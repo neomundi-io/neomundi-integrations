@@ -17,9 +17,12 @@ package:
   name: litellm-neomundi
   import_name: litellm_neomundi
   version: 0.1.0
-  # Not published. The index renders the repository install line instead
-  # of a `pip install` that would fail.
-  published_on: none
+  # This field describes the version declared just above, not the project's
+  # whole history. 0.1.0 was installed from PyPI into a clean virtual
+  # environment and inspected there before this flipped -- the index renders
+  # a copyable `pip install` from it, so it must never claim a version that
+  # cannot be installed.
+  published_on: pypi
   pypi_url: https://pypi.org/project/litellm-neomundi/
 
 # Package lifecycle, not evidence. Experimental: it has not yet measured a

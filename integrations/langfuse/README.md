@@ -36,11 +36,8 @@ contacts the NeoMundi API.
 
 ## Install
 
-Not on PyPI yet — `pip install langfuse-neomundi` does not work. Install
-from the repository:
-
 ```bash
-pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/langfuse'
+pip install langfuse-neomundi
 ```
 
 Python ≥ 3.11. Depends on `langfuse>=5.2.0,<6.0` and `neomundi>=2.1.0,<3.0`.

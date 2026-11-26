@@ -23,12 +23,11 @@ package:
   import_name: langchain_neomundi
   version: 0.2.0
   # This field describes the version declared just above, not the project's
-  # whole history. 0.1.0 IS on PyPI since 2026-11-26; 0.1.1 is not, so the
-  # honest value here is `none` and the index renders the repository install
-  # line. It flips to `pypi` when 0.1.1 is published -- never before, because
-  # the index renders a copyable install from this field and must not claim
-  # a version that cannot be installed.
-  published_on: none
+  # whole history. 0.2.0 was installed from PyPI into a clean virtual
+  # environment and inspected there before this flipped -- the index renders
+  # a copyable `pip install` from it, so it must never claim a version that
+  # cannot be installed.
+  published_on: pypi
   pypi_url: https://pypi.org/project/langchain-neomundi/
 
 # Package lifecycle, not evidence. See the two-axis model in CONTRIBUTING.md.

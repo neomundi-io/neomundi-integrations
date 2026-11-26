@@ -35,10 +35,8 @@ your chain  ──▶  LangChain callback  ──▶  client.trace()  ──▶ 
 
 ## Install
 
-🟡 **Not published on PyPI yet.** `pip install langchain-neomundi` does not work today; the name is reserved and a gated release workflow is in place. Install from this repository:
-
 ```bash
-pip install "git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/langchain"
+pip install langchain-neomundi
 ```
 
 Python 3.11 or newer — the floor comes from LangChain 1.x, not from NeoMundi. Two dependencies: `langchain-core` and `neomundi`.

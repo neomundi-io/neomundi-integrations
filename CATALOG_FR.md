@@ -15,7 +15,7 @@
 | | |
 | --- | --- |
 | Paquet | `langchain-neomundi` 0.2.0 |
-| Installation | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/langchain'` |
+| Installation | `pip install langchain-neomundi` |
 | Maturité | beta |
 | Niveau de preuve | **E2** — plus real execution against production, proof committed |
 | Python | 3.11, 3.12, 3.13 |
@@ -53,7 +53,7 @@
 | | |
 | --- | --- |
 | Paquet | `langfuse-neomundi` 0.1.0 |
-| Installation | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/langfuse'` |
+| Installation | `pip install langfuse-neomundi` |
 | Maturité | beta |
 | Niveau de preuve | **E2** — plus real execution against production, proof committed |
 | Python | 3.11, 3.12, 3.13 |
@@ -91,7 +91,7 @@
 | | |
 | --- | --- |
 | Paquet | `litellm-neomundi` 0.1.0 |
-| Installation | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/litellm'` |
+| Installation | `pip install litellm-neomundi` |
 | Maturité | beta |
 | Niveau de preuve | **E2** — plus real execution against production, proof committed |
 | Python | 3.11, 3.12, 3.13 |
@@ -129,7 +129,7 @@
 | | |
 | --- | --- |
 | Paquet | `mlflow-neomundi` 0.1.0 |
-| Installation | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/mlflow'` |
+| Installation | `pip install mlflow-neomundi` |
 | Maturité | beta |
 | Niveau de preuve | **E2** — plus real execution against production, proof committed |
 | Python | 3.11, 3.12, 3.13 |
@@ -167,7 +167,7 @@
 | | |
 | --- | --- |
 | Paquet | `openai-agents-neomundi` 0.1.0 |
-| Installation | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/openai-agents'` |
+| Installation | `pip install openai-agents-neomundi` |
 | Maturité | beta |
 | Niveau de preuve | **E2** — plus real execution against production, proof committed |
 | Python | 3.11, 3.12, 3.13 |
@@ -205,7 +205,7 @@
 | | |
 | --- | --- |
 | Paquet | `otel-neomundi` 0.1.0 |
-| Installation | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/otel'` |
+| Installation | `pip install otel-neomundi` |
 | Maturité | beta |
 | Niveau de preuve | **E2** — plus real execution against production, proof committed |
 | Python | 3.11, 3.12, 3.13 |

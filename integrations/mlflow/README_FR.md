@@ -55,11 +55,8 @@ par une autre instrumentation n'est pas vérifié.
 
 ## Installation
 
-Pas encore sur PyPI, donc `pip install mlflow-neomundi` ne fonctionne pas.
-Installez depuis le dépôt :
-
 ```bash
-pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/mlflow'
+pip install mlflow-neomundi
 ```
 
 Python ≥ 3.11. Dépend de `mlflow-tracing>=3.18.0,<3.19`, le paquet léger
