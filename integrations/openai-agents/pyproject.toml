@@ -1,0 +1,81 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openai-agents-neomundi"
+version = "0.1.0"
+description = "Measure every model call an OpenAI Agents SDK run makes with the NeoMundi measurement API"
+readme = "README.md"
+license = "Apache-2.0"
+authors = [{ name = "Sebastien FAVRE", email = "sebastien@neomundi.org" }]
+# The library floor. openai-agents 0.26.0 itself accepts 3.10.
+requires-python = ">=3.11"
+keywords = ["openai-agents", "agents", "neomundi", "ai-governance", "llm-measurement", "tracing"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+
+# Two dependencies, both unavoidable: the measurement client and the
+# TracingProcessor base class.
+#
+# `openai-agents` is pinned at >=0.26.0,<0.27 because everything this
+# processor relies on was established by execution on 0.26.0: which spans
+# are leaves and which aggregates, that response spans carry the provider's
+# Response only when sensitive data is recorded, that exactly two classes
+# open a response span. The SDK is pre-1.0 and changes its tracing surface
+# between minors, so the next minor is verified before it is allowed.
+dependencies = [
+    "openai-agents>=0.26.0,<0.27",
+    "neomundi>=2.1.0,<3.0",
+]
+
+[project.optional-dependencies]
+# `httpx.MockTransport` ships with httpx, and the AsyncOpenAI client the
+# SDK already depends on accepts one: the suite opens no socket.
+dev = [
+    "pytest>=8.0",
+]
+
+# Nothing extra: the examples run offline on the runtime dependencies.
+examples = []
+
+notebook = [
+    "nbformat>=5.9",
+    "nbclient>=0.9",
+    "ipykernel>=6.29",
+]
+
+[project.urls]
+Homepage = "https://github.com/neomundi-io/neomundi-integrations/tree/main/integrations/openai-agents"
+Repository = "https://github.com/neomundi-io/neomundi-integrations"
+Documentation = "https://github.com/neomundi-io/neomundi-integrations/tree/main/integrations/openai-agents#readme"
+Changelog = "https://github.com/neomundi-io/neomundi-integrations/blob/main/integrations/openai-agents/CHANGELOG.md"
+Issues = "https://github.com/neomundi-io/neomundi-integrations/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+openai_agents_neomundi = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-q"
+pythonpath = ["src", "tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501"]
+

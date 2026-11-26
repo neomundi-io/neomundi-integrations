@@ -122,6 +122,44 @@
 [Guide](integrations/litellm/README.md) · [Limitations](integrations/litellm/LIMITATIONS.md) · [Value and ROI](integrations/litellm/VALUE.md) · [Notebook](integrations/litellm/notebooks/quickstart.ipynb) · [Examples](integrations/litellm/examples/) · [Mission report](integrations/litellm/MISSION_REPORT.md) · [Changelog](integrations/litellm/CHANGELOG.md)
 
 
+## OpenAI Agents SDK
+
+> OpenAI's framework for agentic applications: agents with tools, handoffs, guardrails and sessions, run in a loop by a Runner, with built-in tracing and pluggable trace processors.
+
+| | |
+| --- | --- |
+| Package | `openai-agents-neomundi` 0.1.0 |
+| Install | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/openai-agents'` |
+| Maturity | experimental |
+| Evidence level | **E1** — offline tests, green across platforms |
+| Python | 3.11, 3.12, 3.13 |
+| Platforms | linux, macos, windows |
+| Target verified | `openai-agents` 0.26.0 (bounds 0.26.0 → <0.27) |
+| NeoMundi SDK | ≥ 2.1.0, verified 2.1.0 |
+| `measurement_version` verified | **none (E1)** |
+| Offline tests | 45 |
+| Real observations | 0, of which 0 re-read as persisted |
+| Metered | yes |
+| Delivered | 2026-11-26 · last verified 2026-11-26 |
+
+**What the technology keeps.** The Agents SDK keeps the agent loop, tools, handoffs, guardrails and its tracing -- including its own exporter to the OpenAI dashboard and any processor you registered. The processor is appended and evicts nobody.
+
+**What NeoMundi adds.** Signed, independently verifiable behavioural measurement of every model call the agent loop makes -- the call that decides on a tool and the one that reads its result -- with the provider's own token count and the latency the SDK recorded, each outcome naming the agent and the tools it requested.
+
+**Complements, does not replace:** the Agents SDK's tracing and the OpenAI traces dashboard, litellm-neomundi, langchain-neomundi, otel-neomundi.
+
+**What it refuses to do.**
+
+- A Chat Completions or LiteLLM generation span is never submitted; its usage is zero-filled, or a local estimate, and cannot be traced to the provider.
+- Turn and task spans are sums of calls already measured; tool executions and agent steps are not model calls.
+- No provider usage, a partial one, a run without sensitive data, or AnyLLMModel loaded -- the count's origin cannot be established.
+- The measurement API is unreachable, so the failure is reported and your agent run is untouched.
+
+🔴 Every submitted observation is a billed measurement; there is no trace-only route. An agent run is billed once per model call, so a tool-using run costs several observations. Start with submit=False, which needs no key and opens no socket.
+
+[Guide](integrations/openai-agents/README.md) · [Limitations](integrations/openai-agents/LIMITATIONS.md) · [Value and ROI](integrations/openai-agents/VALUE.md) · [Notebook](integrations/openai-agents/notebooks/quickstart.ipynb) · [Examples](integrations/openai-agents/examples/) · [Mission report](integrations/openai-agents/MISSION_REPORT.md) · [Changelog](integrations/openai-agents/CHANGELOG.md)
+
+
 ## OpenTelemetry
 
 > The vendor-neutral tracing standard. Instrumentations for model clients (contrib openai-v2, OpenLLMetry and others) emit GenAI spans that the application exports to the backend it already runs.
