@@ -161,7 +161,7 @@
           "min": "2.1.0",
           "verified": "2.1.0"
         },
-        "measurement_version_verified": "3.3.1 (captured fixture, not a live call)"
+        "measurement_version_verified": "3.5.0 (E2, 2026-11-26)"
       },
       "value": {
         "host_keeps": "Langfuse keeps the trace: prompt, completion, latency, cost, sessions, datasets, experiments, and the UI the developer already has open.",

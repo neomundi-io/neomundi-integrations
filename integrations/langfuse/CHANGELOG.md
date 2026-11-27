@@ -6,7 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 ## 0.1.0 — released 2026-11-26
 
 First release. Writes NeoMundi measurements back into Langfuse as scores
-on the trace. Evidence level E1: offline only.
+on the trace. Evidence level E2 at release (proof: `evidence/e2_qualification_20261126T220436Z.json`). This line said
+"E1: offline only" until 2026-11-27: it was written before the qualification.
 
 ### Added
 
