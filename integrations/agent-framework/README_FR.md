@@ -44,6 +44,17 @@ pip install agent-framework-neomundi
 Python 3.11 ou plus récent. Deux dépendances : `agent-framework-core` et
 `neomundi`.
 
+⚠ **Le démarrage rapide ci-dessous utilise le connecteur OpenAI**, qui
+n'est pas l'une de ces deux dépendances. Installez-le avec l'extra
+`examples` :
+
+```bash
+pip install "agent-framework-neomundi[examples]"
+```
+
+Sans lui, `from agent_framework.openai import …` lève
+`ModuleNotFoundError` en nommant `agent-framework-openai`.
+
 🟢 **Pas le méta-paquet.** `pip install agent-framework` en tire une
 trentaine — Copilot Studio, Foundry, Bedrock, Redis, un bac à sable WASM.
 Ce middleware n'en a besoin d'aucun : il dépend de `agent-framework-core`

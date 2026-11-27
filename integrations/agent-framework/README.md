@@ -44,6 +44,16 @@ pip install agent-framework-neomundi
 Python 3.11 or newer. Two dependencies: `agent-framework-core` and
 `neomundi`.
 
+⚠ **The quickstart below uses the OpenAI connector**, which is not one of
+those two. Install it with the `examples` extra:
+
+```bash
+pip install "agent-framework-neomundi[examples]"
+```
+
+Without it, `from agent_framework.openai import …` raises
+`ModuleNotFoundError` naming `agent-framework-openai`.
+
 🟢 **Not the meta-package.** `pip install agent-framework` pulls some
 thirty packages — Copilot Studio, Foundry, Bedrock, Redis, a WASM
 sandbox. This middleware needs none of them, so it depends on
