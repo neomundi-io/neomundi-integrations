@@ -359,19 +359,31 @@ class NeoMundiChatMiddleware(ChatMiddleware):
         metadata = dict(self._metadata)
         metadata.setdefault("client_trace_id", call_id)
 
+        # 🔴 `source_type` and `mode` are NOT forwarded when unset.
+        #
+        # Found by the first real run, not by the offline suite: passing
+        # them as explicit `None` overrides the SDK's own defaults and the
+        # API answers HTTP 422 -- "body.source_type: Input should be a
+        # valid string; body.mode: Input should be 'OBS'". Omitting them
+        # lets the SDK supply its defaults, which is also the right
+        # coupling: this integration does not restate the API's vocabulary.
+        call: dict[str, Any] = {
+            "token_count": token_count,
+            "latency_ms": latency_ms,
+            "prompt_length": len(prompt) if prompt is not None else None,
+            "response_length": len(response) if response is not None else None,
+            "model_name": model_name,
+            "llm_response": response,
+            "llm_prompt": prompt,
+            "metadata": metadata,
+        }
+        if self._source_type is not None:
+            call["source_type"] = self._source_type
+        if self._mode is not None:
+            call["mode"] = self._mode
+
         try:
-            outcome_result = self._client.govern(
-                token_count=token_count,
-                latency_ms=latency_ms,
-                prompt_length=len(prompt) if prompt is not None else None,
-                response_length=len(response) if response is not None else None,
-                model_name=model_name,
-                llm_response=response,
-                llm_prompt=prompt,
-                source_type=self._source_type,
-                mode=self._mode,
-                metadata=metadata,
-            )
+            outcome_result = self._client.govern(**call)
         except NeoMundiError as exc:
             self._record(
                 Outcome(

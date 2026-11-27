@@ -37,8 +37,21 @@ First version. Built in mission 007.
   isolate middleware. Every path here is therefore wrapped, and four
   distinct failure modes are tested.
 
+### Fixed before release
+
+- 🔴 `source_type` and `mode` were forwarded as explicit `None`,
+  overriding the SDK's own defaults; the API answered **HTTP 422**. Found
+  by the **first real run**, not by the offline suite, whose double had
+  accepted anything. Nothing was billed by that failure — the refusal
+  path held and the host was unaffected. The double now refuses what the
+  API refuses, and two regression tests cover both directions.
+- `qualify.py` did not propagate `error_type` into its records, so a
+  transport failure could not be diagnosed from the evidence afterwards.
+
 ### Evidence
 
-**E1.** Offline tests only. No real execution against the production
-measurement API has been performed, so no `measurement_version` is
-declared verified.
+**E2**, established 2026-11-28 for 0.06 CHF: two real interactions
+through a real Agent Framework client against a provider's
+OpenAI-compatible route, **both re-read from the API as persisted** at
+`measurement_version 3.5.0`, plus two refusal phases on real calls that
+billed nothing. Twenty-one offline tests.
