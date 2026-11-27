@@ -5,7 +5,7 @@ All notable changes to `agent-framework-neomundi`.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
-## [0.1.0] — unreleased
+## [0.1.0] — released 2026-11-27
 
 First version. Built in mission 007.
 
@@ -50,7 +50,7 @@ First version. Built in mission 007.
 
 ### Evidence
 
-**E2**, established 2026-11-28 for 0.06 CHF: two real interactions
+**E2**, established 2026-11-27 for 0.06 CHF: two real interactions
 through a real Agent Framework client against a provider's
 OpenAI-compatible route, **both re-read from the API as persisted** at
 `measurement_version 3.5.0`, plus two refusal phases on real calls that

@@ -353,7 +353,7 @@
           "Azure, Anthropic, Bedrock, Gemini, Mistral, Ollama",
           "Copilot Studio, Foundry -- see LIMITATIONS section 7"
         ],
-        "measurement_version_verified": "3.5.0 (E2, 2026-11-28)"
+        "measurement_version_verified": "3.5.0 (E2, 2026-11-27)"
       },
       "value": {
         "host_keeps": "Agent Framework keeps the agent runtime, the connectors, the OpenTelemetry emission, the typed usage_details and the model metadata it already carries. The middleware is added to the client and replaces nothing. And it keeps a property worth naming: when a provider publishes no token count, the framework leaves usage_details absent rather than filling it.",
@@ -398,8 +398,8 @@
         "examples": "examples/",
         "notebook": "notebooks/quickstart.ipynb"
       },
-      "delivered": "2026-11-28",
-      "last_verified": "2026-11-28",
+      "delivered": "2026-11-27",
+      "last_verified": "2026-11-27",
       "directory": "integrations/agent-framework",
       "archived": false,
       "install": "pip install agent-framework-neomundi"

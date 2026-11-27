@@ -3,7 +3,7 @@
 All notable changes to this project are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
-## 0.1.0 — unreleased
+## 0.1.0 — released 2026-11-26
 
 First release. Measures chat completions routed by LiteLLM with NeoMundi.
 Evidence level E1: offline only.

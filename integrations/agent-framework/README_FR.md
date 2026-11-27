@@ -12,7 +12,7 @@
 
 ---
 
-> **Niveau de preuve E2.** Deux mesures réelles le 2026-11-28, par un
+> **Niveau de preuve E2.** Deux mesures réelles le 2026-11-27, par un
 > vrai client Agent Framework contre la route compatible OpenAI d'un
 > fournisseur, **toutes deux relues depuis l'API NeoMundi comme
 > persistées** en `measurement_version 3.5.0`. Plus 21 tests hors ligne
@@ -43,6 +43,17 @@ pip install agent-framework-neomundi
 
 Python 3.11 ou plus récent. Deux dépendances : `agent-framework-core` et
 `neomundi`.
+
+⚠ **Le démarrage rapide ci-dessous utilise le connecteur OpenAI**, qui
+n'est pas l'une de ces deux dépendances. Installez-le avec l'extra
+`examples` :
+
+```bash
+pip install "agent-framework-neomundi[examples]"
+```
+
+Sans lui, `from agent_framework.openai import …` lève
+`ModuleNotFoundError` en nommant `agent-framework-openai`.
 
 🟢 **Pas le méta-paquet.** `pip install agent-framework` en tire une
 trentaine — Copilot Studio, Foundry, Bedrock, Redis, un bac à sable WASM.

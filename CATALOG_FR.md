@@ -136,11 +136,11 @@
 | Plateformes | linux, macos, windows |
 | Cible vérifiée | `agent-framework-core` 1.26.0 (bornes 1.26.0 → <2.0) |
 | SDK NeoMundi | ≥ 2.2.0, vérifié 2.2.0 |
-| `measurement_version` vérifiée | **3.5.0 (E2, 2026-11-28)** |
+| `measurement_version` vérifiée | **3.5.0 (E2, 2026-11-27)** |
 | Tests hors ligne | 21 |
 | Observations réelles | 2, dont 2 relues persistées |
 | Facturée | oui |
-| Livrée | 2026-11-28 · dernière vérification 2026-11-28 |
+| Livrée | 2026-11-27 · dernière vérification 2026-11-27 |
 
 **Ce que la technologie garde.** Agent Framework keeps the agent runtime, the connectors, the OpenTelemetry emission, the typed usage_details and the model metadata it already carries. The middleware is added to the client and replaces nothing. And it keeps a property worth naming: when a provider publishes no token count, the framework leaves usage_details absent rather than filling it.
 
