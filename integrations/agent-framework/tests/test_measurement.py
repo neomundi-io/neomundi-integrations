@@ -185,6 +185,32 @@ async def test_a_malformed_usage_block_is_refused_not_guessed(recording_client):
     assert recording_client.calls == []
 
 
+async def test_source_type_and_mode_are_not_forwarded_when_unset(recording_client):
+    """🔴 Regression, found by the first REAL run, not by this suite.
+
+    Passing them as explicit `None` overrode the SDK's defaults and the
+    API answered HTTP 422: "body.source_type: Input should be a valid
+    string; body.mode: Input should be 'OBS'". Nothing was billed -- the
+    refusal path held -- but no measurement happened either.
+    """
+    mw = NeoMundiChatMiddleware(client=recording_client)
+    await run_once(mw, body=completion_body(usage=USAGE))
+
+    assert mw.last_outcome.status == SUBMITTED
+    sent = recording_client.calls[0]
+    assert "source_type" not in sent
+    assert "mode" not in sent
+
+
+async def test_source_type_and_mode_are_forwarded_when_given(recording_client):
+    mw = NeoMundiChatMiddleware(client=recording_client, source_type="llm", mode="OBS")
+    await run_once(mw, body=completion_body(usage=USAGE))
+
+    sent = recording_client.calls[0]
+    assert sent["source_type"] == "llm"
+    assert sent["mode"] == "OBS"
+
+
 # ------------------------------------------------------------- the unit itself
 
 

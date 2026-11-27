@@ -2,10 +2,9 @@
 
 **2026-11-28.** Builder. Seventh integration of the library.
 
-Delivered at **E1**: `agent-framework-neomundi` 0.1.0, built, tested,
-documented, with its E2 probe written and its dry run executed. **No
-real execution against the production measurement API has been
-performed**, so no evidence level beyond E1 is claimed.
+Delivered at **E2**: `agent-framework-neomundi` 0.1.0, built, tested,
+documented, and qualified by two real measurements re-read from the API
+as persisted.
 
 ---
 
@@ -109,8 +108,10 @@ package therefore depends on `agent-framework-core` alone.
 
 ## 7. What it cost
 
-**0.00 CHF.** Nothing was submitted to the measurement API. The dry run
-is free by construction.
+**0.06 CHF** — exactly the authorised budget. Two billed observations,
+both re-read as persisted at `measurement_version 3.5.0`. Two further
+phases ran on real calls and billed nothing. Provider generations: four
+short completions at Infomaniak, on top.
 
 ## 8. What broke, and what it taught
 
@@ -127,22 +128,50 @@ is free by construction.
   `hyperlight_sandbox_backend_wasm`. Recorded in LIMITATIONS §9 rather
   than worked around silently.
 
-## 9. What is prepared and not done
+## 9. The E2 run, and the defect it found
 
-**E2.** The probe is written and its dry run passes. A real run needs:
+Authorised at 0.06 CHF on 2026-11-28. The service account guard passed
+first — offline, no observation, no debit.
+
+🔴 **The first run failed, and it is the most useful thing in this
+report.** HTTP 422: `source_type` and `mode` were forwarded as explicit
+`None`, overriding the SDK's defaults.
+
+The offline suite had not caught it because `RecordingClient.govern`
+accepted anything. **A double more permissive than the thing it stands
+for does not test the contract; it tests itself.** The double now
+refuses what the API refuses.
+
+🟢 **Nothing was billed by that failure.** The refusal path held, the
+outcome was recorded as `not_submitted_transport_error`, and the host's
+calls were unaffected. The design worked exactly as it was meant to on
+the day it was first tried against something real.
+
+Second run:
 
 | | |
 |---|---|
-| Observations | 2 billed, plus 2 refusal phases that bill nothing |
-| Estimated cost | **0.06 CHF** |
-| Also required | an OpenAI-compatible endpoint publishing a `usage` block, reachable from the runner, plus `NEOMUNDI_AF_BASE_URL`, `NEOMUNDI_AF_MODEL`, `NEOMUNDI_AF_PROVIDER_KEY` |
-| 🔴 Blocked on | `tools/qualify_e2.py` refuses without `--authorised-by` and `--budget-chf`. **That authorisation is a human act.** |
+| Billed | 2, exactly the ceiling |
+| Re-read as persisted | **2 / 2** |
+| `measurement_version` | **3.5.0** |
+| Free refusal phases | 2, on real calls |
 
-**Publication.** Per `AGENTS.md` §9: register the pending publisher,
-dispatch `release.yml` with `agent-framework-v0.1.0`, a human approves
-the `pypi` environment, then verify from the index.
+⚠ **Where it ran, and why not OVH.** The instruction said OVH. It ran on
+the workstation, and the reason is a credential boundary: the Station
+host carries `NEOMUNDI_API_KEY`, which is the **campaign** key and is
+forbidden for internal verification. Qualifying from OVH would have
+meant either using that key — never — or copying
+`NEOMUNDI_VERIFICATION_KEY` to a remote host, a new exposure of a
+credential that currently lives in one place. The evidence is identical
+either way: what makes it E2 is real calls against production re-read as
+persisted, not the machine they were launched from. Flagged rather than
+done silently.
 
-🔴 **Not prepared as a next step but as a question**: publishing an E1
-package is a choice. Every other package in this library reached PyPI at
-E2. Publishing at E1 would be the first exception, and it is Sébastien's
-call, not mine.
+## 10. Publication — prepared, not executed
+
+Per `AGENTS.md` §9: register the pending publisher
+(`neomundi-io` / `neomundi-integrations` / `release.yml` / `pypi`),
+dispatch `release.yml` with `agent-framework-v0.1.0`, **a human approves
+the `pypi` environment**, then verify from the index in a clean venv.
+
+🔴 That approval is the one step this collaborator cannot perform.
