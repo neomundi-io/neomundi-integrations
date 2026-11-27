@@ -12,7 +12,7 @@
 
 ---
 
-> **Niveau de preuve E2.** Deux mesures réelles le 2026-11-28, par un
+> **Niveau de preuve E2.** Deux mesures réelles le 2026-11-27, par un
 > vrai client Agent Framework contre la route compatible OpenAI d'un
 > fournisseur, **toutes deux relues depuis l'API NeoMundi comme
 > persistées** en `measurement_version 3.5.0`. Plus 21 tests hors ligne

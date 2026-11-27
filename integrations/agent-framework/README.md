@@ -12,7 +12,7 @@
 
 ---
 
-> **Evidence level E2.** Two real measurements on 2026-11-28, through a
+> **Evidence level E2.** Two real measurements on 2026-11-27, through a
 > real Agent Framework client against a provider's OpenAI-compatible
 > route, **both re-read from the NeoMundi API as persisted** at
 > `measurement_version 3.5.0`. Plus 21 offline tests on the framework's

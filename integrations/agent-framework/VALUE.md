@@ -10,7 +10,7 @@ A team running it already has dashboards, latency and spend.
 
 🟢 **And it has a property worth naming**: when a provider publishes no
 token count, Agent Framework leaves `usage_details` at `None` rather than
-filling it. Measured, 2026-11-28, both streaming and not. Several hosts
+filling it. Measured, 2026-11-27, both streaming and not. Several hosts
 in this library do the opposite.
 
 ## What NeoMundi adds

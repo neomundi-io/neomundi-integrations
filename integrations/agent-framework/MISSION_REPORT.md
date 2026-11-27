@@ -1,6 +1,6 @@
 # Mission 007 — Microsoft Agent Framework
 
-**2026-11-28.** Builder. Seventh integration of the library.
+**2026-11-27.** Builder. Seventh integration of the library.
 
 Delivered at **E2**: `agent-framework-neomundi` 0.1.0, built, tested,
 documented, and qualified by two real measurements re-read from the API
@@ -130,8 +130,19 @@ short completions at Infomaniak, on top.
 
 ## 9. The E2 run, and the defect it found
 
-Authorised at 0.06 CHF on 2026-11-28. The service account guard passed
+Authorised at 0.06 CHF on 2026-11-27. The service account guard passed
 first — offline, no observation, no debit.
+
+⚠ **A date correction, recorded rather than hidden.** This report, the
+READMEs, `VALUE.md`, `LIMITATIONS.md`, the changelog and the manifest
+first said **2026-11-28**. Every artifact that can be reopened says
+2026-11-27: the evidence file names (`…20261127T140707Z`,
+`…20261127T140858Z`), the notebook execution stamps, the commits and the
+PyPI upload (`2026-11-27T15:24:34Z`). They were corrected to 2026-11-27.
+The two evidence files are **not** rewritten: their
+`authorisation.authorised_by` still reads `Sebastien Favre, 2026-11-28`,
+which is the text recorded at run time. The published 0.1.0 description
+on PyPI also carries the wrong date, and it is immutable.
 
 🔴 **The first run failed, and it is the most useful thing in this
 report.** HTTP 422: `source_type` and `mode` were forwarded as explicit
@@ -167,7 +178,7 @@ either way: what makes it E2 is real calls against production re-read as
 persisted, not the machine they were launched from. Flagged rather than
 done silently.
 
-## 10. Publication — prepared, not executed
+## 10. Publication
 
 Per `AGENTS.md` §9: register the pending publisher
 (`neomundi-io` / `neomundi-integrations` / `release.yml` / `pypi`),
@@ -175,3 +186,16 @@ dispatch `release.yml` with `agent-framework-v0.1.0`, **a human approves
 the `pypi` environment**, then verify from the index in a clean venv.
 
 🔴 That approval is the one step this collaborator cannot perform.
+
+🟢 **Done.** Tag `agent-framework-v0.1.0` on `9bedbe0`, uploaded
+2026-11-27T15:24:34Z after the owner approved the environment. Re-verified
+from the index on 2026-11-27 in a clean virtual environment: version
+0.1.0 resolving from `site-packages`, summary, `Apache-2.0`,
+`Requires-Python >=3.11`, five project URLs on this repository, 17/17
+names in `__all__` resolved, `pip check` clean.
+
+⚠ **What PyPI shows is the README at `9bedbe0`**, which predates the
+publication commit. Its install section still says *“Not published on
+PyPI yet”*, on the PyPI page of the published package. Immutable for
+0.1.0; it goes away with the next release.
+

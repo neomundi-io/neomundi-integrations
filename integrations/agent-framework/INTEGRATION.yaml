@@ -71,7 +71,7 @@ compatibility:
     - "Azure, Anthropic, Bedrock, Gemini, Mistral, Ollama"
     - "Copilot Studio, Foundry -- see LIMITATIONS section 7"
   # No live measurement was taken, so no served version was observed.
-  measurement_version_verified: "3.5.0 (E2, 2026-11-28)"
+  measurement_version_verified: "3.5.0 (E2, 2026-11-27)"
 
 value:
   host_keeps: >-
@@ -130,5 +130,5 @@ links:
   examples: examples/
   notebook: notebooks/quickstart.ipynb
 
-delivered: 2026-11-28
-last_verified: 2026-11-28
+delivered: 2026-11-27
+last_verified: 2026-11-27

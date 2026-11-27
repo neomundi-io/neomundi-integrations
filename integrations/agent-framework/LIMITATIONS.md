@@ -1,6 +1,6 @@
 # Known limitations
 
-Each item was **measured on 2026-11-28** against `agent-framework`
+Each item was **measured on 2026-11-27** against `agent-framework`
 1.26.0, `agent-framework-core` 1.26.0, `agent-framework-openai` 1.18.2,
 `openai` 3.60.0 and `neomundi` 2.2.0, Python 3.12, offline — rather than
 assumed. Read this before relying on any NeoMundi score produced through
@@ -163,7 +163,7 @@ alone — which is all this integration needs — avoids it.
 
 ## 10. Evidence level: E2 — and what it does not cover
 
-**E2 at 0.1.0**, established 2026-11-28 for **0.06 CHF**:
+**E2 at 0.1.0**, established 2026-11-27 for **0.06 CHF**:
 
 | | |
 |---|---|
