@@ -60,7 +60,7 @@
 | Platforms | linux, macos, windows |
 | Target verified | `langfuse` 5.2.0 (bounds 5.2.0 → <6.0) |
 | NeoMundi SDK | ≥ 2.1.0, verified 2.1.0 |
-| `measurement_version` verified | **3.3.1 (captured fixture, not a live call)** |
+| `measurement_version` verified | **3.5.0 (E2, 2026-11-26)** |
 | Offline tests | 33 |
 | Real observations | 2, of which 2 re-read as persisted |
 | Metered | no |

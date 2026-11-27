@@ -6,7 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 ## 0.1.0 — unreleased
 
 First release. Measures the model calls MLflow traces with its `openai`
-autolog. Evidence level E1: offline only.
+autolog. Evidence level E2 at release (proof: `evidence/e2_qualification_20261126T165539Z.json`). This line said
+"E1: offline only" until 2026-11-27: it was written before the qualification.
 
 ### Added
 
