@@ -122,6 +122,45 @@
 [Guide](integrations/litellm/README_FR.md) · [Limites](integrations/litellm/LIMITATIONS.md) · [Valeur et ROI](integrations/litellm/VALUE.md) · [Notebook](integrations/litellm/notebooks/quickstart.ipynb) · [Exemples](integrations/litellm/examples/) · [Rapport de mission](integrations/litellm/MISSION_REPORT.md) · [Journal](integrations/litellm/CHANGELOG.md)
 
 
+## Microsoft Agent Framework
+
+> Microsoft's agent runtime, which unifies and succeeds Semantic Kernel and AutoGen -- both now in maintenance. It exposes a ChatMiddleware layer that brackets every model call, and emits OpenTelemetry natively.
+
+| | |
+| --- | --- |
+| Paquet | `agent-framework-neomundi` 0.1.0 |
+| Installation | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/agent-framework'` |
+| Maturité | experimental |
+| Niveau de preuve | **E1** — offline tests, green across platforms |
+| Python | 3.11, 3.12, 3.13 |
+| Plateformes | linux, macos, windows |
+| Cible vérifiée | `agent-framework-core` 1.26.0 (bornes 1.26.0 → <2.0) |
+| SDK NeoMundi | ≥ 2.2.0, vérifié 2.2.0 |
+| `measurement_version` vérifiée | **none (E1: no live call)** |
+| Tests hors ligne | 19 |
+| Observations réelles | —, dont — relues persistées |
+| Facturée | oui |
+| Livrée | 2026-11-28 · dernière vérification 2026-11-28 |
+
+**Ce que la technologie garde.** Agent Framework keeps the agent runtime, the connectors, the OpenTelemetry emission, the typed usage_details and the model metadata it already carries. The middleware is added to the client and replaces nothing. And it keeps a property worth naming: when a provider publishes no token count, the framework leaves usage_details absent rather than filling it.
+
+**Ce que NeoMundi ajoute.** Signed, independently verifiable behavioural measurement of each model call the framework makes -- five signals with explicit provenance and an explicit measured / not-measured state -- attached at the framework's own middleware layer, with the latency measured around the call rather than read off a span. It never invents a token count: a provider that publishes none produces a named refusal and no bill.
+
+**Complète, ne remplace pas :** Agent Framework's native OpenTelemetry emission, otel-neomundi, which can read the same spans but must have the count declared by hand, your tracing backend.
+
+**Ce qu'elle refuse de faire.**
+
+- A token count is never invented. A provider that publishes none leaves usage_details absent, and the call is refused by name rather than measured.
+- A zero, or anything that is not a positive integer, is not a token count.
+- {'A streaming invocation is refused by name': 'usage exists only once the stream is consumed, and this middleware resumes before that.'}
+- No exception of ours reaches the host application -- measured, because the framework does NOT isolate a failing middleware.
+- {"The host's own failure is recorded and re-raised untouched": 'swallowing it would hide a failure from the application.'}
+
+🔴 Every submitted observation is a billed measurement; there is no trace-only route. A refusal opens no socket and costs nothing, which examples/02_refusals.py demonstrates by printing the billed count: zero. There is no sampling in 0.1.0.
+
+[Guide](integrations/agent-framework/README_FR.md) · [Limites](integrations/agent-framework/LIMITATIONS.md) · [Valeur et ROI](integrations/agent-framework/VALUE.md) · [Notebook](integrations/agent-framework/notebooks/quickstart.ipynb) · [Exemples](integrations/agent-framework/examples/) · [Journal](integrations/agent-framework/CHANGELOG.md)
+
+
 ## MLflow
 
 > The tracing layer of MLflow, built on OpenTelemetry: autolog instrumentations for model clients and agent frameworks record each call as a span in a trace, stored next to the experiments and runs MLflow users already compare.

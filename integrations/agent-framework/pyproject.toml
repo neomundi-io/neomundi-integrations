@@ -1,0 +1,98 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-framework-neomundi"
+version = "0.1.0"
+description = "Measure every model call a Microsoft Agent Framework client makes, with the NeoMundi measurement API"
+readme = "README.md"
+license = "Apache-2.0"
+authors = [{ name = "Sebastien FAVRE", email = "sebastien@neomundi.org" }]
+requires-python = ">=3.11"
+keywords = [
+    "microsoft-agent-framework",
+    "agent-framework",
+    "agents",
+    "neomundi",
+    "ai-governance",
+    "llm-measurement",
+    "observability",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+
+# Two dependencies, and `agent-framework-core` rather than the
+# `agent-framework` meta-package on purpose: the meta-package pulls some
+# thirty others -- Copilot Studio, Foundry, Bedrock, Redis, a WASM sandbox
+# -- and this middleware needs none of them. `ChatMiddleware`,
+# `ChatContext` and `ChatResponse.usage_details` all live in core.
+#
+# Floored at 1.26.0 because that is the release whose surface was
+# introspected, and on which the no-fabrication property was measured.
+dependencies = [
+    "agent-framework-core>=1.26.0,<2.0",
+    "neomundi>=2.2.0,<3.0",
+]
+
+[project.optional-dependencies]
+# The suite drives a REAL Agent Framework chat client over
+# `httpx.MockTransport`: a real middleware pipeline, a real provider
+# payload, no socket. `agent-framework-openai` brings the connector.
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "agent-framework-openai>=1.18.2,<2.0",
+    "httpx>=0.27",
+]
+
+examples = [
+    "agent-framework-openai>=1.18.2,<2.0",
+    "httpx>=0.27",
+]
+
+notebook = [
+    "nbformat>=5.9",
+    "nbclient>=0.9",
+    "ipykernel>=6.29",
+]
+
+[project.urls]
+Homepage = "https://github.com/neomundi-io/neomundi-integrations/tree/main/integrations/agent-framework"
+Repository = "https://github.com/neomundi-io/neomundi-integrations"
+Documentation = "https://github.com/neomundi-io/neomundi-integrations/tree/main/integrations/agent-framework#readme"
+Changelog = "https://github.com/neomundi-io/neomundi-integrations/blob/main/integrations/agent-framework/CHANGELOG.md"
+Issues = "https://github.com/neomundi-io/neomundi-integrations/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+agent_framework_neomundi = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-q"
+pythonpath = ["src", "tests"]
+asyncio_mode = "auto"
+# Pinned rather than left to a future default change.
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/agent_framework_neomundi/__init__.py" = ["E402"]
