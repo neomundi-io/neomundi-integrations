@@ -3,6 +3,31 @@
 All notable changes to this project are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## Unreleased
+
+### Fixed
+
+- The quickstart notebook stopped at section 8 with an `AttributeError`: it
+  still called `_warn_on_version`, which 0.2.0 removed. CI does not execute
+  notebooks, so this was found by running it. Section 8 now shows the drift
+  through the real path: a mocked response serving an unverified version
+  produces exactly one `RuntimeWarning`, emitted by the SDK, and the
+  measurement is still submitted.
+- `__version__` said `"0.1.0"` in 0.2.0. It now matches `pyproject.toml`.
+- `INTEGRATION_CONTRACT["neomundi_min"]`, `verified_against["neomundi"]` and
+  `INTEGRATION.yaml`'s `neomundi_sdk` said `2.1.0` under a `>=2.2.0` floor.
+  They now say `2.2.0`.
+- The README said production ran a measurement version the SDK had not
+  qualified, and that the handler warned. Neither has been true since 0.2.0.
+- Dead references to `KNOWN_LIMITATIONS.md` and `docs/VALUE.md` (the files
+  are `LIMITATIONS.md` and `VALUE.md`).
+
+### Added
+
+- `tests/test_package_metadata.py`: `__version__`, the contract's SDK floor
+  and the manifest are confronted with `pyproject.toml`, and the notebook
+  builder may not call a handler attribute that does not exist.
+
 ## 0.2.0 — released 2026-11-26
 
 ### Changed
@@ -22,7 +47,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - `LIMITATIONS.md` §1 said production ran a measurement version the SDK had
   not qualified. It has, since 2026-11-26, on live REST and SSE evidence.
 
-## 0.1.1 — unreleased
+## 0.1.1 — never uploaded; its fix shipped in 0.2.0
 
 ### Fixed
 

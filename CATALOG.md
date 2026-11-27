@@ -21,9 +21,9 @@
 | Python | 3.11, 3.12, 3.13 |
 | Platforms | linux, macos, windows |
 | Target verified | `langchain-core` 1.8.5 (bounds 1.0 → <2.0) |
-| NeoMundi SDK | ≥ 2.1.0, verified 2.1.0 |
+| NeoMundi SDK | ≥ 2.2.0, verified 2.2.0 |
 | `measurement_version` verified | **3.5.0** |
-| Offline tests | 54 |
+| Offline tests | 59 |
 | Real observations | 6, of which 6 re-read as persisted |
 | Metered | yes |
 | Delivered | 2026-11-26 · last verified 2026-11-26 |

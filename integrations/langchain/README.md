@@ -120,9 +120,9 @@ The decision is **deterministic in the run id**, so a sampled trace is reproduci
 
 | | |
 |---|---|
-| Offline test suite | **54 tests**, green on Python 3.11–3.13. No network, no key, no cost. |
+| Offline test suite | **59 tests**, green on Python 3.11–3.13. No network, no key, no cost. |
 | Real execution | **6 observations** submitted to `https://api.neomundi.io` and 6/6 read back as persisted, from a real LangChain chain driving a real local LLM. See [`evidence/`](evidence/). |
-| Measurement version | Production currently serves **3.5.0**, which the SDK deliberately has **not** yet qualified. The handler warns once per instance. See [LIMITATIONS.md](LIMITATIONS.md). |
+| Measurement version | Production serves **3.5.0**, which `neomundi` 2.2.0 verified on live evidence on 2026-11-26. Every `Outcome` records the version that served it; the **SDK** warns when that version is not one it verified, and this handler adds no second warning. See [LIMITATIONS.md](LIMITATIONS.md) §1. |
 | Maturity | **Beta.** The callback surface is stable; the package is new. |
 
 Read [LIMITATIONS.md](LIMITATIONS.md) before drawing a conclusion from any score. It is short, and it is not marketing.

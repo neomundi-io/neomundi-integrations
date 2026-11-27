@@ -121,7 +121,7 @@ not exist yet.
 
 ## 10. Alpha maturity
 
-54 offline tests and one real-execution proof of 6 observations. That is
+59 offline tests and one real-execution proof of 6 observations. That is
 enough to trust the refusals and the safety guarantee; it is not enough to
 call the package battle-tested. The LangChain callback surface it depends on
 is stable; this package is new.
@@ -137,9 +137,9 @@ says so, which makes the `Issues` link functionally dead -- an archived
 repository accepts no issue.
 
 PyPI metadata for a released version is immutable, so 0.1.0 keeps those
-links for as long as it exists. **0.1.1 carries the correction.** Until it
-is published, follow the links from this repository, not from the PyPI
-page.
+links for as long as it exists. The correction was prepared as 0.1.1,
+which was never uploaded, and **shipped in 0.2.0**, published on
+2026-11-26: install 0.2.0 or later.
 
 ⚠ The library's conformance check did not catch this: it verifies the
 package *name* against the slug and refuses an install line that would
@@ -148,3 +148,24 @@ actually lives. Deliberately not fixed here -- closing it means a new
 blocking rule, which is a decision for the owner, not a side effect of a
 correction.
 
+## 12. Version 0.2.0 on PyPI misreports two of its own numbers
+
+🔴 Measured on **2026-11-27**, by installing `langchain-neomundi==0.2.0`
+from PyPI into a clean virtual environment:
+
+- `langchain_neomundi.__version__` is **`"0.1.0"`**, while the distribution
+  is 0.2.0 (`importlib.metadata.version("langchain-neomundi")`);
+- `INTEGRATION_CONTRACT["neomundi_min"]` is **`"2.1.0"`**, while the
+  package requires `neomundi>=2.2.0`. pip enforces the requirement, so no
+  one can run 0.2.0 on 2.1.0; only the declaration is wrong.
+
+Its README also still says production serves a measurement version the SDK
+has not qualified, and that the handler warns. Both stopped being true with
+0.2.0 itself. And its quickstart notebook stops at section 8 with an
+`AttributeError`, because it called a method 0.2.0 removed.
+
+None of this changes a measurement. PyPI metadata for a released version is
+immutable, so 0.2.0 keeps it; the source here is corrected, and
+`tests/test_package_metadata.py` now confronts the declarations with
+`pyproject.toml`, so the next release cannot ship the same drift. To read
+the installed version reliably, use `importlib.metadata`.
