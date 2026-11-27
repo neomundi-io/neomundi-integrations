@@ -129,7 +129,7 @@
 | | |
 | --- | --- |
 | Paquet | `agent-framework-neomundi` 0.1.0 |
-| Installation | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/agent-framework'` |
+| Installation | `pip install agent-framework-neomundi` |
 | Maturité | beta |
 | Niveau de preuve | **E2** — plus real execution against production, proof committed |
 | Python | 3.11, 3.12, 3.13 |
