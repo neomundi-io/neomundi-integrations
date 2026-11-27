@@ -37,11 +37,8 @@ votre agent  ──▶  ChatMiddleware  ──▶  le fournisseur
 
 ## Installation
 
-🟡 **Pas encore publié sur PyPI.** `pip install agent-framework-neomundi`
-ne fonctionne pas aujourd'hui. Installation depuis ce dépôt :
-
 ```bash
-pip install "git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/agent-framework"
+pip install agent-framework-neomundi
 ```
 
 Python 3.11 ou plus récent. Deux dépendances : `agent-framework-core` et

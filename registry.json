@@ -5,7 +5,7 @@
     "active": 7,
     "archived": 0,
     "evidence_e2_or_better": 7,
-    "published": 6
+    "published": 7
   },
   "evidence_levels": {
     "e0": "nothing probative yet",
@@ -312,7 +312,7 @@
         "name": "agent-framework-neomundi",
         "import_name": "agent_framework_neomundi",
         "version": "0.1.0",
-        "published_on": "none"
+        "published_on": "pypi"
       },
       "maturity": "beta",
       "evidence": {
@@ -402,7 +402,7 @@
       "last_verified": "2026-11-28",
       "directory": "integrations/agent-framework",
       "archived": false,
-      "install": "pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/agent-framework'"
+      "install": "pip install agent-framework-neomundi"
     },
     {
       "slug": "mlflow",

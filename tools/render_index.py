@@ -282,18 +282,11 @@ def _render_roadmap(*, fr: bool) -> str:
     """
     rows_en = [
         (
-            "[Microsoft Agent Framework](https://learn.microsoft.com/en-us/agent-framework/overview/)",
-            "Microsoft",
-            "`agent-framework`",
-            "**native OpenTelemetry**",
-            "Succeeds Semantic Kernel and AutoGen, both now maintenance-only. One attachment point replaces two.",
-        ),
-        (
             "[Strands Agents](https://strandsagents.com/latest/)",
             "AWS",
             "`strands-agents`",
             "**native OpenTelemetry**",
-            "Open-source agent toolkit with a documented `[otel]` extra -- the shortest path of the eight.",
+            "Open-source agent toolkit with a documented `[otel]` extra -- the shortest path of the lot.",
         ),
         (
             "[Amazon Bedrock AgentCore](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html)",
@@ -340,18 +333,11 @@ def _render_roadmap(*, fr: bool) -> str:
     ]
     rows_fr = [
         (
-            "[Microsoft Agent Framework](https://learn.microsoft.com/fr-fr/agent-framework/overview/)",
-            "Microsoft",
-            "`agent-framework`",
-            "**OpenTelemetry natif**",
-            "Succède à Semantic Kernel et AutoGen, désormais en maintenance seule. Un point d'attache en remplace deux.",
-        ),
-        (
             "[Strands Agents](https://strandsagents.com/latest/)",
             "AWS",
             "`strands-agents`",
             "**OpenTelemetry natif**",
-            "Boîte à outils ouverte, avec un extra `[otel]` documenté : le chemin le plus court des huit.",
+            "Boîte à outils ouverte, avec un extra `[otel]` documenté : le chemin le plus court du lot.",
         ),
         (
             "[Amazon Bedrock AgentCore](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html)",
@@ -400,9 +386,12 @@ def _render_roadmap(*, fr: bool) -> str:
     if fr:
         head = (
             "## Intégrations futures — feuille de route\n\n"
-            "🔴 **Rien dans ce tableau n'est un engagement.** Les six intégrations "
+            "🟢 **Une candidate est passée au produit** : Microsoft Agent Framework "
+            "est désormais [une intégration](integrations/agent-framework/), en "
+            "E2, et non une ligne de ce tableau.\n\n"
+            "🔴 **Rien d'autre dans ce tableau n'est un engagement.** Les intégrations "
             "ci-dessus sont **disponibles** : publiées sur PyPI, avec un niveau de "
-            "preuve *calculé*. Les huit ci-dessous sont des **candidates** : des "
+            "preuve *calculé*. Celles ci-dessous sont des **candidates** : des "
             "hôtes dont le nom officiel, la surface Python et le point de traçage "
             "ont été vérifiés le 2026-11-27 dans la documentation de l'éditeur, et "
             "rien de plus. Une candidate ne devient une intégration qu'avec une "
@@ -422,9 +411,12 @@ def _render_roadmap(*, fr: bool) -> str:
     else:
         head = (
             "## Future integrations — roadmap\n\n"
-            "🔴 **Nothing in this table is a commitment.** The six integrations "
+            "🟢 **One candidate has since shipped**: Microsoft Agent Framework "
+            "is now [an integration](integrations/agent-framework/), E2, not a "
+            "line in this table.\n\n"
+            "🔴 **Nothing else in this table is a commitment.** The integrations "
             "above are **available**: published on PyPI, with a *computed* "
-            "evidence level. The eight below are **candidates**: hosts whose "
+            "evidence level. Those below are **candidates**: hosts whose "
             "official name, Python surface and tracing hook were verified on "
             "2026-11-27 against vendor documentation, and nothing more. A "
             "candidate becomes an integration only once it has a mission, a "
