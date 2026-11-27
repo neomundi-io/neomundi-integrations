@@ -5,6 +5,10 @@ Generated rather than hand-edited so its JSON stays valid and its cells
 stay in sync with the package. Run this, then commit the executed
 notebook.
 
+🔴 **Ruff lints notebooks, so the cell sources below must be ruff-clean.**
+Formatting `quickstart.ipynb` directly does not hold: the next
+regeneration overwrites it. The source of truth is here.
+
     pip install -e ".[examples,notebook]"
     python notebooks/build_quickstart.py --execute
 """
@@ -53,28 +57,39 @@ from openai import AsyncOpenAI
 
 from agent_framework_neomundi import NeoMundiChatMiddleware
 
+
 def reply(usage):
     body = {
-        "id": "chatcmpl-nb", "object": "chat.completion", "created": 1764115200,
+        "id": "chatcmpl-nb",
+        "object": "chat.completion",
+        "created": 1764115200,
         "model": "gpt-4o-mini",
-        "choices": [{"index": 0,
-                     "message": {"role": "assistant", "content": "Paris."},
-                     "finish_reason": "stop"}],
+        "choices": [
+            {
+                "index": 0,
+                "message": {"role": "assistant", "content": "Paris."},
+                "finish_reason": "stop",
+            }
+        ],
     }
     if usage is not None:
         body["usage"] = usage
     return body
 
+
 class StandInApi:
     "What NeoMundiClient would do, without the socket or the bill."
+
     def __init__(self):
         self.billed = 0
+
     def govern(self, **kwargs):
         self.billed += 1
         r = type("R", (), {})()
         r.request_id = "11111111-2222-3333-4444-555555555555"
         r.audit = type("A", (), {"measurement_version": "3.5.0"})()
         return r
+
 
 def chat(body, middleware):
     http = httpx.AsyncClient(
@@ -85,6 +100,7 @@ def chat(body, middleware):
         async_client=AsyncOpenAI(api_key="not-a-real-key", http_client=http),
         middleware=middleware,
     )
+
 
 print("ready")
 """
@@ -102,10 +118,9 @@ changed in the application.
 api = StandInApi()
 measure = NeoMundiChatMiddleware(client=api)
 
-answer = await chat(reply({"prompt_tokens": 11, "completion_tokens": 7,
-                           "total_tokens": 18}), [measure]).get_response(
-    "What is the capital of France?"
-)
+answer = await chat(
+    reply({"prompt_tokens": 11, "completion_tokens": 7, "total_tokens": 18}), [measure]
+).get_response("What is the capital of France?")
 
 o = measure.last_outcome
 print("the host got     :", repr(answer.text))
@@ -166,13 +181,16 @@ class FailingApi(StandInApi):
     def govern(self, **kwargs):
         raise NeoMundiError("unreachable")
 
+
 cases = []
 
 USAGE = {"prompt_tokens": 11, "completion_tokens": 7, "total_tokens": 18}
 
 api = StandInApi()
 mw = NeoMundiChatMiddleware(client=api)
-await chat(reply({"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}), [mw]).get_response("q")
+await chat(
+    reply({"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}), [mw]
+).get_response("q")
 cases.append(("a zero count", mw.last_outcome, api.billed))
 
 api = FailingApi()
