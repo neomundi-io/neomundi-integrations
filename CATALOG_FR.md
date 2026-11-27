@@ -21,9 +21,9 @@
 | Python | 3.11, 3.12, 3.13 |
 | Plateformes | linux, macos, windows |
 | Cible vérifiée | `langchain-core` 1.8.5 (bornes 1.0 → <2.0) |
-| SDK NeoMundi | ≥ 2.1.0, vérifié 2.1.0 |
+| SDK NeoMundi | ≥ 2.2.0, vérifié 2.2.0 |
 | `measurement_version` vérifiée | **3.5.0** |
-| Tests hors ligne | 54 |
+| Tests hors ligne | 59 |
 | Observations réelles | 6, dont 6 relues persistées |
 | Facturée | oui |
 | Livrée | 2026-11-26 · dernière vérification 2026-11-26 |

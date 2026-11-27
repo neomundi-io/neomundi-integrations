@@ -198,7 +198,7 @@ def test_production_version_350_is_verified_and_no_longer_warns(client):
     That test pinned a fact about production — 3.5.0 served, 3.5.0 not
     verified — and said in its docstring that it would turn red when the SDK
     qualified 3.5.0, as "the intended signal to revisit
-    KNOWN_LIMITATIONS.md section 1". The signal fired on 2026-11-26: the SDK
+    LIMITATIONS.md section 1" (then named KNOWN_LIMITATIONS.md). The signal fired on 2026-11-26: the SDK
     qualified 3.5.0 live on REST and SSE. So the fact is replaced by the new
     one rather than the assertion being relaxed.
 
@@ -225,7 +225,8 @@ def test_integration_contract_does_not_restate_the_measurement_version():
     contract = langchain_neomundi.INTEGRATION_CONTRACT
     assert "measurement_version" not in contract
     assert contract["billed"] is True
-    assert contract["neomundi_min"] == "2.1.0"
+    # The SDK floor is confronted with pyproject.toml in test_package_metadata.py,
+    # not with a literal: this line asserted "2.1.0" under a 2.2.0 floor.
 
 
 # ------------------------------------------------------------ R10 hygiene

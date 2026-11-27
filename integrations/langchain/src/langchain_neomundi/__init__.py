@@ -16,27 +16,28 @@ This package **transports** measurements. It does not interpret them: no
 threshold, no verdict, no "safe" label. That boundary belongs to the
 ``neomundi`` SDK and is kept here on purpose.
 
-Read ``KNOWN_LIMITATIONS.md`` before drawing a conclusion from any score.
+Read ``LIMITATIONS.md`` before drawing a conclusion from any score.
 """
 
 from __future__ import annotations
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 #: What this package was built and verified against.
 #:
-#: ``neomundi_min`` is the first SDK release that exposes ``client.trace()``,
-#: which this integration drives. ``langchain_core_min`` is the first 1.x
+#: ``neomundi_min`` is the dependency floor in ``pyproject.toml``: 2.2.0, the
+#: first SDK release that compares the served measurement version itself, so
+#: this handler does not have to (``client.trace()`` exists since 2.1.0). ``langchain_core_min`` is the first 1.x
 #: core whose callback surface was introspected for this handler.
 #:
 #: ``measurement_version`` is not restated here on purpose: the SDK owns it,
 #: and this package reads ``neomundi.API_CONTRACT`` at runtime so the two can
 #: never drift apart silently.
 INTEGRATION_CONTRACT = {
-    "neomundi_min": "2.1.0",
+    "neomundi_min": "2.2.0",
     "langchain_core_min": "1.0.0",
     "verified_against": {
-        "neomundi": "2.1.0",
+        "neomundi": "2.2.0",
         "langchain_core": "1.8.5",
         "python": ("3.11", "3.12", "3.13"),
     },

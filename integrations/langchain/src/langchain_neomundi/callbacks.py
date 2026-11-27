@@ -12,7 +12,7 @@ Design rules, inherited from the ``neomundi`` SDK and not negotiable here:
 3. **Nothing is silent.** Every decision produces an :class:`Outcome` with
    an explicit status, available on the handler and through ``on_outcome``.
 
-See ``KNOWN_LIMITATIONS.md`` before drawing conclusions from a score.
+See ``LIMITATIONS.md`` before drawing conclusions from a score.
 """
 
 from __future__ import annotations
@@ -393,7 +393,7 @@ class NeoMundiCallbackHandler(BaseCallbackHandler):
 
         Walking up from the model therefore never reaches the retriever.
         What the two genuinely share is their root, so that is the key.
-        Measured on langchain-core 1.8.5; see KNOWN_LIMITATIONS.md §5.
+        Measured on langchain-core 1.8.5; see LIMITATIONS.md §5.
         """
         with self._lock:
             lineage = self._lineage(run_id, parent_run_id)

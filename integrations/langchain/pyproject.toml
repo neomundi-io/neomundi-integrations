@@ -28,8 +28,10 @@ classifiers = [
 #
 # `langchain-core` is pinned at >=1.0 because the callback signatures this
 # handler implements were introspected on the 1.x surface. `neomundi` is
-# pinned at >=2.1.0 because `client.trace()` -- the brick this package
-# drives -- does not exist before it.
+# pinned at >=2.2.0 because that is the first release that compares the
+# served measurement version itself; this handler stopped doing it in 0.2.0,
+# so below 2.2.0 nothing would warn. `client.trace()` -- the brick this
+# package drives -- has existed since 2.1.0.
 dependencies = [
     "langchain-core>=1.0,<2.0",
     "neomundi>=2.2.0,<3.0",

@@ -40,7 +40,7 @@
       "maturity": "beta",
       "evidence": {
         "level": "e2",
-        "offline_tests": 54,
+        "offline_tests": 59,
         "real_observations": 6,
         "observations_verified_persisted": 6,
         "proof": "evidence/real_execution_20261125T234924Z.json",
@@ -64,8 +64,8 @@
           "verified": "1.8.5"
         },
         "neomundi_sdk": {
-          "min": "2.1.0",
-          "verified": "2.1.0"
+          "min": "2.2.0",
+          "verified": "2.2.0"
         },
         "measurement_version_verified": "3.5.0"
       },

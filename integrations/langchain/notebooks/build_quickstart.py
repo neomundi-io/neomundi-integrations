@@ -376,32 +376,47 @@ print(f"rag_context : {json.dumps(REQUESTS[0].get('rag_context'), indent=2)}")
 ## 8. Comparability: the version caveat
 
 Two results produced under two different `measurement_version` values are
-**not comparable for the same input**. The handler warns once when the
-served version is not one the installed SDK verified.
+**not comparable for the same input**. So every `Outcome` records the
+version that served it, and the installed `neomundi` SDK emits a
+`RuntimeWarning` when that version is not one it verified.
 
-As measured on 2026-11-25, production serves `3.5.0` while the SDK
-verifies `3.3.0` and `3.3.1` — deliberately, per the SDK's own
-`docs/COMPATIBILITY_350.md`. So this warning fires on real production use
-today. See `KNOWN_LIMITATIONS.md` §1.
+The warning is the SDK's, not this handler's: since `neomundi` 2.2.0 the
+comparison happens on the funnel of every response, so a direct SDK user
+gets it too, and a drift warns once rather than twice. Production serves
+`3.5.0`, which the SDK verified on live evidence on 2026-11-26, so on real
+traffic today this stays silent. Below, the mock serves a version nobody
+verified. See `LIMITATIONS.md` §1.
 """
     ),
     code(
         """
+import copy
 import warnings
 
-print(f"SDK verifies      : {neomundi.API_CONTRACT['verified_measurement_versions']}")
-print("production serves : 3.5.0  (measured 2026-11-25)")
-print()
+print(f"SDK verifies   : {neomundi.API_CONTRACT['verified_measurement_versions']}")
 
-client = fresh_client()
-handler = NeoMundiCallbackHandler(client)
+DRIFTED = copy.deepcopy(PAYLOAD)
+DRIFTED["audit"]["measurement_version"] = "9.9.9"  # a version nobody verified
+
+
+def drifted_api(request: httpx.Request) -> httpx.Response:
+    REQUESTS.append(json.loads(request.content.decode("utf-8")))
+    return httpx.Response(200, json=DRIFTED)
+
+
+handler = NeoMundiCallbackHandler(fresh_client(drifted_api))
 with warnings.catch_warnings(record=True) as caught:
     warnings.simplefilter("always")
-    handler._warn_on_version("3.5.0")
-    handler._warn_on_version("3.5.0")  # silent the second time
+    chain.invoke(
+        {"question": "In one sentence, what is the capital of France?"},
+        config={"callbacks": [handler]},
+    )
 
-print(f"warnings emitted  : {len(caught)}  (once per handler, not once per call)")
-print(f"message           : {str(caught[0].message)[:120]}...")
+drift = [w for w in caught if "not comparable" in str(w.message)]
+print(f"served version : {handler.last_outcome.measurement_version}")
+print(f"submitted      : {handler.last_outcome.submitted}  (a warning never blocks)")
+print(f"drift warnings : {len(drift)}  (one, from the SDK; the handler adds none)")
+print(f"message        : {str(drift[0].message)[:100]}...")
 """
     ),
     md(
@@ -446,10 +461,10 @@ else:
         """
 ## Where to go next
 
-- **[KNOWN_LIMITATIONS.md](../KNOWN_LIMITATIONS.md)** — ten specific
+- **[LIMITATIONS.md](../LIMITATIONS.md)** — specific
   limitations, each measured rather than assumed. Read it before drawing a
   conclusion from a score.
-- **[docs/VALUE.md](../docs/VALUE.md)** — when this is worth paying for,
+- **[VALUE.md](../VALUE.md)** — when this is worth paying for,
   with the sampling arithmetic spelled out.
 - **[examples/02_refusals.py](../examples/02_refusals.py)** — the refusals
   as a standalone script.
