@@ -49,7 +49,7 @@ INTEGRATION_CONTRACT = {
     "token_count_verified_against_provider_payload": False,
     "latency_source": "measured around call_next()",
     "streaming": "refused by name",
-    "measurement_versions_verified": (),
+    "measurement_versions_verified": ("3.5.0",),
 }
 
 __all__ = [

@@ -125,6 +125,9 @@ async def _probe_async(client, *, submit: bool, metadata: dict) -> list[dict[str
                 "model_name": outcome.model_name,
                 "measurement_version": outcome.measurement_version,
                 "reason": outcome.reason,
+                # A transport failure without its type cannot be diagnosed
+                # afterwards. The first real run proved that the hard way.
+                "error_type": outcome.error_type,
             }
         )
 

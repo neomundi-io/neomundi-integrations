@@ -14,6 +14,7 @@ from typing import Any
 import httpx
 import pytest
 from agent_framework.openai import OpenAIChatCompletionClient
+from neomundi import NeoMundiError
 from openai import AsyncOpenAI
 
 
@@ -97,6 +98,19 @@ class RecordingClient:
         self._raises = raises
 
     def govern(self, **kwargs: Any) -> FakeResult:
+        """Refuse what the real API refuses.
+
+        🔴 The first real run returned HTTP 422 because `source_type` and
+        `mode` were forwarded as explicit `None`. The offline suite missed
+        it because this double accepted anything. A double that is more
+        permissive than the thing it stands for does not test the contract;
+        it tests itself.
+        """
+        for field, allowed in (("source_type", str), ("mode", str)):
+            if field in kwargs and not isinstance(kwargs[field], allowed):
+                raise NeoMundiError(
+                    f"HTTP 422 | validation_error | body.{field}: Input should be a valid string"
+                )
         self.calls.append(kwargs)
         if self._raises is not None:
             raise self._raises

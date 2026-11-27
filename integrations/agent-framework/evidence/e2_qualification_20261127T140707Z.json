@@ -1,0 +1,74 @@
+{
+  "proof": "agent-framework-neomundi E2 qualification",
+  "dry_run": false,
+  "started_utc": "2026-11-27T14:07:07.734401+00:00",
+  "finished_utc": "2026-11-27T14:07:12.639169+00:00",
+  "api_base_url": "https://api.neomundi.io",
+  "probe": "agent-framework-neomundi middleware -> real Agent Framework chat client",
+  "authorisation": {
+    "authorised_by": "Sebastien Favre, 2026-11-28",
+    "budget_chf": 0.06,
+    "ceiling_observations": 2
+  },
+  "account": {
+    "note": "service verification account; guard authorised before this run"
+  },
+  "versions": {
+    "neomundi": "2.2.0",
+    "python": "3.12.10"
+  },
+  "metadata_applied": {
+    "role": "devrel-verify",
+    "excluded_from": "Study2_Stage1_Stage2_Stage3",
+    "integration": "agent-framework-neomundi",
+    "qualification": "e2"
+  },
+  "billed_observations": 0,
+  "estimated_cost_chf": 0.0,
+  "measurement_versions_served": [],
+  "records": [
+    {
+      "phase": "measure 1",
+      "expectation": "a real model call, measured with the provider's own count",
+      "status": "not_submitted_transport_error",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": 599.7695000260137,
+      "token_count": 77,
+      "token_source": "framework_total",
+      "model_name": "swiss-ai/Apertus-v1.5-70B",
+      "measurement_version": null,
+      "reason": "the measurement API could not be reached or refused the submission; the host application was not affected"
+    },
+    {
+      "phase": "measure 2",
+      "expectation": "a real model call, measured with the provider's own count",
+      "status": "not_submitted_transport_error",
+      "submitted": false,
+      "request_id": null,
+      "latency_ms": 242.236599966418,
+      "token_count": 77,
+      "token_source": "framework_total",
+      "model_name": "swiss-ai/Apertus-v1.5-70B",
+      "measurement_version": null,
+      "reason": "the measurement API could not be reached or refused the submission; the host application was not affected"
+    },
+    {
+      "phase": "streaming",
+      "expectation": "refused by name: usage exists only after the stream is consumed",
+      "status": "not_submitted_streaming",
+      "submitted": false,
+      "reason": "a streaming invocation: usage exists only once the stream is consumed, and this middleware resumes before that. Measuring it here would mean guessing. See LIMITATIONS.md section 3."
+    },
+    {
+      "phase": "submit=False on a real call",
+      "expectation": "the count is computed from a real response and never sent",
+      "status": "not_submitted_local_only",
+      "submitted": false,
+      "token_count": 77,
+      "reason": "submit=False or no client: nothing left the process"
+    }
+  ],
+  "readback": [],
+  "note": "Prompts and responses are deliberately absent. Observations are marked role=devrel-verify and must be excluded from any analysis."
+}

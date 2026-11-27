@@ -161,14 +161,26 @@ Enable Windows long-path support, or install from a shorter root. This is
 the host's packaging, not ours, and installing `agent-framework-core`
 alone — which is all this integration needs — avoids it.
 
-## 10. Evidence level: E1
+## 10. Evidence level: E2 — and what it does not cover
 
-**E1 at 0.1.0.** Offline tests, green across platforms, driving the
-framework's real middleware pipeline and real connector over a mocked
-transport.
+**E2 at 0.1.0**, established 2026-11-28 for **0.06 CHF**:
 
-🔴 **No real execution against the production measurement API has been
-performed**, so no `measurement_version` is declared verified and
-`INTEGRATION_CONTRACT["measurement_versions_verified"]` is empty. The E2
-probe is written and `tools/qualify_e2.py` will run it when a spend is
-authorised. Until then this package claims E1 and nothing more.
+| | |
+|---|---|
+| Real interactions | 2, through a real `OpenAIChatCompletionClient` against a provider's OpenAI-compatible route |
+| Re-read as persisted | **2 / 2** |
+| `measurement_version` | **3.5.0** |
+| Refusal phases on real calls | 2, billing nothing: a streaming invocation and `submit=False` |
+| Offline tests | 21, on the framework's real middleware pipeline |
+
+🔴 **What E2 does not mean here.** Two observations prove the chain works
+end to end: a real call, a real submission, a real re-read. They
+establish nothing about model behaviour, nothing about other connectors
+(§2), and they do not lift the provenance limit of §1.
+
+⚠ **The first real run failed, and that is part of the record.** It
+returned HTTP 422 — `source_type` and `mode` were forwarded as explicit
+null, overriding the SDK's own defaults. The offline suite had missed it
+because its double accepted anything the real API would refuse. **Nothing
+was billed by that failure**: the refusal path held and the host was
+unaffected. Both the fix and a tightened double are in the suite.

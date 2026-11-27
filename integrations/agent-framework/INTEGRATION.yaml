@@ -23,25 +23,32 @@ package:
   # of a `pip install` that would fail.
   published_on: none
 
-# Package lifecycle, not evidence. Experimental until a real execution
-# exists: nothing here has touched the production measurement API.
-maturity: experimental
+# Package lifecycle, not evidence. A package that has measured real calls
+# is no longer experimental; `stable` is a separate claim about age and use.
+maturity: beta
 
 evidence:
   # E0 nothing yet, E1 offline tests, E2 + real execution against
   # production, E3 + independently reproduced.
-  level: e1
-  offline_tests: 19
+  level: e2
+  offline_tests: 21
+  real_observations: 2
+  observations_verified_persisted: 2
+  cost_chf: 0.06
+  proof: evidence/e2_qualification_20261127T140858Z.json
   reason: >-
-    Nineteen offline tests, driving the framework's REAL middleware
-    pipeline and its real OpenAI Chat Completions connector over
-    httpx.MockTransport -- not a hand-made context. They cover a measured
-    call, the four named refusals, four distinct failure modes including
-    one where the measurement API itself raises, and the unit that reads
-    the count. No real execution against the production measurement API
-    has been performed, so no measurement_version is declared verified.
-    qualify.py is written and its dry run was executed (free); E2 needs a
-    separately authorised spend.
+    Two real interactions through a real Agent Framework
+    OpenAIChatCompletionClient against Infomaniak's OpenAI-compatible
+    route, with NeoMundiChatMiddleware attached. The provider published a
+    usage block, the framework carried it, both served measurement_version
+    3.5.0 and both were re-read from the API as persisted. Two further
+    phases ran on real calls and billed nothing: a streaming invocation,
+    refused by name, and submit=False on a real response. Twenty-one
+    offline tests drive the framework's REAL middleware pipeline over
+    httpx.MockTransport. Two of them are a regression: the FIRST real run
+    returned HTTP 422 because source_type and mode were forwarded as
+    explicit null, which the offline double had accepted. Nothing was
+    billed by that failure -- the refusal path held.
 
 compatibility:
   python: ["3.11", "3.12", "3.13"]
@@ -55,13 +62,13 @@ compatibility:
     min: "2.2.0"
     verified: "2.2.0"
   connectors_verified:
-    - "agent-framework-openai 1.18.2, OpenAIChatCompletionClient (Chat Completions)"
+    - "agent-framework-openai 1.18.2, OpenAIChatCompletionClient (Chat Completions), against Infomaniak's OpenAI-compatible route"
   connectors_not_verified:
     - "OpenAIChatClient (Responses API)"
     - "Azure, Anthropic, Bedrock, Gemini, Mistral, Ollama"
     - "Copilot Studio, Foundry -- see LIMITATIONS section 7"
   # No live measurement was taken, so no served version was observed.
-  measurement_version_verified: "none (E1: no live call)"
+  measurement_version_verified: "3.5.0 (E2, 2026-11-28)"
 
 value:
   host_keeps: >-

@@ -130,15 +130,15 @@
 | --- | --- |
 | Package | `agent-framework-neomundi` 0.1.0 |
 | Install | `pip install 'git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/agent-framework'` |
-| Maturity | experimental |
-| Evidence level | **E1** — offline tests, green across platforms |
+| Maturity | beta |
+| Evidence level | **E2** — plus real execution against production, proof committed |
 | Python | 3.11, 3.12, 3.13 |
 | Platforms | linux, macos, windows |
 | Target verified | `agent-framework-core` 1.26.0 (bounds 1.26.0 → <2.0) |
 | NeoMundi SDK | ≥ 2.2.0, verified 2.2.0 |
-| `measurement_version` verified | **none (E1: no live call)** |
-| Offline tests | 19 |
-| Real observations | —, of which — re-read as persisted |
+| `measurement_version` verified | **3.5.0 (E2, 2026-11-28)** |
+| Offline tests | 21 |
+| Real observations | 2, of which 2 re-read as persisted |
 | Metered | yes |
 | Delivered | 2026-11-28 · last verified 2026-11-28 |
 

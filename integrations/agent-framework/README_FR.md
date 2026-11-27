@@ -12,12 +12,12 @@
 
 ---
 
-> **Niveau de preuve E1.** Tests hors ligne, verts sur plusieurs
-> plateformes, pilotant le vrai pipeline de middleware du framework et
-> son vrai connecteur sur un transport simulé. **Aucune exécution réelle
-> contre l'API de mesure de production n'a encore eu lieu**, donc aucune
-> version de mesure n'est déclarée vérifiée. Voir
-> [LIMITATIONS §10](LIMITATIONS.md#10-evidence-level-e1).
+> **Niveau de preuve E2.** Deux mesures réelles le 2026-11-28, par un
+> vrai client Agent Framework contre la route compatible OpenAI d'un
+> fournisseur, **toutes deux relues depuis l'API NeoMundi comme
+> persistées** en `measurement_version 3.5.0`. Plus 21 tests hors ligne
+> sur le vrai pipeline de middleware. Voir
+> [LIMITATIONS §10](LIMITATIONS.md#10-evidence-level-e2--and-what-it-does-not-cover).
 
 ## Ce que c'est
 
@@ -38,8 +38,7 @@ votre agent  ──▶  ChatMiddleware  ──▶  le fournisseur
 ## Installation
 
 🟡 **Pas encore publié sur PyPI.** `pip install agent-framework-neomundi`
-ne fonctionne pas aujourd'hui : le paquet est en E1 et la publication
-attend une qualification réelle. Installation depuis ce dépôt :
+ne fonctionne pas aujourd'hui. Installation depuis ce dépôt :
 
 ```bash
 pip install "git+https://github.com/neomundi-io/neomundi-integrations.git#subdirectory=integrations/agent-framework"
