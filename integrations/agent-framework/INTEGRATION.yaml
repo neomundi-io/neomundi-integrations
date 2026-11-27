@@ -1,0 +1,124 @@
+# The single source of truth for this integration.
+#
+# The library index, the catalogue and the badges are GENERATED from this
+# file and its siblings. `tools/check_conformance.py` validates it and
+# refuses claims it cannot verify -- in particular, `evidence.level` is
+# checked against what `evidence/` actually contains.
+
+slug: agent-framework
+name: Microsoft Agent Framework
+technology:
+  name: Microsoft Agent Framework
+  homepage: https://learn.microsoft.com/en-us/agent-framework/overview/
+  what_it_is: >-
+    Microsoft's agent runtime, which unifies and succeeds Semantic Kernel
+    and AutoGen -- both now in maintenance. It exposes a ChatMiddleware
+    layer that brackets every model call, and emits OpenTelemetry natively.
+
+package:
+  name: agent-framework-neomundi
+  import_name: agent_framework_neomundi
+  version: 0.1.0
+  # Not published. The index renders the repository install line instead
+  # of a `pip install` that would fail.
+  published_on: none
+
+# Package lifecycle, not evidence. Experimental until a real execution
+# exists: nothing here has touched the production measurement API.
+maturity: experimental
+
+evidence:
+  # E0 nothing yet, E1 offline tests, E2 + real execution against
+  # production, E3 + independently reproduced.
+  level: e1
+  offline_tests: 19
+  reason: >-
+    Nineteen offline tests, driving the framework's REAL middleware
+    pipeline and its real OpenAI Chat Completions connector over
+    httpx.MockTransport -- not a hand-made context. They cover a measured
+    call, the four named refusals, four distinct failure modes including
+    one where the measurement API itself raises, and the unit that reads
+    the count. No real execution against the production measurement API
+    has been performed, so no measurement_version is declared verified.
+    qualify.py is written and its dry run was executed (free); E2 needs a
+    separately authorised spend.
+
+compatibility:
+  python: ["3.11", "3.12", "3.13"]
+  platforms: [linux, macos, windows]
+  target:
+    name: agent-framework-core
+    min: "1.26.0"
+    max: "<2.0"
+    verified: "1.26.0"
+  neomundi_sdk:
+    min: "2.2.0"
+    verified: "2.2.0"
+  connectors_verified:
+    - "agent-framework-openai 1.18.2, OpenAIChatCompletionClient (Chat Completions)"
+  connectors_not_verified:
+    - "OpenAIChatClient (Responses API)"
+    - "Azure, Anthropic, Bedrock, Gemini, Mistral, Ollama"
+    - "Copilot Studio, Foundry -- see LIMITATIONS section 7"
+  # No live measurement was taken, so no served version was observed.
+  measurement_version_verified: "none (E1: no live call)"
+
+value:
+  host_keeps: >-
+    Agent Framework keeps the agent runtime, the connectors, the
+    OpenTelemetry emission, the typed usage_details and the model
+    metadata it already carries. The middleware is added to the client
+    and replaces nothing. And it keeps a property worth naming: when a
+    provider publishes no token count, the framework leaves usage_details
+    absent rather than filling it.
+  neomundi_adds: >-
+    Signed, independently verifiable behavioural measurement of each model
+    call the framework makes -- five signals with explicit provenance and
+    an explicit measured / not-measured state -- attached at the
+    framework's own middleware layer, with the latency measured around the
+    call rather than read off a span. It never invents a token count: a
+    provider that publishes none produces a named refusal and no bill.
+  complements_not_replaces:
+    - Agent Framework's native OpenTelemetry emission
+    - otel-neomundi, which can read the same spans but must have the count declared by hand
+    - your tracing backend
+  typical_use:
+    - Measure every model call of an Agent Framework application without writing a measurement call per site.
+    - Find out, for free and with submit=False, which of your calls could be measured at all.
+    - Account for model behaviour to an auditor who does not take your word for it.
+
+entrypoint:
+  kind: middleware
+  symbol: agent_framework_neomundi.NeoMundiChatMiddleware
+  snippet: |
+    measure = NeoMundiChatMiddleware(api_key=..., base_url="https://api.neomundi.io")
+    chat = OpenAIChatCompletionClient(model="gpt-4o-mini", middleware=[measure])
+    reply = await chat.get_response("What is the capital of France?")
+    print(measure.last_outcome.request_id)  # your correlation key
+
+refusals:
+  - A token count is never invented. A provider that publishes none leaves usage_details absent, and the call is refused by name rather than measured.
+  - A zero, or anything that is not a positive integer, is not a token count.
+  - A streaming invocation is refused by name: usage exists only once the stream is consumed, and this middleware resumes before that.
+  - No exception of ours reaches the host application -- measured, because the framework does NOT isolate a failing middleware.
+  - The host's own failure is recorded and re-raised untouched: swallowing it would hide a failure from the application.
+
+billing:
+  metered: true
+  note: >-
+    Every submitted observation is a billed measurement; there is no
+    trace-only route. A refusal opens no socket and costs nothing, which
+    examples/02_refusals.py demonstrates by printing the billed count:
+    zero. There is no sampling in 0.1.0.
+
+links:
+  readme: README.md
+  readme_fr: README_FR.md
+  limitations: LIMITATIONS.md
+  value: VALUE.md
+  changelog: CHANGELOG.md
+  examples: examples/
+  notebook: notebooks/quickstart.ipynb
+
+delivered: 2026-11-28
+last_verified: 2026-11-28

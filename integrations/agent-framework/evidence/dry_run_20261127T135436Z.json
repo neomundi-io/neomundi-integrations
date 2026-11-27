@@ -1,0 +1,54 @@
+{
+  "proof": "agent-framework-neomundi E2 qualification -- DRY RUN, not a proof",
+  "dry_run": true,
+  "started_utc": "2026-11-27T13:54:36.267091+00:00",
+  "finished_utc": "2026-11-27T13:54:36.310257+00:00",
+  "api_base_url": "https://api.neomundi.io",
+  "probe": "agent-framework-neomundi middleware -> real Agent Framework chat client",
+  "authorisation": {
+    "authorised_by": "dry run, no spend",
+    "budget_chf": 0.0,
+    "ceiling_observations": 0
+  },
+  "account": {
+    "note": "service verification account; guard authorised before this run"
+  },
+  "versions": {
+    "neomundi": "2.2.0",
+    "python": "3.12.10"
+  },
+  "metadata_applied": {
+    "role": "devrel-verify",
+    "excluded_from": "Study2_Stage1_Stage2_Stage3",
+    "integration": "agent-framework-neomundi",
+    "qualification": "e2"
+  },
+  "billed_observations": 0,
+  "estimated_cost_chf": 0.0,
+  "measurement_versions_served": [],
+  "records": [
+    {
+      "phase": "measure 1",
+      "expectation": "dry run: nothing is called and nothing is sent",
+      "status": "not_submitted_local_only",
+      "submitted": false,
+      "reason": "no provider call in a dry run, and no socket opened"
+    },
+    {
+      "phase": "measure 2",
+      "expectation": "dry run: nothing is called and nothing is sent",
+      "status": "not_submitted_local_only",
+      "submitted": false,
+      "reason": "no provider call in a dry run, and no socket opened"
+    },
+    {
+      "phase": "streaming",
+      "expectation": "dry run: refused by name, as a real stream would be",
+      "status": "not_submitted_streaming",
+      "submitted": false,
+      "reason": "no provider call in a dry run"
+    }
+  ],
+  "readback": [],
+  "note": "Prompts and responses are deliberately absent. Observations are marked role=devrel-verify and must be excluded from any analysis."
+}
