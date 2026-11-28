@@ -63,6 +63,10 @@ n'ouvre aucune socket et exécute toutes les vérifications — vous voyez
 combien de vos complétions seraient mesurées avant de dépenser quoi que ce
 soit.
 
+Deux lignes, sans clé, et vous le voyez se produire : [`examples/03_the_count_you_see.py`](examples/03_the_count_you_see.py)
+montre LiteLLM annoncer un nombre de jetons qu'**aucun fournisseur n'a publié**,
+et le logger le refuser.
+
 Dans le **Proxy LiteLLM**, placez une instance dans un module et
 référencez-la sous `litellm_settings.callbacks` dans `config.yaml`. Lisez
 d'abord [LIMITATIONS §2](LIMITATIONS.md#2-async-streams-are-never-measured) :

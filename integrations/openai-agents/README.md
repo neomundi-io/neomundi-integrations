@@ -77,6 +77,10 @@ socket, and tells you which of your calls would be measured. Runnable,
 offline: [`examples/01_offline_agent.py`](examples/01_offline_agent.py)
 and the [notebook](notebooks/quickstart.ipynb).
 
+Two lines, no key, and you see it happen: [`examples/03_the_count_you_see.py`](examples/03_the_count_you_see.py)
+runs an agent whose provider publishes no usage — the run reports **0 tokens**,
+and the processor refuses it, because a zero-filled dict is not a count.
+
 ## Refusals
 
 Every span ends with an `Outcome` and an explicit status. Nothing is
