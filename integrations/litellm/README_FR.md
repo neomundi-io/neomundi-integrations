@@ -106,6 +106,13 @@ cela ([LIMITATIONS §4](LIMITATIONS.md#4-replacing-or-removing-the-logger-is-not
 
 Lisez [LIMITATIONS.md](LIMITATIONS.md) avant de tirer une conclusion d'un score.
 
+## Le voir mesure
+
+Une demonstration en ligne du sujet de cette integration, la provenance des
+decomptes de jetons a travers LiteLLM, se trouve sur
+[neomundi.io/demo-12](https://neomundi.io/demo-12). La page renvoie vers ses
+sources et porte sa propre section sur ce qu'elle n'etablit pas.
+
 ## Licence
 
 Apache-2.0. Voir [LICENSE](../../LICENSE).

@@ -104,6 +104,13 @@ deterministic in `litellm_call_id`.
 
 Read [LIMITATIONS.md](LIMITATIONS.md) before drawing a conclusion from any score.
 
+## See it measured
+
+A live demonstration of this integration's subject, token-count provenance
+through LiteLLM, is at [neomundi.io/demo-12](https://neomundi.io/demo-12). The
+page links the sources it draws on and carries its own section on what it does
+not establish.
+
 ## License
 
 Apache-2.0. See [LICENSE](../../LICENSE).
