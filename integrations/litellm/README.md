@@ -61,6 +61,10 @@ Free first: `NeoMundiLogger(submit=False)` needs no key, opens no socket,
 and runs every check — so you can see how many of your completions would be
 measured before spending anything.
 
+Two lines, no key, and you see it happen: [`examples/03_the_count_you_see.py`](examples/03_the_count_you_see.py)
+shows LiteLLM reporting a token count that **no provider published**, and the
+logger refusing it.
+
 In the **LiteLLM Proxy**, put an instance in a module and reference it under
 `litellm_settings.callbacks` in `config.yaml`. Read
 [LIMITATIONS §2](LIMITATIONS.md#2-async-streams-are-never-measured) first:

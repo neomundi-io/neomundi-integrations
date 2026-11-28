@@ -57,3 +57,12 @@ def test_refusals_example_shows_each_refusal_on_the_wire():
         assert "status        : not_submitted_transport_error" in section
         assert "requests sent : 1" in section
         assert "host          : got 'Paris.'" in section
+
+
+def test_the_count_you_see_example_shows_a_count_no_provider_reported():
+    """Two lines, no key: LiteLLM shows a number, and the logger says no provider said it."""
+    out = _run("03_the_count_you_see.py")
+    reported = next(line for line in out.splitlines() if line.startswith("LiteLLM reports"))
+    count = int(reported.split(":")[1].split()[0])
+    assert count > 0, "the demonstration needs a count LiteLLM made up, or it shows nothing"
+    assert "traced to a provider : not_submitted_unverified_token_count" in out

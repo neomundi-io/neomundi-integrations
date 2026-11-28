@@ -59,3 +59,11 @@ def test_refusals_example_shows_each_refusal_and_sends_nothing():
         assert f"span          : {span}" in section, section
         assert f"status        : {status}" in section, section
         assert "requests sent : 0" in section, section
+
+
+def test_the_count_you_see_example_refuses_a_zero_filled_usage():
+    """Two lines, no key: the run reports 0 tokens, and the processor says 0 is not a count."""
+    out = _run("03_the_count_you_see.py")
+    assert "the agent run reports : 0 tokens" in out
+    assert "traced to a provider  : not_submitted_unverified_token_count" in out
+    assert "zero-filled" in out

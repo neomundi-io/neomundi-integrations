@@ -82,6 +82,11 @@ seraient mesurés. Exécutables, hors ligne :
 [`examples/01_offline_agent.py`](examples/01_offline_agent.py) et le
 [notebook](notebooks/quickstart.ipynb).
 
+Deux lignes, sans clé, et vous le voyez se produire : [`examples/03_the_count_you_see.py`](examples/03_the_count_you_see.py)
+fait tourner un agent dont le fournisseur ne publie aucun usage — le run annonce
+**0 jeton**, et le processeur le refuse, car un dictionnaire rempli de zéros
+n'est pas un décompte.
+
 ## Refus
 
 Chaque span se termine par un `Outcome` au statut explicite. Rien n'est
