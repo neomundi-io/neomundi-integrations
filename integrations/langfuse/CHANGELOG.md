@@ -3,6 +3,17 @@
 All notable changes to this project are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## Unreleased
+
+### Fixed
+
+- An observation on which the server attempted **no check**
+  (`measurement.status == "not_attempted"` or `checks_attempted == 0`) no
+  longer writes any numeric score, even for a signal still listed in
+  `measured_signals`, and its summary carries `coverage: null` with a
+  `coverage_withheld` reason instead of the conventional `1.0`. See
+  `LIMITATIONS.md` §5.
+
 ## 0.1.0 — released 2026-11-26
 
 First release. Writes NeoMundi measurements back into Langfuse as scores

@@ -65,6 +65,18 @@ that was not attempted can carry a conventional value (`coherence_score:
 `signals_withheld`. An older server response with neither provenance list
 yields **no signal score at all**, by design.
 
+🔴 **And when the server attempted no check at all, nothing numeric is
+written** — not even for a signal it still lists in `measured_signals`.
+`measurement.status == "not_attempted"` or `checks_attempted == 0` withholds
+every signal with the reason `not_attempted: …`, and the summary carries
+`coverage: null` with a `coverage_withheld` reason instead of a number. The
+`neomundi` SDK documents why: `coverage` is **1.0 when nothing was
+attempted**, and an aggregate that was required and never attempted is not
+a value. Before this change the summary carried that `1.0`, and a server
+response listing signals as measured with no check attempted would have
+become perfect-looking numeric scores (checked offline on 2026-11-28; that
+server shape was constructed, **not observed** in any recorded response).
+
 ## 6. Evidence level: E2 — and what it does not cover
 
 🟢 Measured on **2026-11-26**, after the service account's guard. This
