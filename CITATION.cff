@@ -1,0 +1,28 @@
+# Citation metadata for this repository.
+# https://citation-file-format.github.io/
+#
+# Read by GitHub, which renders a "Cite this repository" button, and by Zenodo
+# when a release is archived. 🔴 It does not archive anything by itself.
+
+cff-version: 1.2.0
+message: If you use this software, please cite it using these metadata.
+type: software
+title: NeoMundi Integrations
+abstract: >-
+  Integration library attaching NeoMundi behavioural measurement to the hook a host framework already provides — LangChain, Langfuse, LiteLLM, Microsoft Agent Framework, MLflow, the OpenAI Agents SDK and OpenTelemetry. Each integration carries an evidence level that continuous integration computes from a committed proof rather than reading from a declaration, together with its explicit limitations.
+authors:
+  - family-names: Favre-Lecca
+    given-names: Sébastien
+    affiliation: NeoMundi
+repository-code: https://github.com/neomundi-io/neomundi-integrations
+url: https://neomundi.io
+license: Apache-2.0
+keywords:
+  - artificial intelligence
+  - observability
+  - langchain
+  - litellm
+  - mlflow
+  - opentelemetry
+  - llm
+  - instrumentation
