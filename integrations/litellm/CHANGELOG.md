@@ -3,6 +3,15 @@
 All notable changes to this project are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## Unreleased
+
+### Documentation
+
+- `LIMITATIONS.md` §10: how `Outcome.status` and `Outcome.token_source` line
+  up with LiteLLM's own `UsageObservation` (`known` / `estimated` /
+  `unknown`), why the integration cannot map onto it at runtime, and the
+  state upstream has no word for (*present but unprovable*). No code change.
+
 ## 0.1.0 — released 2026-11-26
 
 First release. Measures chat completions routed by LiteLLM with NeoMundi.

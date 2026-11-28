@@ -157,3 +157,38 @@ What that does **not** cover, and what it means for you:
 - **Not E3.** Nobody outside the team has reproduced it. Real providers other than
 the mocked shapes (OpenAI-compatible, Ollama, Anthropic's usage block)
 were not exercised.
+
+## 10. Provenance vocabulary: how ours lines up with LiteLLM's `known` / `estimated` / `unknown`
+
+**Read on 2026-11-28 against `litellm` 1.111.0, by introspection.** LiteLLM
+defines `UsageObservation` with three values — `known`, `unknown`,
+`estimated` (`litellm/litellm_core_utils/litellm_logging.py:705`). The same
+three-way distinction is being discussed for OpenTelemetry GenAI at
+`open-telemetry/semantic-conventions#4075`.
+
+🔴 **This integration does not map onto those three words at runtime, and
+cannot.** A `CustomLogger` never sees LiteLLM's marker: on `completion`,
+`completion(stream=True)` and `acompletion(stream=True)`, the
+`_accounting_usage_observed` key was **absent** from the `kwargs` handed to
+the success hook (offline, `mock_response`; the non-streamed `acompletion`
+event was not captured by that probe and is not claimed). The marker is
+internal to LiteLLM's cost accounting.
+
+🔴 **And the words do not mean the same thing.** LiteLLM sets `known` when a
+usage object **exists** (`litellm_logging.py:2961-2967`). This integration
+submits only when the count is **traced to the provider's own payload**. A
+usage object can exist and still be a default (`0 / 0 / 0`) or LiteLLM's
+own tokenizer estimate — §1 measures three such cases. So:
+
+| what `Outcome` says | closest LiteLLM word | why it is not an equivalence |
+|---|---|---|
+| `submitted`, `token_source = "provider_total"` | `known` | 🟢 ours is **stricter**: the total was found in the provider's payload |
+| `submitted`, `token_source = "provider_prompt_plus_completion"` | `known` | 🟢 stricter: prompt and completion were both found in the payload, and summed by us |
+| `not_submitted_unverified_token_count`, reason *"the provider published no token count…"* | `unknown` | the provider payload reached the logger and held no count |
+| `not_submitted_unverified_token_count`, reason *"…cannot be traced to the provider's payload (partial or estimated usage)…"* | 🔴 **none** | LiteLLM may call this `known` (a usage object exists) or `estimated`; **we cannot tell which**, and we do not guess. It is a fourth state: **present but unprovable** |
+| `not_submitted_unverified_token_count` with no provider payload at all (§0, native `ollama/`) | 🔴 **none** | nothing reached the logger to classify |
+
+**What to do.** Read `outcome.status` and `outcome.token_source`, not a
+three-word label. ⚠ **Never translate LiteLLM's `known` into "measured by
+NeoMundi"**: the first means a usage block exists, the second means it was
+proven to be the provider's.
