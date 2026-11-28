@@ -131,3 +131,73 @@ def test_the_input_result_is_not_mutated(recorder, trace_id):
     before = copy.deepcopy(payload)
     _write(result(payload), recorder, trace_id)
     assert payload == before
+
+
+# --- An aggregate that was required and never attempted is not a value ------
+#
+# The SDK documents both conventions: `measurement.coverage` is 1.0 when
+# nothing was attempted, and a check that never ran can carry a reassuring
+# value. Nothing numeric may reach Langfuse from such an observation.
+
+_NOTHING_ATTEMPTED = {
+    "status": "not_attempted",
+    "checks_attempted": 0,
+    "checks_succeeded": 0,
+    "coverage": 1.0,
+    "aggregates_publishable": False,
+}
+_PERFECT = {
+    "stability_score": 1.0,
+    "coherence_score": 1.0,
+    "semantic_risk": 0.0,
+    "factual_hallucination_score": 0.0,
+    "semantic_instability_score": 0.0,
+}
+
+
+def test_nothing_attempted_writes_no_number_and_withholds_the_conventional_coverage(
+    recorder, trace_id
+):
+    payload = load_fixture()
+    payload["measurement"].update(_NOTHING_ATTEMPTED)
+    payload["measured_signals"] = []
+    payload["quality"].update(_PERFECT)
+
+    _, sent = _write(result(payload), recorder, trace_id)
+
+    assert list(sent) == [SUMMARY_SCORE]
+    summary = sent[SUMMARY_SCORE]
+    assert summary["value"] == "not_attempted"
+    assert summary["metadata"]["coverage"] is None  # not the conventional 1.0
+    assert summary["metadata"]["coverage_withheld"].startswith("not_attempted")
+
+
+def test_nothing_attempted_overrides_signals_the_server_still_lists_as_measured(recorder, trace_id):
+    """The EVPACK-033 shape: no check ran, yet five signals are declared measured."""
+    payload = load_fixture()
+    payload["measurement"].update(_NOTHING_ATTEMPTED)
+    payload["quality"].update(_PERFECT)  # measured_signals left as served: all five
+
+    outcome, sent = _write(result(payload), recorder, trace_id)
+
+    assert list(sent) == [SUMMARY_SCORE]
+    assert set(outcome.signals_withheld) == set(COVERAGE_SIGNALS)
+    for reason in outcome.signals_withheld.values():
+        assert reason.startswith("not_attempted")
+
+
+def test_zero_checks_attempted_is_enough_even_if_the_status_says_otherwise(recorder, trace_id):
+    payload = load_fixture()
+    payload["measurement"]["checks_attempted"] = 0
+    payload["quality"].update(_PERFECT)
+
+    _, sent = _write(result(payload), recorder, trace_id)
+
+    assert list(sent) == [SUMMARY_SCORE]
+    assert sent[SUMMARY_SCORE]["metadata"]["coverage"] is None
+
+
+def test_a_complete_measurement_still_carries_its_coverage_number(recorder, trace_id):
+    _, sent = _write(measure(), recorder, trace_id)
+    assert sent[SUMMARY_SCORE]["metadata"]["coverage"] == load_fixture()["measurement"]["coverage"]
+    assert "coverage_withheld" not in sent[SUMMARY_SCORE]["metadata"]

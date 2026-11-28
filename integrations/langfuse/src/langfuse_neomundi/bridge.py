@@ -79,6 +79,25 @@ _SUMMARY_NO_RESULT = "submitted_no_result"
 _SUMMARY_UNKNOWN = "unknown"
 _SUMMARY_KNOWN = ("complete", "partial", "not_attempted")
 
+#: Why nothing numeric is written for an observation on which the server
+#: attempted no check. The SDK documents both conventions this refuses to
+#: transport: ``coverage`` is 1.0 when nothing was attempted, and a check
+#: that never ran can carry a reassuring value such as ``coherence_score``
+#: 1.0. An aggregate that was required and never attempted is not a value.
+_NOT_ATTEMPTED = (
+    "not_attempted: the server attempted no check on this observation, so any "
+    "value here is a convention, not a measurement"
+)
+
+
+def _nothing_attempted(result: GovernResult | None) -> bool:
+    """``True`` when the server says no check ran: status or count, either one."""
+    measurement = result.measurement if result is not None else None
+    if measurement is None:
+        return False
+    return measurement.status == "not_attempted" or measurement.checks_attempted == 0
+
+
 #: Evaluator provenance keys that are safe to forward: identities and
 #: fingerprints, never content.
 #: Spelled as the server publishes them (read from a captured response,
@@ -418,7 +437,11 @@ class NeoMundiLangfuseBridge:
         summary_meta["signals_written"] = list(written)
         summary_meta["signals_withheld"] = dict(withheld)
         if result is not None and result.measurement is not None:
-            summary_meta["coverage"] = result.measurement.coverage
+            if _nothing_attempted(result):
+                summary_meta["coverage"] = None
+                summary_meta["coverage_withheld"] = _NOT_ATTEMPTED
+            else:
+                summary_meta["coverage"] = result.measurement.coverage
             summary_meta["missing_required_signals"] = result.measurement.missing_required_signals
         if m.reason_not_submitted:
             summary_meta["not_submitted_because"] = m.reason_not_submitted
@@ -442,6 +465,10 @@ class NeoMundiLangfuseBridge:
         result = m.result
         if result is None:
             return "no measurement result on this input"
+        if _nothing_attempted(result):
+            # Checked BEFORE `measured_signals`: if the server attempted
+            # nothing, a signal it still lists as measured is not one.
+            return _NOT_ATTEMPTED
         state = result.measurement_state(signal)
         if state is not MeasurementState.MEASURED:
             # A conventional value such as coherence_score 1.0 for a check
